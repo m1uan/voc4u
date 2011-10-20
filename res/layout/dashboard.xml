@@ -30,7 +30,7 @@
 			android:onClick="onSpeechButton" 
 			 />
 			 <Button
-			android:id="@+id/settingButton"
+			android:id="@+id/menuDictionary"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="Setting"

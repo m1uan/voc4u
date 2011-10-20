@@ -22,11 +22,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 
-public abstract class BaseWordActivity extends Activity implements OnInitListener
+public abstract class BaseWordActivity extends Activity implements OnInitListener, OnMenuItemClickListener
 {
 	private static final String TAG = "VOC4UBaseWordActivity";
 	protected WordController mWCtrl;
 	protected TextToSpeech mTts;
+	private MenuItem mMenuHomeId;
+	private MenuItem mMenuDictionary;
+	private MenuItem mSpeachSetting;
 
 	
 	
@@ -103,32 +106,11 @@ public abstract class BaseWordActivity extends Activity implements OnInitListene
 	@Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-    	menu.add("setting").setOnMenuItemClickListener(new OnMenuItemClickListener()
-		{
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item)
-			{
-				onShowMenu();
-				return false;
-			}
-
-			
-		});
-    	menu.add("setting speech").setOnMenuItemClickListener(new OnMenuItemClickListener()
-		{
-			
-			@Override
-			public boolean onMenuItemClick(MenuItem item)
-			{
-				onShowSpeechMenu();
-				return false;
-			}
-
-			
-
-			
-		});
+		mMenuHomeId = menu.add(R.string.menuHome).setOnMenuItemClickListener(this);
+    	mMenuDictionary = menu.add(R.string.menuDictionary).setOnMenuItemClickListener(this);
+    	mSpeachSetting = menu.add(R.string.menuSettingSpeech).setOnMenuItemClickListener(this);
+    	
+    	
     	return super.onCreateOptionsMenu(menu);
     }
     
@@ -172,5 +154,21 @@ public abstract class BaseWordActivity extends Activity implements OnInitListene
 		            TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
 		            null);
 		}
+	}
+	
+	
+	@Override
+	public boolean onMenuItemClick(MenuItem item)
+	{
+		if(item == mMenuDictionary)
+			onShowMenu();
+		else if(item == mMenuHomeId)
+			finish();
+		else if(item == mSpeachSetting)
+			onShowSpeechMenu();
+		else
+			return false;
+		
+		return true;
 	}
 }

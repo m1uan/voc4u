@@ -24,4 +24,9 @@
     <string name="langPL">Poland</string>
     <string name="langPT">Portugal</string>
     <string name="langES">Spain</string>
+    
+    <string name="menuDictionary">Dictionary</string>
+    <string name="menuHome">Home</string>
+    <string name="menuSettingSpeech">Settings speech</string>
+    
 </resources>
