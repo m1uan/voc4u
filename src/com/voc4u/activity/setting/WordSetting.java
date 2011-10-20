@@ -55,12 +55,7 @@ public class WordSetting extends Activity
 
 		public Adapter()
 		{
-			int lenght = LangSetting.getInitDataFromLT(CommonSetting.nativeCode).length;
-			
-			mNum = (int)(lenght / CommonSetting.LESSON_NUM);
-			
-			if(mNum * CommonSetting.LESSON_NUM < lenght)
-				mNum++;
+			mNum = LangSetting.LESSON_SIZES.length;
 		}
 		
 		@Override
@@ -80,8 +75,8 @@ public class WordSetting extends Activity
 		@Override
 		public int getCount()
 		{
-			// TODO Auto-generated method stub
-			return mNum;
+			// first is setting
+			return mNum + 1;
 		}
 
 		@Override

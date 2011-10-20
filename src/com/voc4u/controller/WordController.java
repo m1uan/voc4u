@@ -223,7 +223,7 @@ public class WordController
 	
 	public void initLesson(updateLisener ul)
 	{
-		new UpdateTask(1, ul).execute("");
+		new UpdateTask(0, ul).execute("");
 	}
 
 	public Word getPublicWordById(int id)
@@ -231,15 +231,21 @@ public class WordController
 		return mDictionary.getPublicWordById(id);
 	}
 	
+	
+	/**
+	 * add lesson
+	 * @param lesson - number of lesson
+	 * @param waights - normaly 0, but in  initial is set to 1
+	 */
 	private void addLesson(int lesson, int waights) 
 	{
 		String[] nt = LangSetting.getInitDataFromLT(CommonSetting.nativeCode);
 		String[] lr = LangSetting.getInitDataFromLT(CommonSetting.lernCode);
 
-		int start = lesson * CommonSetting.LESSON_NUM;
-		int end = start + CommonSetting.LESSON_NUM;
+		int start = LangSetting.getLessonStart(lesson);
+		int end = LangSetting.getLessonStart(lesson + 1);
 
-		if (start < nt.length)
+		if (start != -1 && end != -1 && start < nt.length)
 		{
 			if(end >= nt.length)
 				end = nt.length -1;
@@ -256,6 +262,8 @@ public class WordController
 			}
 		}
 	}
+
+	
 
 	private class UpdateTask extends AsyncTask<String, Integer, Long>
 	{

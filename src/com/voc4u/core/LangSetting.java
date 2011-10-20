@@ -32,9 +32,32 @@ public class LangSetting
 	public static final LangType PL = new LangType(6, LANG_PL);
 	public static final LangType PT = new LangType(7, LANG_PT);
 	
+	/**
+	 * num words in lesson
+	 * size of array is define num of lessons
+	 */
+	public static final int[] LESSON_SIZES = new int[]{ 50, 500, 1000, 500};
 	
 	
-
+	/**
+	 * calc position on getLangTextArray for lesson
+	 * see to LESSON_SIZES
+	 * @param lesson
+	 * @return
+	 */
+	public static int getLessonStart(int lesson) 
+	{
+		int result = -1;
+		if(lesson <= LangSetting.LESSON_SIZES.length)
+		{
+			result = 0;
+			for(int i = 0; i < lesson;i++)
+			{
+				result += LangSetting.LESSON_SIZES[i];
+			}
+		}
+		return result;
+	}
 	
 	public final static LangTypeText[] getLangTextArray(Context ctx)
 	{
