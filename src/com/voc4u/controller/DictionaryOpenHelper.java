@@ -107,17 +107,17 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 	}
 
 	/**
-	 * 
+	 * first unsetup word for setup
 	 * @param czenGroup
 	 * @param b
 	 * @return
 	 */
-	public Word getFirstPublicWord(int czenGroup, boolean selectByWeight1)
+	public Word getFirstUnsetupWord()
 	{
 		Word pw = null;
 
 		mDB = getWritableDatabase();
-		Cursor c = rawQuerySQL(mDB, DBConfig.DICTIONARY_TABLE_SELECT_WEIGHT1);
+		Cursor c = rawQuerySQL(mDB, DBConfig.DICTIONARY_TABLE_UNSETUP_WORD);
 
 		if (c != null)
 		{
@@ -126,7 +126,9 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 			int idWordColumn = c.getColumnIndex(DBConfig.ID_COLUMN);
 			int weight1Column = c.getColumnIndex(DBConfig.WEIGHT_1_COLUMN);
 			int weight2Column = c.getColumnIndex(DBConfig.WEIGHT_2_COLUMN);
-			c.moveToFirst();
+			
+			if(!c.moveToFirst())
+				return null;
 
 			String word = c.getString(firstWordColumn);
 			String word2 = c.getString(secondWordColumn);
@@ -403,7 +405,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
         //new String[] { Id.toString(), QuestionnaireId, QuestionId });
 	}
 	
-	public void removeLesson(int lesson)
+	public void unloadLesson(int lesson)
 	{
 		mDB = getWritableDatabase();
 		
@@ -412,11 +414,47 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		
 	}
 
-	public boolean isLessonEnabled(int lesson)
+	/**
+	 * get the lesson in database
+	 * @param lesson
+	 * @return true when the lesson is in database
+	 */
+	public boolean isLessonLoaded(int lesson)
 	{
 		String sql = String.format( DBConfig.GET_LESSON_ENABLED, lesson) ;
 	    SQLiteStatement statement = getReadableDatabase().compileStatement(sql);
 	    long count = statement.simpleQueryForLong();
 	    return count > 0;
 	}
+	
+	
+	/**
+	 * test is any word in database have weight 1, 1
+	 * this is mean that user not know this word yet
+	 * @return true when exist any word with weight 1,1
+	 */
+	public boolean isAnyUnknownWord()
+	{
+		SQLiteStatement statement = getReadableDatabase().compileStatement(DBConfig.EXIST_UNKNOWS_WORDS);
+	    long count = statement.simpleQueryForLong();
+	    return count > 0;
+	}
+	
+	/**
+	 * setup first word with weight 0, 0 to 1, 1
+	 */
+	public void setupFirstWordWeight()
+	{
+		Word w = getFirstUnsetupWord();
+		
+		if(w != null)
+		{
+			String query = String.format(DBConfig.SETUP_WEIGHT,
+				 1, 1, 0, 0, w.getId());
+		
+			execSQL(getWritableDatabase(), query);
+		}
+	}
+	
+	
 }

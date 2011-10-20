@@ -37,16 +37,19 @@ public class DBConfig
 	public static final String DICTIONARY_TABLE_SELECT_WEIGHT1 =
 		DICTIONARY_TABLE_SELECT + " WHERE "+ WEIGHT_1_COLUMN +" > 0 ORDER BY "+ WEIGHT_1_COLUMN +" LIMIT 1";
 	
+	public static final String DICTIONARY_TABLE_UNSETUP_WORD =
+		DICTIONARY_TABLE_SELECT + " WHERE "+ WEIGHT_1_COLUMN +" = 0 AND "+ WEIGHT_2_COLUMN +" = 0 LIMIT 1";
+	
 	public static final String DICTIONARY_TABLE_SELECT_20_WEIGHT1 =
-		DICTIONARY_TABLE_SELECT + " ORDER BY "+ WEIGHT_1_COLUMN +" LIMIT 20";
+		DICTIONARY_TABLE_SELECT + " ORDER BY "+ WEIGHT_1_COLUMN +" LIMIT 10";
 	public static final String DICTIONARY_TABLE_SELECT_20_WEIGHT1_WHERE =
-		DICTIONARY_TABLE_SELECT + " %s ORDER BY "+ WEIGHT_1_COLUMN +" LIMIT 20";
+		DICTIONARY_TABLE_SELECT + " %s ORDER BY "+ WEIGHT_1_COLUMN +" LIMIT 10";
 	
 	public static final String DICTIONARY_TABLE_SELECT_20_WEIGHT2_WHERE =
-		DICTIONARY_TABLE_SELECT + " %s ORDER BY "+ WEIGHT_2_COLUMN +" LIMIT 20";
+		DICTIONARY_TABLE_SELECT + " %s ORDER BY "+ WEIGHT_2_COLUMN +" LIMIT 10";
 	
 	public static final String DICTIONARY_TABLE_SELECT_20_WEIGHT2 =
-		DICTIONARY_TABLE_SELECT + " ORDER BY "+ WEIGHT_2_COLUMN +" LIMIT 20";
+		DICTIONARY_TABLE_SELECT + " ORDER BY "+ WEIGHT_2_COLUMN +" LIMIT 10";
 	
 	public static final String DICTIONARY_TABLE_UPDATE_WEIGHT1 = "UPDATE "
 		+ DBConfig.WORD_TABLE_NAME + " SET " + WEIGHT_1_COLUMN + " = %d WHERE " + ID_COLUMN + " = %d";
@@ -58,8 +61,20 @@ public class DBConfig
 		
 		public static final String GET_ENABLED = "SELECT COUNT(*) FROM " + DBConfig.WORD_TABLE_NAME + " WHERE " + DBConfig.ID_COLUMN + " >= %d AND " + DBConfig.ID_COLUMN + " < %d AND " + DBConfig.WEIGHT_1_COLUMN + " > 0";
 		public static final String GET_LESSON_ENABLED = "SELECT COUNT(*) FROM " + DBConfig.WORD_TABLE_NAME + " WHERE " + DBConfig.LANG_LESSON + " = %d";
-			
-public static final String SET_ENABLED = "UPDATE "
+		
+		public static final String EXIST_UNKNOWS_WORDS = "SELECT COUNT(*) FROM " + DBConfig.WORD_TABLE_NAME + " WHERE " + DBConfig.WEIGHT_1_COLUMN + " = 1 OR "+ DBConfig.WEIGHT_2_COLUMN + " = 1";
+		
+		public static final String SETUP_WEIGHT = "UPDATE "
+			+ DBConfig.WORD_TABLE_NAME + " SET " 
+			+ WEIGHT_1_COLUMN + " = %d ," 
+			+ WEIGHT_2_COLUMN + " = %d WHERE "
+			+ WEIGHT_1_COLUMN + " = %d AND " 
+			+ WEIGHT_2_COLUMN + " = %d AND "
+			+ ID_COLUMN + " = %d";
+
+		
+		
+		public static final String SET_ENABLED = "UPDATE "
 		+ DBConfig.WORD_TABLE_NAME + " SET " + WEIGHT_1_COLUMN + " = %d ," + WEIGHT_2_COLUMN + " = %d WHERE " + DBConfig.ID_COLUMN + " >= %d AND " + DBConfig.ID_COLUMN + " < %d";
 	public static final String DICTIONARY_TABLE_SELECT_BY_ID = DICTIONARY_TABLE_SELECT + " WHERE " + ID_COLUMN + " = %d";
 }

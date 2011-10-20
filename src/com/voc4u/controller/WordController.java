@@ -33,7 +33,7 @@ public class WordController
 	private final ArrayList<PublicWord> mLastList;
 	private static int mNativeWordNum = 0;
 	private static int mWordNum = 0;
-	public static final int MAX_LAST_LIST = 30;
+	
 
 	static WordController mInstance = null;
 
@@ -75,6 +75,9 @@ public class WordController
 		Assert.assertNotNull(mDictionary);
 		if (mDictionary != null)
 		{
+			if(!mDictionary.isAnyUnknownWord())
+				mDictionary.setupFirstWordWeight();
+			
 			mSwitchPoliticy = getSwitchPoliticyOrNot();
 
 			ArrayList<Word> list = !mSwitchPoliticy ? mDictionary
@@ -82,7 +85,7 @@ public class WordController
 							getLastListIds()) : mDictionary.getPublicWords2(
 					DictionaryOpenHelper.CZEN_GROUP, true, getLastListIds());
 
-			int pos = Math.abs(mRandomGenerator.nextInt() % list.size());
+			int pos = 0;//Math.abs(mRandomGenerator.nextInt() % list.size());
 			mPublicWord = new PublicWord(list.get(pos),
 					!mSwitchPoliticy ? EPoliticy.PRIMAR : EPoliticy.SECUNDAR);
 			addLastList(mPublicWord);
@@ -126,7 +129,7 @@ public class WordController
 	private void addLastList(PublicWord publicWord)
 	{
 		mLastList.add(publicWord);
-		if (mLastList.size() > MAX_LAST_LIST)
+		if (mLastList.size() > CommonSetting.MAX_LAST_LIST)
 			mLastList.remove(0);
 	}
 
@@ -208,7 +211,7 @@ public class WordController
 	public boolean isEnableLesson(int lesson)
 	{
 		if(mDictionary != null)
-			return mDictionary.isLessonEnabled(lesson);
+			return mDictionary.isLessonLoaded(lesson);
 		
 		return false;
 	}
@@ -285,7 +288,7 @@ public class WordController
 				addLesson(lesson, mWeights);
 			else
 			{
-				mDictionary.removeLesson(lesson);
+				mDictionary.unloadLesson(lesson);
 			}
 
 			return 10L;

@@ -28,7 +28,7 @@ public class PublicWord
 
 	private boolean isBasePrimary()
 	{
-		return true;
+		return mPoliticy == EPoliticy.PRIMAR;
 		//(CommonSetting.langType.getCrossBase() && mPoliticy == EPoliticy.PRIMAR) ||
 		//		(!CommonSetting.langType.getCrossBase() && mPoliticy == EPoliticy.SECUNDAR);
 	}

@@ -10,11 +10,12 @@ public class CommonSetting
 {
 	private static final String LANG_NATIVE_NUM = "langNativeNum";
 	private static final String LANG_TYPE = "langType";
-	public static final int LESSON_NUM = 50;
+	public static final int LESSON_NUM = 10;
+	public static final int MAX_LAST_LIST = 5;
 	
 	//public static LangType langType = LangType.ENG_2_CZECH;
 	public static int langNativeNum = 0;
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	public static LangSetting langSetting;
 	public static LangType nativeCode = null;
 	public static LangType lernCode = null;
