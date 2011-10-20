@@ -66,7 +66,7 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		ProgressDialog dialog = ProgressDialog.show(this, "",
 				"Loading. Please wait...", true);
 		dialog.show();
-		WordController.getInstance(this).enableLesson(0, true, this);
+		WordController.getInstance(this).initLesson(this);
 		//new DownloadFilesTask().execute("");
 	}
 

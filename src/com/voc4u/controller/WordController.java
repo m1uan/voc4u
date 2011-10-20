@@ -216,15 +216,19 @@ public class WordController
 	public void enableLesson(int lesson, boolean enable, updateLisener ul)
 	{
 		new UpdateTask(lesson, enable, ul).execute("");
-		// mDictionary.setEnabled(idFrom, idTo, enable);
+	}
+	
+	public void initLesson(updateLisener ul)
+	{
+		new UpdateTask(1, ul).execute("");
 	}
 
 	public Word getPublicWordById(int id)
 	{
 		return mDictionary.getPublicWordById(id);
 	}
-
-	private void addLesson(int lesson)
+	
+	private void addLesson(int lesson, int waights) 
 	{
 		String[] nt = LangSetting.getInitDataFromLT(CommonSetting.nativeCode);
 		String[] lr = LangSetting.getInitDataFromLT(CommonSetting.lernCode);
@@ -245,7 +249,7 @@ public class WordController
 						|| slr.length() < 1)
 					continue;
 
-				addWordEx(lesson, slr, snt, 1, 1);
+				addWordEx(lesson, slr, snt, waights, waights);
 			}
 		}
 	}
@@ -255,19 +259,30 @@ public class WordController
 		final int lesson;
 		final boolean mEnable;
 		updateLisener mUpdateListener;
-
+		final int mWeights;
+		
+		
 		public UpdateTask(int less, boolean remove, updateLisener ul)
 		{
 			lesson = less;
 			mEnable = remove;
 			mUpdateListener = ul;
+			mWeights = 0;
+		}
+		
+		public UpdateTask(int less, updateLisener ul)
+		{
+			lesson = less;
+			mEnable = true;
+			mUpdateListener = ul;
+			mWeights = 1;
 		}
 
 		protected Long doInBackground(String... urls)
 		{
 
 			if (mEnable)
-				addLesson(lesson);
+				addLesson(lesson, mWeights);
 			else
 			{
 				mDictionary.removeLesson(lesson);
@@ -275,6 +290,8 @@ public class WordController
 
 			return 10L;
 		}
+
+		
 
 		protected void onProgressUpdate(Integer... progress)
 		{
