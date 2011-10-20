@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#3A3A3A">
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text=""
+		android:padding="5dp"
+		android:textSize="30sp"
+		android:textStyle="bold"
+		android:id="@+id/wordTextView"
+		android:background="#000000" />
+	
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text=""
+		android:id="@+id/word2TextView"
+		android:layout_below="@id/wordTextView"
+		 />
+	
+	<ListView
+		android:background="#3A3A3A"
+		android:id="@+id/lastList"
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_below="@id/word2TextView" />
+	<LinearLayout
+		android:padding="5dp"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="#0A0A0A">
+		
+		<com.google.ads.AdView android:id="@+id/adView"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         ads:adUnitId="7005464866"
+                         ads:adSize="BANNER"
+                         ads:loadAdOnCreate="true"/>
+		<Button
+			android:id="@+id/dontKnowButton"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/dontknow"
+			android:onClick="onDontKnowButton" 
+			android:layout_weight="1" />
+		<Button
+			android:id="@+id/nextButton"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/know" 
+			android:layout_weight="1"
+			android:onClick="onNextButton" />
+	</LinearLayout>
+	</RelativeLayout>

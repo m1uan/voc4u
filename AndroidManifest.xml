@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.voc4u.czen1"
+	android:versionCode="1"
+	android:versionName="1.0">
+	<application
+		android:icon="@drawable/icon"
+		android:label="@string/app_name">
+
+
+<receiver android:name="com.voc4u.widget.TrainWidget" >
+    <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        <action android:name="com.voc4u.widget.TrainWidget.ACTION_WIDGET_RECEIVER" />
+       
+            <action android:name="com.voc4u.widget.TrainWidget.ACTION_WIDGET_PLAY"/>
+            <action android:name="com.voc4u.widget.TrainWidget.ACTION_WIDGET_NEXT"/>
+            <action android:name="com.voc4u.widget.TrainWidget.ACTION_WIDGET_WORD"/>
+    </intent-filter>    
+        <meta-data android:name="android.appwidget.provider"              
+        android:resource="@xml/hello_widget_provider" />
+</receiver>
+
+        <activity android:name="com.voc4u.activity.train.Train"
+                  android:label="@string/app_name" android:screenOrientation="portrait">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        
+         <activity android:name="com.voc4u.activity.speaker.Speaker"
+                  android:label="@string/app_name" android:screenOrientation="portrait">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        
+        <activity android:name="com.voc4u.activity.dashboard.Dashboard"
+                  android:label="@string/app_name" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name="com.voc4u.activity.setting.WordSetting"
+                  android:label="setting" android:screenOrientation="portrait">
+        </activity>
+		<activity android:name="com.voc4u.activity.init.Init"
+                  android:label="@string/app_name" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.voc4u.activity.speech.Speech"
+                  android:label="@string/app_name" android:screenOrientation="portrait">
+                  
+        </activity>
+	<activity android:name="com.google.ads.AdActivity"
+              android:configChanges="keyboard|keyboardHidden|orientation"/>
+<!--		 Broadcast Receiver that will process AppWidget updates -->
+<!--		<receiver-->
+<!--			android:name=".Train"-->
+<!--			android:label="@string/app_name">-->
+<!--			<intent-filter>-->
+<!--				<action-->
+<!--					android:name="android.appwidget.action.APPWIDGET_UPDATE" />-->
+<!--					<action-->
+<!--					android:name="android.appwidget.action.APPWIDGET_ENABLED" />-->
+<!--			</intent-filter>-->
+<!--			<meta-data-->
+<!--				android:name="android.appwidget.provider"-->
+<!--				android:resource="@xml/hello_widget_provider" />-->
+<!--		</receiver>-->
+		<service android:name="com.voc4u.activity.speaker.SService" />
+	</application>
+	 <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-sdk
+		android:minSdkVersion="3" />
+</manifest>
+

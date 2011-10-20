@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World!</string>
+    <string name="app_name">voc4u1</string>
+    <string name="language_from_to" formatted="false">I\'m native %1s and lerning %2s</string>
+    <string name="lang_english">English</string>
+    <string name="lang_czech">Czech</string>
+    <string name="know">know</string>
+    <string name="dontknow">don\'t know</string>
+    <string name="btnShowSpoke">show spoken word</string>
+    <string name="btnStart">begin</string>
+    <string name="btnRepeat">repeat</string>
+    <string name="btnStop">end</string>
+    
+    <string name="start">start</string>
+    <string name="choiceNativeLang">Choice your native language:</string>
+    <string name="choiceLernLang">Choice your lern language:</string>
+    <string name="settingItem">Lesson %d</string>
+    
+    <string name="langCZ">Czech</string>
+    <string name="langEN">English</string>
+    <string name="langDE">Germany</string>
+    <string name="langFR">Franch</string>
+    <string name="langPL">Poland</string>
+    <string name="langPT">Portugal</string>
+    <string name="langES">Spain</string>
+</resources>

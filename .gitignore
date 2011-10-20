@@ -1,0 +1,7 @@
+gen/
+bin/
+assets/
+src/com/voc4u/lang/
+local.properties
+.pydevproject
+*~

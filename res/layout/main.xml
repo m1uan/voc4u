@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/widget_frm">
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<TextView
+			android:id="@+id/wordTextView"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textSize="40sp"
+			android:textStyle="bold"
+			android:textColor="@drawable/bg_word_textview"
+			android:text="hello"
+			android:clickable="true"
+			onClick="onWordTextViewClick"
+			 />
+		<Button
+		android:id="@+id/nextButton"
+		
+			android:gravity="center_vertical"
+			android:layout_width="48dip"
+			android:layout_height="48dip"
+			android:text=""
+			android:background="@drawable/bg_next_button" />
+		<Button
+		android:id="@+id/playButton"
+			android:layout_width="48dip"
+			android:layout_height="48dip"
+			android:text=""
+			
+			android:background="@drawable/bg_play_button" />
+	</LinearLayout>
+	<TextView
+		android:id="@+id/word2TextView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="#000"
+		android:text="ahoj"
+		android:visibility="visible"
+		android:background="@drawable/popup_inline_error" />
+</LinearLayout>
