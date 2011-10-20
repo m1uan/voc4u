@@ -11,6 +11,8 @@
     <string name="btnStart">begin</string>
     <string name="btnRepeat">repeat</string>
     <string name="btnStop">end</string>
+    <string name="btnAddWord">add word</string>
+    
     
     <string name="start">start</string>
     <string name="choiceNativeLang">Choice your native language:</string>

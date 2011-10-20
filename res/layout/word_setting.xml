@@ -12,27 +12,20 @@
 	</ListView>
 	
 	<LinearLayout
+		android:id="@+id/addword"
 		android:padding="5dp"
 		android:orientation="horizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:background="#0A0A0A"
-		android:layout_alignParentBottom="true">
-		
+		android:layout_alignParentBottom="true"
+		android:visibility="gone">
 		
 		<Button
-			android:id="@+id/dontKnowButton"
+			android:id="@+id/btnAddWord"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/dontknow"
-			android:onClick="onDontKnowButton" 
+			android:text="@string/btnAddWord" 
 			android:layout_weight="1" />
-		<Button
-			android:id="@+id/nextButton"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/know" 
-			android:layout_weight="1"
-			android:onClick="onNextButton" />
 	</LinearLayout>
 </RelativeLayout>

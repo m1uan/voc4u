@@ -8,19 +8,25 @@ import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.database.DataSetObserver;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-public class WordSetting extends Activity
+public class WordSetting extends Activity implements OnClickListener
 {
 	private WordController mWordCtrl;
 	private ListView mList;
+	private View btnAddWord;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -36,6 +42,13 @@ public class WordSetting extends Activity
 		mList = (ListView)findViewById(R.id.list);
 		mList.setAdapter(new Adapter());
 		
+		
+		if(CommonSetting.DEBUG)
+		{
+			findViewById(R.id.addword).setVisibility(View.VISIBLE);
+			btnAddWord = findViewById(R.id.btnAddWord);
+			btnAddWord.setOnClickListener(this);
+		}
 	}
 	
 	@Override
@@ -176,6 +189,45 @@ public class WordSetting extends Activity
 			
 		}
 		}
+
+	@Override
+	public void onClick(View v)
+	{
+		if(v == btnAddWord)
+		{
+			showDialog(101);
+		}
+	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id)
+	{
+		if(id == 101)
+		{
+			
+			//Context mContext = getApplicationContext();
+			final Dialog dialog = new Dialog(this);
+
+			dialog.setContentView(R.layout.add_word_dialog);
+			dialog.setTitle("Custom Dialog");
+			
+			final EditText edtNative = (EditText)dialog.findViewById(R.id.edtNative);
+			final EditText edtLern = (EditText)dialog.findViewById(R.id.edtLern);
+			Button btnAdd = (Button)dialog.findViewById(R.id.btnAdd);
+			btnAdd.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					WordController.getInstance(WordSetting.this)
+						.addWordEx(4, edtNative.getText().toString() + "~", edtLern.getText().toString() + "~", 1, 1);
+					dialog.cancel();
+				}
+			});
+			return dialog;
+		}
+		
+		return super.onCreateDialog(id);
+	}
 
 	
 }
