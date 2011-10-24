@@ -1,6 +1,8 @@
 package com.voc4u.activity.setting;
 
 
+import junit.framework.Assert;
+
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.core.LangSetting;
@@ -8,8 +10,12 @@ import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.database.DataSetObserver;
 import android.opengl.Visibility;
 import android.os.Bundle;
@@ -27,6 +33,7 @@ public class WordSetting extends Activity implements OnClickListener
 	private WordController mWordCtrl;
 	private ListView mList;
 	private View btnAddWord;
+	private Adapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -37,10 +44,10 @@ public class WordSetting extends Activity implements OnClickListener
 		
 		mWordCtrl = WordController.getInstance(this);
 		
-		//mAdapter = new 
+		mAdapter = new Adapter();
 		
 		mList = (ListView)findViewById(R.id.list);
-		mList.setAdapter(new Adapter());
+		mList.setAdapter(mAdapter);
 		
 		
 		if(CommonSetting.DEBUG)
@@ -52,23 +59,127 @@ public class WordSetting extends Activity implements OnClickListener
 	}
 	
 	@Override
-	protected void onPause()
+	protected void onResume() 	
+	{
+		// if still runing the async task
+		// isn't posible changing anything
+		if(mWordCtrl.isAsyncRunning())
+		{
+			ProgressDialog dialog = ProgressDialog.show(this, "", 
+                    "Words still initializing, Please wait...", true);
+			dialog.setOnCancelListener(new OnCancelListener() 
+			{	
+				@Override
+				public void onCancel(DialogInterface dialog)
+				{
+					finish();
+				}
+			});
+		}
+		
+		super.onResume();
+	}
+	
+	@Override
+	public void onBackPressed() 
 	{
 		CommonSetting.store(this);
+		store();
+		
+		// super is called in store() -> showDialogAboutDurationOfOperation() -> "YES"
+		//super.onBackPressed();
+	}
+	
+	@Override
+	protected void onPause()
+	{
 		super.onPause();
 	}
 	
+	private void store() 
+	{
+		boolean anyChanges = false;
+		boolean anyChecked = false;
+		
+		for(int i = 0; i != mAdapter.getLessonCount(); i++)
+		{
+			ItemView item = mAdapter.getLessonItem(i);
+			
+			Assert.assertNotNull(item);
+			if(item != null)
+			{
+				ItemStatus is = item.getStatus();
+				if( is != ItemStatus.NONE)
+				{
+					mWordCtrl.enableLessonAsync(i, is == ItemStatus.ADD);
+					anyChanges = true;
+				}
+				else if(item.isChecked())
+					anyChecked = true;
+			}
+		}
+		
+		if(!anyChecked)
+		{
+			showDialogAboutMustCheckAtleasOneItem();
+		}
+		else if(anyChanges)
+		{
+			showDialogAboutDurationOfOperation();
+		}
+		
+		
+	}
+
+	private void showDialogAboutMustCheckAtleasOneItem() 
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.vocabulary_you_must_enable_at_least_one_lesson_)
+		       .setCancelable(true);
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	private void showDialogAboutDurationOfOperation() 
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.vocabulary_you_are_make_some_changes)
+		       .setCancelable(false)
+		       .setPositiveButton(this.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		                mWordCtrl.runAsyncTask();
+		                superOnBackPresed();
+		           }
+		       })
+		       .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		                dialog.cancel();
+		           }
+		       });
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	protected void superOnBackPresed() 
+	{
+		super.onBackPressed();
+	}
+
 	public class Adapter implements ListAdapter
 	{
 
 		private static final int  NUM_ADAPTING = 50;
 		private static final int VOCABULARY_TYPE = 0;
 		private static final int SETTING_TYPE = 1;
-		private int mNum;
-
+		final private int mLessonNum;
+		final ItemView[] mLessons;
+		private int mLastItem = 0;
+		
+		
 		public Adapter()
 		{
-			mNum = LangSetting.LESSON_SIZES.length;
+			mLessonNum = LangSetting.LESSON_SIZES.length;
+			mLessons = new ItemView[mLessonNum];
 		}
 		
 		@Override
@@ -89,13 +200,25 @@ public class WordSetting extends Activity implements OnClickListener
 		public int getCount()
 		{
 			// first is setting
-			return mNum + 1;
+			return mLessonNum + 1;
+		}
+		
+		public int getLessonCount()
+		{
+			return mLessonNum;
 		}
 
-		@Override
-		public Object getItem(int position)
+		ItemView getLessonItem(int position)
 		{
-			// TODO Auto-generated method stub
+			if(mLessonNum > position)
+				return mLessons[position];
+			
+			return null;
+		}
+		
+		@Override
+		public ItemView getItem(int position)
+		{
 			return null;
 		}
 
@@ -151,7 +274,7 @@ public class WordSetting extends Activity implements OnClickListener
 				item =(ItemView)convertView;
 			
 			item.setup(lesson);
-			
+			mLessons[mLastItem++] = item;
 			return item;
 		}
 		

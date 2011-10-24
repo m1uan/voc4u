@@ -22,7 +22,10 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 	private WordController mWordCtrl;
 	private String mTitle;
 	private int mLesson;
-
+	private CheckBox chkBox;
+	private ItemStatus mStatus;
+	
+	
 	public ItemView(Context context, WordController wordCtrl)
 	{
 		super(context);
@@ -31,6 +34,10 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		inflater.inflate(R.layout.word_setting_item, this);
 
 		mWordCtrl = wordCtrl;
+		
+		chkBox = (CheckBox)findViewById(R.id.checkbox);
+	
+		mStatus = ItemStatus.NONE;
 	}
 
 	public void setup(int lesson)
@@ -42,9 +49,8 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		tv.setText(mTitle);
 
 		final boolean enable = mWordCtrl.isEnableLesson(mLesson);
-		final CheckBox chkbox = (CheckBox) findViewById(R.id.checkbox);
-		chkbox.setChecked(enable);
-		chkbox.setOnCheckedChangeListener(this);
+		chkBox.setChecked(enable);
+		chkBox.setOnCheckedChangeListener(this);
 	}
 
 	@Override
@@ -87,7 +93,24 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 
 	protected void setVocabulary(boolean enable)
 	{
-		mWordCtrl.enableLesson(mLesson, enable, null);
+		if(mStatus == ItemStatus.NONE)
+			mStatus = enable ? ItemStatus.ADD : ItemStatus.REMOVE;
+		else if(mStatus == ItemStatus.ADD)
+			mStatus = !enable ? ItemStatus.NONE : ItemStatus.REMOVE;
+		else if(mStatus == ItemStatus.REMOVE)
+			mStatus = enable ? ItemStatus.NONE : ItemStatus.REMOVE;
+		
+		//mWordCtrl.enableLesson(mLesson, enable, null);
+	}
+	
+	public ItemStatus getStatus()
+	{
+		return mStatus;
+	}
+
+	public boolean isChecked() 
+	{
+		return chkBox.isChecked();
 	}
 
 }

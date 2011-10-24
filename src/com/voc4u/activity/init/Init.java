@@ -63,11 +63,12 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		CommonSetting.store(this);
 		CommonSetting.restore(this);
 
-		ProgressDialog dialog = ProgressDialog.show(this, "",
-				"Loading. Please wait...", true);
-		dialog.show();
-		WordController.getInstance(this).initLesson(this);
+//		ProgressDialog dialog = ProgressDialog.show(this, "",
+//				"Loading. Please wait...", true);
+//		dialog.show();
+//		WordController.getInstance(this).initLesson(this);
 		//new DownloadFilesTask().execute("");
+		finish();
 	}
 
 	

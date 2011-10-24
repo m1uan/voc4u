@@ -58,11 +58,14 @@ public abstract class BaseWordActivity extends Activity implements OnInitListene
 	@Override
 	protected void onResume()
 	{
-		
 		if(mWCtrl.count() < 1)
 		{
 			Intent init = new Intent(this, Init.class);
 			startActivity(init);
+		}
+		else if(mWCtrl.getFirstPublicWord() == null)
+		{
+			onShowMenu();
 		}
 		else
 			onResumeSuccess();

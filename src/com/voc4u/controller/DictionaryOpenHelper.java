@@ -403,6 +403,8 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		mDB.insert(DBConfig.WORD_TABLE_NAME, null, values);
 		//db.delete(DBAdapter.TableName, "Id=? AND QstnrId=? AND QstnId=?",
         //new String[] { Id.toString(), QuestionnaireId, QuestionId });
+		
+		Log.d(TAG, "add word: " + text + " with lesson = " + String.valueOf(lesson));
 	}
 	
 	public void unloadLesson(int lesson)

@@ -31,6 +31,7 @@ public class WordController
 	private boolean mSwitchPoliticy;
 	private int mWeight;
 	private final ArrayList<PublicWord> mLastList;
+	private UpdateTask mAsyncUpdate;
 	private static int mNativeWordNum = 0;
 	private static int mWordNum = 0;
 	
@@ -267,15 +268,20 @@ public class WordController
 
 	private class UpdateTask extends AsyncTask<String, Integer, Long>
 	{
-		final int lesson;
+		final int mLesson;
 		final boolean mEnable;
 		updateLisener mUpdateListener;
 		final int mWeights;
+		private boolean mDone;
+		private ArrayList<Integer> mAddList;
+		private ArrayList<Integer> mRemoveList;
+		
+		
 		
 		
 		public UpdateTask(int less, boolean remove, updateLisener ul)
 		{
-			lesson = less;
+			mLesson = less;
 			mEnable = remove;
 			mUpdateListener = ul;
 			mWeights = 0;
@@ -283,7 +289,7 @@ public class WordController
 		
 		public UpdateTask(int less, updateLisener ul)
 		{
-			lesson = less;
+			mLesson = less;
 			mEnable = true;
 			mUpdateListener = ul;
 			mWeights = 1;
@@ -291,14 +297,16 @@ public class WordController
 
 		protected Long doInBackground(String... urls)
 		{
+			mDone = false;
 
-			if (mEnable)
-				addLesson(lesson, mWeights);
-			else
-			{
-				mDictionary.unloadLesson(lesson);
-			}
-
+			if(mAddList != null && mAddList.size() > 0)
+				for(int i = 0; i != mAddList.size(); i++)
+					addLesson(mAddList.get(i), 0);
+			
+			if(mRemoveList != null && mRemoveList.size() > 0)
+				for(int i = 0; i != mRemoveList.size(); i++)
+					mDictionary.unloadLesson(mRemoveList.get(i));
+			
 			return 10L;
 		}
 
@@ -310,8 +318,55 @@ public class WordController
 
 		protected void onPostExecute(Long result)
 		{
+			
+			mAddList = null;
+			mDone = true;
 			if (mUpdateListener != null)
 				mUpdateListener.onUpdateDone();
 		}
+
+		public boolean isDone() {
+			return mDone;
+		}
+
+		public void add(int lesson2) 
+		{
+			if(mAddList == null)
+				mAddList = new ArrayList<Integer>();
+			mAddList.add(lesson2);
+			
+		}
+
+		public void remove(int lesson2) 
+		{
+			if(mRemoveList == null)
+				mRemoveList = new ArrayList<Integer>();
+			mRemoveList.add(lesson2);
+		}
+	}
+
+
+
+	public void runAsyncTask() 
+	{
+		Assert.assertFalse(mAsyncUpdate != null);
+		if(mAsyncUpdate != null && !mAsyncUpdate.isDone())
+			mAsyncUpdate.execute("");
+	}
+
+	public void enableLessonAsync(int lesson, boolean enable) 
+	{
+		if(mAsyncUpdate == null || mAsyncUpdate.isDone())
+			mAsyncUpdate = new UpdateTask(0, null);
+	
+		if(enable)
+			mAsyncUpdate.add(lesson);
+		else
+			mAsyncUpdate.remove(lesson);
+	}
+	
+	public boolean isAsyncRunning()
+	{
+		return mAsyncUpdate == null || mAsyncUpdate.isDone();
 	}
 }
