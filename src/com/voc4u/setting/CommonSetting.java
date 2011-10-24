@@ -63,8 +63,8 @@ public class CommonSetting
 		//langType = getInt(context, LANG_TYPE, 0) == 0 ? LangType.CZECH_2_ENG : LangType.ENG_2_CZECH;
 		langNativeNum = getInt(context, LANG_NATIVE_NUM, Consts.MAX_WORD_NATIVE_LEARN / 2);
 		
-		final String nativeCd = getString(context, LANG_NATIVE_CODE, "PL");
-		final String lernCd = getString(context, LANG_LERN_CODE, "PT");
+		final String nativeCd = getString(context, LANG_NATIVE_CODE, "INIT");
+		final String lernCd = getString(context, LANG_LERN_CODE, "INIT");
 		
 		nativeCode = LangSetting.getLangTypeFromCode(nativeCd);
 		lernCode = LangSetting.getLangTypeFromCode(lernCd);

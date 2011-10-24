@@ -116,7 +116,7 @@ public class LangSetting
 //		else if(code.contentEquals(LangSetting.LANG_PT))
 //			return PT;
 		
-		return CZ;
+		return null;
 	}
 	
 	public static String[] getInitDataFromLT(final LangType lt)

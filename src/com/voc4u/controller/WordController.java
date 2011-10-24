@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.voc4u.activity.init.Init;
+import com.voc4u.activity.setting.WordSetting;
 import com.voc4u.activity.train.Train;
 import com.voc4u.core.InitData;
 import com.voc4u.core.LangSetting;
@@ -32,6 +33,7 @@ public class WordController
 	private int mWeight;
 	private final ArrayList<PublicWord> mLastList;
 	private UpdateTask mAsyncUpdate;
+	private final Context mContext;
 	private static int mNativeWordNum = 0;
 	private static int mWordNum = 0;
 	
@@ -54,6 +56,7 @@ public class WordController
 		mRandomGenerator = new Random();
 		mLastList = new ArrayList<PublicWord>();
 		mNativeWordNum = 0;
+		mContext = activity;
 	}
 
 	public void addWord(String text, String text2)
@@ -81,11 +84,22 @@ public class WordController
 			
 			mSwitchPoliticy = getSwitchPoliticyOrNot();
 
-			ArrayList<Word> list = !mSwitchPoliticy ? mDictionary
-					.getPublicWords(DictionaryOpenHelper.CZEN_GROUP, true,
-							getLastListIds()) : mDictionary.getPublicWords2(
-					DictionaryOpenHelper.CZEN_GROUP, true, getLastListIds());
+			// get normaly all words
+			ArrayList<Word> list = mDictionary.getPublicWords(!mSwitchPoliticy, getLastListIds());
 
+			if(list == null)
+			{
+				// its posible in the db is less words as is size of last list
+				// get the word without lastlist
+				list = mDictionary.getPublicWords(!mSwitchPoliticy, null);
+				
+				// db is null -> open the setting with words
+				if(list == null)
+				{
+					showWordsMenu();
+					return null;
+				}
+			}
 			int pos = 0;//Math.abs(mRandomGenerator.nextInt() % list.size());
 			mPublicWord = new PublicWord(list.get(pos),
 					!mSwitchPoliticy ? EPoliticy.PRIMAR : EPoliticy.SECUNDAR);
@@ -333,14 +347,35 @@ public class WordController
 		{
 			if(mAddList == null)
 				mAddList = new ArrayList<Integer>();
+			else if(isInList(mAddList, lesson2))
+				return;
+			
 			mAddList.add(lesson2);
 			
+		}
+
+		/**
+		 * is contained item in list
+		 * @param list - list with content
+		 * @param lesson2 - item
+		 * @return true if already in list
+		 */
+		private boolean isInList(final ArrayList<Integer> list, int lesson2) {
+			
+			if(list != null)
+				for(int i = 0; i != list.size(); i++)
+					if(list.get(i) == lesson2)
+						return true;
+			
+			return false;
 		}
 
 		public void remove(int lesson2) 
 		{
 			if(mRemoveList == null)
 				mRemoveList = new ArrayList<Integer>();
+			else if(isInList(mRemoveList, lesson2))
+				return;
 			mRemoveList.add(lesson2);
 		}
 	}
@@ -349,7 +384,7 @@ public class WordController
 
 	public void runAsyncTask() 
 	{
-		Assert.assertFalse(mAsyncUpdate != null);
+		Assert.assertTrue(mAsyncUpdate != null);
 		if(mAsyncUpdate != null && !mAsyncUpdate.isDone())
 			mAsyncUpdate.execute("");
 	}
@@ -367,6 +402,12 @@ public class WordController
 	
 	public boolean isAsyncRunning()
 	{
-		return mAsyncUpdate == null || mAsyncUpdate.isDone();
+		return mAsyncUpdate != null && !mAsyncUpdate.isDone();
+	}
+	
+	public void showWordsMenu()
+	{
+		Intent intent = new Intent(mContext, WordSetting.class);
+		mContext.startActivity(intent);
 	}
 }

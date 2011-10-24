@@ -92,7 +92,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		if (mWCtrl != null)
 			mPublicWord = mWCtrl.getFirstPublicWord();
 		
-		Assert.assertTrue(mPublicWord != null);
+		//Assert.assertTrue(mPublicWord != null);
 		if (mPublicWord != null)
 		{
 			TextView et = (TextView) findViewById(R.id.wordTextView);

@@ -2,6 +2,7 @@ package com.voc4u.controller;
 
 import java.util.ArrayList;
 
+import com.voc4u.activity.setting.WordSetting;
 import com.voc4u.core.DBConfig;
 import com.voc4u.core.InitData;
 
@@ -12,6 +13,7 @@ import com.voc4u.core.InitData;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -128,8 +130,11 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 			int weight2Column = c.getColumnIndex(DBConfig.WEIGHT_2_COLUMN);
 			
 			if(!c.moveToFirst())
+			{
+				c.close();
 				return null;
-
+			}
+				
 			String word = c.getString(firstWordColumn);
 			String word2 = c.getString(secondWordColumn);
 			int id = c.getInt(idWordColumn);
@@ -137,7 +142,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 			int weight2 = c.getInt(weight2Column);
 			pw = new Word(id, word, word2, weight, weight2);
 		}
-
+		c.close();
 		return pw;
 	}
 
@@ -254,10 +259,23 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		return result +  DBConfig.WEIGHT_1_COLUMN + " > 0 AND " + DBConfig.WEIGHT_2_COLUMN + " > 0 ";
 	}
 	
-	public ArrayList<Word> getPublicWords(int czenGroup, boolean b, int[] ids)
+	
+	/**
+	 * get array with words sorted by weight1 or weight2 
+	 * @param fromWeight2 - order by weight 2
+	 * @param ids - ids which will be skiped
+	 * @return array wiht words
+	 */
+	public ArrayList<Word> getPublicWords(boolean fromWeight2, int[] ids)
 	{
 		mDB = getWritableDatabase();
-		String query = String.format(DBConfig.DICTIONARY_TABLE_SELECT_20_WEIGHT1_WHERE, createWhereFromIds(ids) );
+		final String where = createWhereFromIds(ids);
+		final String query; 
+		
+		if(!fromWeight2)
+			query = String.format(DBConfig.DICTIONARY_TABLE_SELECT_20_WEIGHT1_WHERE, where);
+		else
+			query = String.format(DBConfig.DICTIONARY_TABLE_SELECT_20_WEIGHT2_WHERE, where);
 		
 		Cursor c = rawQuerySQL(mDB, query);
 
@@ -282,9 +300,9 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 				list.add(new Word(id, word, word2, weight, weight2));
 			} while (c.moveToNext());
 			
-			c.close();
+			
 		}
-
+		c.close();
 		return list;
 	}
 	
@@ -426,6 +444,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		String sql = String.format( DBConfig.GET_LESSON_ENABLED, lesson) ;
 	    SQLiteStatement statement = getReadableDatabase().compileStatement(sql);
 	    long count = statement.simpleQueryForLong();
+	    statement.close();
 	    return count > 0;
 	}
 	
@@ -439,6 +458,9 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 	{
 		SQLiteStatement statement = getReadableDatabase().compileStatement(DBConfig.EXIST_UNKNOWS_WORDS);
 	    long count = statement.simpleQueryForLong();
+	    statement.close();
+	    Log.i(TAG, "num of unknow word (with weight1,waight2=1,1) : " + String.valueOf(count));
+	    
 	    return count > 0;
 	}
 	
@@ -455,8 +477,13 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 				 1, 1, 0, 0, w.getId());
 		
 			execSQL(getWritableDatabase(), query);
+			
+			Log.i(TAG, String.format("Add new word to round! \'%s\' with id = %d", w.getWord(), w.getId()));
 		}
+		
+	
 	}
+	
 	
 	
 }

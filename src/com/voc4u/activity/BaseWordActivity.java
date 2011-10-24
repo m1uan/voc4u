@@ -58,14 +58,10 @@ public abstract class BaseWordActivity extends Activity implements OnInitListene
 	@Override
 	protected void onResume()
 	{
-		if(mWCtrl.count() < 1)
+		if(CommonSetting.lernCode == null || CommonSetting.nativeCode == null)
 		{
 			Intent init = new Intent(this, Init.class);
 			startActivity(init);
-		}
-		else if(mWCtrl.getFirstPublicWord() == null)
-		{
-			onShowMenu();
 		}
 		else
 			onResumeSuccess();
@@ -130,11 +126,7 @@ public abstract class BaseWordActivity extends Activity implements OnInitListene
 	}
     
     
-    public void onShowMenu()
-	{
-		Intent intent = new Intent(this, WordSetting.class);
-		startActivity(intent);
-	}
+    
     
 	@Override
     public void onDestroy() {
@@ -164,7 +156,7 @@ public abstract class BaseWordActivity extends Activity implements OnInitListene
 	public boolean onMenuItemClick(MenuItem item)
 	{
 		if(item == mMenuDictionary)
-			onShowMenu();
+			mWCtrl.showWordsMenu();
 		else if(item == mMenuHomeId)
 			finish();
 		else if(item == mSpeachSetting)

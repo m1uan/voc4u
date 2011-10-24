@@ -66,7 +66,7 @@ public class WordSetting extends Activity implements OnClickListener
 		if(mWordCtrl.isAsyncRunning())
 		{
 			ProgressDialog dialog = ProgressDialog.show(this, "", 
-                    "Words still initializing, Please wait...", true);
+                    "Words still initializing, Please wait...", false, true);
 			dialog.setOnCancelListener(new OnCancelListener() 
 			{	
 				@Override
@@ -114,7 +114,8 @@ public class WordSetting extends Activity implements OnClickListener
 					mWordCtrl.enableLessonAsync(i, is == ItemStatus.ADD);
 					anyChanges = true;
 				}
-				else if(item.isChecked())
+				
+				if(item.isChecked())
 					anyChecked = true;
 			}
 		}
@@ -147,7 +148,7 @@ public class WordSetting extends Activity implements OnClickListener
 		       .setCancelable(false)
 		       .setPositiveButton(this.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
-		                mWordCtrl.runAsyncTask();
+		                
 		                superOnBackPresed();
 		           }
 		       })
@@ -162,6 +163,7 @@ public class WordSetting extends Activity implements OnClickListener
 
 	protected void superOnBackPresed() 
 	{
+		mWordCtrl.runAsyncTask();
 		super.onBackPressed();
 	}
 
