@@ -352,6 +352,10 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		 String sql = "SELECT COUNT(*) FROM " + DBConfig.WORD_TABLE_NAME;
 		    SQLiteStatement statement = getReadableDatabase().compileStatement(sql);
 		    long count = statement.simpleQueryForLong();
+		    statement.close();
+		    
+		    Log.i(TAG, "num words in DB is " + String.valueOf(count));
+		    
 		    return count;
 	}
 	

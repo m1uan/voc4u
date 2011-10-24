@@ -250,9 +250,9 @@ public class WordController
 	/**
 	 * add lesson
 	 * @param lesson - number of lesson
-	 * @param waights - normaly 0, but in  initial is set to 1
+	 * @param weights - normaly 0, but in  initial is set to 1
 	 */
-	private void addLesson(int lesson, int waights) 
+	private void addLesson(int lesson, int weights) 
 	{
 		String[] nt = LangSetting.getInitDataFromLT(CommonSetting.nativeCode);
 		String[] lr = LangSetting.getInitDataFromLT(CommonSetting.lernCode);
@@ -260,6 +260,17 @@ public class WordController
 		int start = LangSetting.getLessonStart(lesson);
 		int end = LangSetting.getLessonStart(lesson + 1);
 
+		// if it is first lesson which add
+		// to DB set first words as weight1,weight2 to 1,1
+		// because else isn't work getFirstWords
+		// the last list is bigger as used words
+		boolean initialize = weights == 0 && mDictionary.getCount() < CommonSetting.MAX_LAST_LIST;
+		
+		if(initialize)
+			weights = 1;
+			
+		
+		int num = 0;
 		if (start != -1 && end != -1 && start < nt.length)
 		{
 			if(end >= nt.length)
@@ -273,7 +284,14 @@ public class WordController
 						|| slr.length() < 1)
 					continue;
 
-				addWordEx(lesson, slr, snt, waights, waights);
+				addWordEx(lesson, slr, snt, weights, weights);
+				
+				// stop initialize first words to used value
+				if(initialize && num++ > CommonSetting.MAX_LAST_LIST)
+				{
+					initialize = false;
+					weights = 0;
+				}
 			}
 		}
 	}
