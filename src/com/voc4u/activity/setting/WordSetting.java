@@ -11,11 +11,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.voc4u.activity.BaseActivity;
 import com.voc4u.controller.WordController;
 import com.voc4u.core.LangSetting;
 import com.voc4u.czen1.R;
@@ -23,10 +22,7 @@ import com.voc4u.setting.CommonSetting;
 
 public class WordSetting extends Activity implements OnClickListener
 {
-	private static final int	DIALOG_ADD_WORD							= 101;
-	private static final int	DIALOG_CONFIRM_CONTINUE_SAVE_SETTING	= 103;
-	private static final int	DIALOG_MUST_CHECK_AT_LEAST_ONE			= 102;
-	private static final int	DIALOG_PROGRES							= 104;
+
 	private WordController		mWordCtrl;
 	private ListView			mList;
 	private View				btnStoreSetting;
@@ -48,11 +44,11 @@ public class WordSetting extends Activity implements OnClickListener
 
 		if (CommonSetting.DEBUG)
 		{
-			//findViewById(R.id.addword).setVisibility(View.VISIBLE);
+			// findViewById(R.id.addword).setVisibility(View.VISIBLE);
 			btnStoreSetting = findViewById(R.id.btnStoreSetting);
 			btnStoreSetting.setOnClickListener(this);
 		}
-		
+
 		btnStoreSetting = findViewById(R.id.btnStoreSetting);
 		btnStoreSetting.setOnClickListener(this);
 	}
@@ -65,7 +61,7 @@ public class WordSetting extends Activity implements OnClickListener
 		// isn't posible changing anything
 		if (mWordCtrl.isAsyncRunning())
 		{
-			showDialog(DIALOG_PROGRES);
+			showDialog(BaseActivity.DIALOG_PROGRESS);
 		}
 
 		super.onResume();
@@ -114,20 +110,17 @@ public class WordSetting extends Activity implements OnClickListener
 
 		if (!anyChecked)
 		{
-			showDialog(DIALOG_MUST_CHECK_AT_LEAST_ONE);
+			showDialog(BaseActivity.DIALOG_MUST_CHECK_AT_LEAST_ONE);
 			// showDialogAboutMustCheckAtleasOneItem();
 		}
 		else if (anyChanges)
 		{
-			showDialog(DIALOG_CONFIRM_CONTINUE_SAVE_SETTING);
+			showDialog(BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING);
 			// showDialogAboutDurationOfOperation();
 		}
 		else
 			finish();
 	}
-
-	
-
 
 	protected void superOnBackPresed()
 	{
@@ -237,12 +230,15 @@ public class WordSetting extends Activity implements OnClickListener
 			final int lesson = (position - 1);
 
 			if (convertView == null)
+			{
 				item = new ItemView(WordSetting.this, mWordCtrl);
+				mLessons[mLastItem++] = item;
+			}
 			else
 				item = (ItemView) convertView;
 
 			item.setup(lesson);
-			mLessons[mLastItem++] = item;
+
 			return item;
 		}
 
@@ -292,37 +288,18 @@ public class WordSetting extends Activity implements OnClickListener
 		}
 	}
 
+	public void onBtnAddWord(View v)
+	{
+		showDialog(BaseActivity.DIALOG_ADD_WORD);
+	}
+
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
 		final Dialog dialog;
 		switch (id)
 		{
-			case DIALOG_ADD_WORD:
-			{
-				// Context mContext = getApplicationContext();
-				dialog = new Dialog(this);
-
-				dialog.setContentView(R.layout.add_word_dialog);
-				dialog.setTitle("Custom Dialog");
-
-				final EditText edtNative = (EditText) dialog.findViewById(R.id.edtNative);
-				final EditText edtLern = (EditText) dialog.findViewById(R.id.edtLern);
-				Button btnAdd = (Button) dialog.findViewById(R.id.btnAdd);
-				btnAdd.setOnClickListener(new OnClickListener()
-				{
-
-					@Override
-					public void onClick(View v)
-					{
-						WordController.getInstance(WordSetting.this).addWordEx(4, edtNative.getText().toString() + "~",
-						edtLern.getText().toString() + "~", 1, 1);
-						dialog.cancel();
-					}
-				});
-				break;
-			}
-			case DIALOG_CONFIRM_CONTINUE_SAVE_SETTING:
+			case BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING:
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setMessage(R.string.vocabulary_you_are_make_some_changes).setCancelable(false).setPositiveButton(
@@ -342,7 +319,7 @@ public class WordSetting extends Activity implements OnClickListener
 				dialog = builder.create();
 				break;
 			}
-			case DIALOG_MUST_CHECK_AT_LEAST_ONE:
+			case BaseActivity.DIALOG_MUST_CHECK_AT_LEAST_ONE:
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setTitle("setting");
@@ -356,12 +333,12 @@ public class WordSetting extends Activity implements OnClickListener
 						dialog.dismiss();
 					}
 				});
-				//builder.set
+				// builder.set
 				dialog = builder.create();
-				
+
 				break;
 			}
-			case DIALOG_PROGRES:
+			case BaseActivity.DIALOG_PROGRESS:
 			{
 				dialog = ProgressDialog.show(this, "", getString(R.string.database_still_initializing_please_wait), false, true);
 				dialog.setOnCancelListener(new DialogInterface.OnCancelListener()
@@ -376,7 +353,7 @@ public class WordSetting extends Activity implements OnClickListener
 			}
 			default:
 			{
-				return null;
+				return super.onCreateDialog(id);
 			}
 		}
 

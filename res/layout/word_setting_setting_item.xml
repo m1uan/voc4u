@@ -17,6 +17,7 @@
 <!--		android:id="@+id/spinner"/>-->
 	
 	
+	
 	 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -26,7 +27,7 @@
                         android:layout_width="wrap_content"
                         android:id="@+id/txtDistanceMin"
                         android:layout_height="wrap_content"
-                        android:text="only native"
+                        android:text="@string/tvOnlyNative"
                         android:layout_alignParentLeft="true"
                          />
                     <TextView
@@ -34,23 +35,32 @@
                         android:id="@+id/txtDistanceMax"
                         android:layout_alignParentRight="true"
                         android:layout_height="wrap_content"
-                        android:text="only lern"
+                        android:text="@string/tvOnlyLern"
                         />
                     <TextView
                         android:layout_centerHorizontal="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtDistance"
-                        android:text="show words"
+                        android:text="@string/tvUseWords"
                         android:textStyle="bold"
                          />
                 </RelativeLayout>
 		
 	<SeekBar
+		android:padding="4dp"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/seekbar"
 		/>
 	
+	<Button
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnAddWord"
+		android:text="@string/btnAddWord"
+		android:onClick="onBtnAddWord"
+		android:visibility="gone"
+	/>
 		
 	</LinearLayout>

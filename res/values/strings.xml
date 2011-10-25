@@ -39,5 +39,10 @@
     <string name="train">Train</string>
     <string name="speaker">Speaker</string>
     <string name="speech">Speech</string>
+    <string name="tvOnlyNative">only native</string>
+    <string name="tvOnlyLern">only lern</string>
+    <string name="tvUseWords">show words</string>
+    <string name="menuAddWord">Add word</string>
+    <string name="toas_word_is_add" formatted="false">Word \'%s\' - \'%s\' is added.</string>
     
 </resources>

@@ -3,7 +3,7 @@
               android:id="@+id/layout_root"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
+              android:layout_height="wrap_content"
               android:padding="10dp"
               >
     <TextView android:id="@+id/image"
@@ -23,7 +23,7 @@
               android:text="lern"
               android:textColor="#FFF"
               />
-   <EditText
+   	<EditText
                android:id="@+id/edtLern"
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"/>

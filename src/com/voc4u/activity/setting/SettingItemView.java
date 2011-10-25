@@ -1,31 +1,20 @@
 package com.voc4u.activity.setting;
 
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+
 import com.voc4u.controller.WordController;
 import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.database.DataSetObserver;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class SettingItemView extends LinearLayout implements OnItemSelectedListener, OnSeekBarChangeListener
 {
@@ -39,7 +28,8 @@ public class SettingItemView extends LinearLayout implements OnItemSelectedListe
 //            new LangSpinnerItem( LangType.CZECH_2_ENG, this.getContext() ), 
 //            new LangSpinnerItem( LangType.ENG_2_CZECH, this.getContext() )
 //            };
-	private SeekBar mSeeekBar;
+	private final  SeekBar mSeeekBar;
+private final  Button	btnAddWord;
 	
 	
 	public SettingItemView(Context context)
@@ -58,6 +48,9 @@ public class SettingItemView extends LinearLayout implements OnItemSelectedListe
 		mSeeekBar = (SeekBar)findViewById(R.id.seekbar);
 		mSeeekBar.setMax(Consts.MAX_WORD_NATIVE_LEARN);
 		mSeeekBar.setOnSeekBarChangeListener(this);
+		
+		btnAddWord = (Button)findViewById(R.id.btnAddWord);
+		btnAddWord.setVisibility(CommonSetting.DEBUG ? View.VISIBLE : View.GONE);
 		
 		setup();
 	}
