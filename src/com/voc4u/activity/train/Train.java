@@ -1,44 +1,20 @@
 package com.voc4u.activity.train;
 
-import java.util.List;
-import java.util.Locale;
-
 import junit.framework.Assert;
-
-import com.voc4u.activity.BaseWordActivity;
-import com.voc4u.activity.setting.WordSetting;
-import com.voc4u.controller.PublicWord;
-import com.voc4u.controller.Word;
-import com.voc4u.controller.WordController;
-import com.voc4u.czen1.R;
-import com.voc4u.setting.CommonSetting;
-import com.voc4u.widget.TrainWidget;
-
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RemoteViews;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.voc4u.activity.BaseWordActivity;
+import com.voc4u.controller.PublicWord;
+import com.voc4u.czen1.R;
+import com.voc4u.setting.CommonSetting;
 
 public class Train extends BaseWordActivity implements OnItemClickListener
 {
@@ -47,7 +23,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	private Button mDontKnowButton;
 
 	// if true set word as known
-	private boolean mKnowetIt = true;
+	private final boolean mKnowetIt = true;
 	private String TAG;
 	private int mAppWidgetId;
 	private ListView lvLastItems;
@@ -158,6 +134,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 
 	private void updateWord(boolean know)
 	{
+		// TODO: no finish() this activity - use the same for show new word
 		mWCtrl.getActualPublicWord();
 		Intent intent = new Intent(this, Train.class);
 		startActivity(intent);

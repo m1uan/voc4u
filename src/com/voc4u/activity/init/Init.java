@@ -1,34 +1,18 @@
 package com.voc4u.activity.init;
 
-import com.voc4u.activity.dashboard.Dashboard;
-import com.voc4u.activity.setting.WordSetting;
-import com.voc4u.activity.speaker.Speaker;
-import com.voc4u.activity.train.Train;
-import com.voc4u.controller.WordController;
-import com.voc4u.controller.updateLisener;
-import com.voc4u.core.InitData;
-import com.voc4u.core.LangSetting;
-import com.voc4u.czen1.R;
-import com.voc4u.lang.DataCS;
-import com.voc4u.lang.DataDE;
-import com.voc4u.lang.DataEN;
-import com.voc4u.lang.DataES;
-import com.voc4u.lang.DataFR;
-import com.voc4u.lang.DataPL;
-import com.voc4u.lang.DataPT;
-import com.voc4u.setting.CommonSetting;
-import com.voc4u.setting.LangType;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+
+import com.voc4u.controller.updateLisener;
+import com.voc4u.core.LangSetting;
+import com.voc4u.czen1.R;
+import com.voc4u.setting.CommonSetting;
+import com.voc4u.setting.LangType;
 
 public class Init extends Activity implements OnItemSelectedListener, updateLisener
 {
@@ -47,6 +31,7 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		//fillLern();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void fillNative()
 	{
 		Spinner nat = (Spinner) findViewById(R.id.spnNative);
@@ -81,6 +66,7 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		fillLern();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void fillLern()
 	{
 		Spinner nat = (Spinner) findViewById(R.id.spnLern);

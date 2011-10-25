@@ -1,39 +1,36 @@
 package com.voc4u.activity.setting;
 
-
 import junit.framework.Assert;
-
-import com.voc4u.controller.Word;
-import com.voc4u.controller.WordController;
-import com.voc4u.core.LangSetting;
-import com.voc4u.czen1.R;
-import com.voc4u.setting.CommonSetting;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.database.DataSetObserver;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.ListAdapter;
-import android.widget.TextView;
+import android.widget.ListView;
+
+import com.voc4u.controller.WordController;
+import com.voc4u.core.LangSetting;
+import com.voc4u.czen1.R;
+import com.voc4u.setting.CommonSetting;
 
 public class WordSetting extends Activity implements OnClickListener
 {
-	private WordController mWordCtrl;
-	private ListView mList;
-	private View btnAddWord;
-	private Adapter mAdapter;
+	private static final int	DIALOG_ADD_WORD							= 101;
+	private static final int	DIALOG_CONFIRM_CONTINUE_SAVE_SETTING	= 103;
+	private static final int	DIALOG_MUST_CHECK_AT_LEAST_ONE			= 102;
+	private static final int	DIALOG_PROGRES							= 104;
+	private WordController		mWordCtrl;
+	private ListView			mList;
+	private View				btnAddWord;
+	private Adapter				mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -41,149 +38,116 @@ public class WordSetting extends Activity implements OnClickListener
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.word_setting);
-		
+
 		mWordCtrl = WordController.getInstance(this);
-		
+
 		mAdapter = new Adapter();
-		
-		mList = (ListView)findViewById(R.id.list);
+
+		mList = (ListView) findViewById(R.id.list);
 		mList.setAdapter(mAdapter);
-		
-		
-		if(CommonSetting.DEBUG)
+
+		if (CommonSetting.DEBUG)
 		{
 			findViewById(R.id.addword).setVisibility(View.VISIBLE);
 			btnAddWord = findViewById(R.id.btnAddWord);
 			btnAddWord.setOnClickListener(this);
 		}
 	}
-	
+
 	@Override
-	protected void onResume() 	
+	protected void onResume()
 	{
+		// FIXME: close dialog when mWordCtrl is finish
 		// if still runing the async task
 		// isn't posible changing anything
-		if(mWordCtrl.isAsyncRunning())
+		if (mWordCtrl.isAsyncRunning())
 		{
-			ProgressDialog dialog = ProgressDialog.show(this, "", 
-                    "Words still initializing, Please wait...", false, true);
-			dialog.setOnCancelListener(new OnCancelListener() 
-			{	
-				@Override
-				public void onCancel(DialogInterface dialog)
-				{
-					finish();
-				}
-			});
+			showDialog(DIALOG_PROGRES);
 		}
-		
+
 		super.onResume();
 	}
-	
+
 	@Override
-	public void onBackPressed() 
+	public void onBackPressed()
 	{
-		CommonSetting.store(this);
-		store();
-		
-		// super is called in store() -> showDialogAboutDurationOfOperation() -> "YES"
-		//super.onBackPressed();
+		// TODO: move this to special button for save
+		// TODO: show information about changes and leaving without this changes
+
+		// super is called in store() -> showDialogAboutDurationOfOperation() ->
+		// "YES"
+		super.onBackPressed();
 	}
-	
+
 	@Override
 	protected void onPause()
 	{
 		super.onPause();
 	}
-	
-	private void store() 
+
+	private void store()
 	{
 		boolean anyChanges = false;
 		boolean anyChecked = false;
-		
-		for(int i = 0; i != mAdapter.getLessonCount(); i++)
+
+		for (int i = 0; i != mAdapter.getLessonCount(); i++)
 		{
 			ItemView item = mAdapter.getLessonItem(i);
-			
+
 			Assert.assertNotNull(item);
-			if(item != null)
+			if (item != null)
 			{
 				ItemStatus is = item.getStatus();
-				if( is != ItemStatus.NONE)
+				if (is != ItemStatus.NONE)
 				{
 					mWordCtrl.enableLessonAsync(i, is == ItemStatus.ADD);
 					anyChanges = true;
 				}
-				
-				if(item.isChecked())
+
+				if (item.isChecked())
 					anyChecked = true;
 			}
 		}
-		
-		if(!anyChecked)
+
+		if (!anyChecked)
 		{
-			showDialogAboutMustCheckAtleasOneItem();
+			showDialog(DIALOG_MUST_CHECK_AT_LEAST_ONE);
+			// showDialogAboutMustCheckAtleasOneItem();
 		}
-		else if(anyChanges)
+		else if (anyChanges)
 		{
-			showDialogAboutDurationOfOperation();
+			showDialog(DIALOG_CONFIRM_CONTINUE_SAVE_SETTING);
+			// showDialogAboutDurationOfOperation();
 		}
-		
-		
+		else
+			finish();
 	}
 
-	private void showDialogAboutMustCheckAtleasOneItem() 
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.vocabulary_you_must_enable_at_least_one_lesson_)
-		       .setCancelable(true);
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
+	
 
-	private void showDialogAboutDurationOfOperation() 
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.vocabulary_you_are_make_some_changes)
-		       .setCancelable(false)
-		       .setPositiveButton(this.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		                
-		                superOnBackPresed();
-		           }
-		       })
-		       .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		                dialog.cancel();
-		           }
-		       });
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
 
-	protected void superOnBackPresed() 
+	protected void superOnBackPresed()
 	{
 		mWordCtrl.runAsyncTask();
-		super.onBackPressed();
+		finish();
 	}
 
 	public class Adapter implements ListAdapter
 	{
 
-		private static final int  NUM_ADAPTING = 50;
-		private static final int VOCABULARY_TYPE = 0;
-		private static final int SETTING_TYPE = 1;
-		final private int mLessonNum;
-		final ItemView[] mLessons;
-		private int mLastItem = 0;
-		
-		
+		private static final int	NUM_ADAPTING	= 50;
+		private static final int	VOCABULARY_TYPE	= 0;
+		private static final int	SETTING_TYPE	= 1;
+		final private int			mLessonNum;
+		final ItemView[]			mLessons;
+		private int					mLastItem		= 0;
+
 		public Adapter()
 		{
 			mLessonNum = LangSetting.LESSON_SIZES.length;
 			mLessons = new ItemView[mLessonNum];
 		}
-		
+
 		@Override
 		public boolean areAllItemsEnabled()
 		{
@@ -204,7 +168,7 @@ public class WordSetting extends Activity implements OnClickListener
 			// first is setting
 			return mLessonNum + 1;
 		}
-		
+
 		public int getLessonCount()
 		{
 			return mLessonNum;
@@ -212,12 +176,12 @@ public class WordSetting extends Activity implements OnClickListener
 
 		ItemView getLessonItem(int position)
 		{
-			if(mLessonNum > position)
+			if (mLessonNum > position)
 				return mLessons[position];
-			
+
 			return null;
 		}
-		
+
 		@Override
 		public ItemView getItem(int position)
 		{
@@ -234,7 +198,7 @@ public class WordSetting extends Activity implements OnClickListener
 		@Override
 		public int getItemViewType(int position)
 		{
-			if(position == 0)
+			if (position == 0)
 				return SETTING_TYPE;
 			else
 				return VOCABULARY_TYPE;
@@ -243,9 +207,9 @@ public class WordSetting extends Activity implements OnClickListener
 		@Override
 		public View getView(int position, View convertView, final ViewGroup parent)
 		{
-			if(getItemViewType(position) == VOCABULARY_TYPE)
+			if (getItemViewType(position) == VOCABULARY_TYPE)
 				return createWordView(position, convertView);
-			else if(getItemViewType(position) == SETTING_TYPE)
+			else if (getItemViewType(position) == SETTING_TYPE)
 				return createSettingView(convertView);
 
 			return convertView;
@@ -253,33 +217,33 @@ public class WordSetting extends Activity implements OnClickListener
 
 		private View createSettingView(View convertView)
 		{
-			//SettingItemView setting;
-			
-			if(convertView == null)
+			// SettingItemView setting;
+
+			if (convertView == null)
 			{
 				convertView = new SettingItemView(WordSetting.this);
-				((SettingItemView)convertView).setup();
+				((SettingItemView) convertView).setup();
 			}
-			
+
 			return convertView;
 		}
 
 		public View createWordView(int position, View convertView)
 		{
 			ItemView item;
-			
-			final int lesson = (position-1);
-			
-			if(convertView == null)
+
+			final int lesson = (position - 1);
+
+			if (convertView == null)
 				item = new ItemView(WordSetting.this, mWordCtrl);
 			else
-				item =(ItemView)convertView;
-			
+				item = (ItemView) convertView;
+
 			item.setup(lesson);
 			mLessons[mLastItem++] = item;
 			return item;
 		}
-		
+
 		@Override
 		public int getViewTypeCount()
 		{
@@ -304,55 +268,117 @@ public class WordSetting extends Activity implements OnClickListener
 		public void registerDataSetObserver(DataSetObserver observer)
 		{
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void unregisterDataSetObserver(DataSetObserver observer)
 		{
 			// TODO Auto-generated method stub
-			
+
 		}
-		}
+	}
 
 	@Override
 	public void onClick(View v)
 	{
-		if(v == btnAddWord)
+		if (v == btnAddWord)
 		{
-			showDialog(101);
+			// showDialog(101);
+			CommonSetting.store(this);
+			store();
 		}
 	}
-	
+
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
-		if(id == 101)
+		final Dialog dialog;
+		switch (id)
 		{
-			
-			//Context mContext = getApplicationContext();
-			final Dialog dialog = new Dialog(this);
+			case DIALOG_ADD_WORD:
+			{
+				// Context mContext = getApplicationContext();
+				dialog = new Dialog(this);
 
-			dialog.setContentView(R.layout.add_word_dialog);
-			dialog.setTitle("Custom Dialog");
-			
-			final EditText edtNative = (EditText)dialog.findViewById(R.id.edtNative);
-			final EditText edtLern = (EditText)dialog.findViewById(R.id.edtLern);
-			Button btnAdd = (Button)dialog.findViewById(R.id.btnAdd);
-			btnAdd.setOnClickListener(new OnClickListener() {
+				dialog.setContentView(R.layout.add_word_dialog);
+				dialog.setTitle("Custom Dialog");
+
+				final EditText edtNative = (EditText) dialog.findViewById(R.id.edtNative);
+				final EditText edtLern = (EditText) dialog.findViewById(R.id.edtLern);
+				Button btnAdd = (Button) dialog.findViewById(R.id.btnAdd);
+				btnAdd.setOnClickListener(new OnClickListener()
+				{
+
+					@Override
+					public void onClick(View v)
+					{
+						WordController.getInstance(WordSetting.this).addWordEx(4, edtNative.getText().toString() + "~",
+						edtLern.getText().toString() + "~", 1, 1);
+						dialog.cancel();
+					}
+				});
+				break;
+			}
+			case DIALOG_CONFIRM_CONTINUE_SAVE_SETTING:
+			{
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage(R.string.vocabulary_you_are_make_some_changes).setCancelable(false).setPositiveButton(
+				this.getResources().getString(R.string.yes), new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int id)
+					{
+						superOnBackPresed();
+					}
+				}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int id)
+					{
+						dialog.cancel();
+					}
+				});
+				dialog = builder.create();
+				break;
+			}
+			case DIALOG_MUST_CHECK_AT_LEAST_ONE:
+			{
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("setting");
+				builder.setMessage(R.string.vocabulary_you_must_enable_at_least_one_lesson_);
+				builder.setCancelable(true);
+				builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						dialog.dismiss();
+					}
+				});
+				//builder.set
+				dialog = builder.create();
 				
-				@Override
-				public void onClick(View v) {
-					WordController.getInstance(WordSetting.this)
-						.addWordEx(4, edtNative.getText().toString() + "~", edtLern.getText().toString() + "~", 1, 1);
-					dialog.cancel();
-				}
-			});
-			return dialog;
+				break;
+			}
+			case DIALOG_PROGRES:
+			{
+				dialog = ProgressDialog.show(this, "", getString(R.string.database_still_initializing_please_wait), false, true);
+				dialog.setOnCancelListener(new DialogInterface.OnCancelListener()
+				{
+					@Override
+					public void onCancel(DialogInterface dialog)
+					{
+						finish();
+					}
+				});
+				break;
+			}
+			default:
+			{
+				return null;
+			}
 		}
-		
-		return super.onCreateDialog(id);
+
+		return dialog;
 	}
 
-	
 }
