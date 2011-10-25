@@ -29,7 +29,7 @@ public class WordSetting extends Activity implements OnClickListener
 	private static final int	DIALOG_PROGRES							= 104;
 	private WordController		mWordCtrl;
 	private ListView			mList;
-	private View				btnAddWord;
+	private View				btnStoreSetting;
 	private Adapter				mAdapter;
 
 	@Override
@@ -48,10 +48,13 @@ public class WordSetting extends Activity implements OnClickListener
 
 		if (CommonSetting.DEBUG)
 		{
-			findViewById(R.id.addword).setVisibility(View.VISIBLE);
-			btnAddWord = findViewById(R.id.btnAddWord);
-			btnAddWord.setOnClickListener(this);
+			//findViewById(R.id.addword).setVisibility(View.VISIBLE);
+			btnStoreSetting = findViewById(R.id.btnStoreSetting);
+			btnStoreSetting.setOnClickListener(this);
 		}
+		
+		btnStoreSetting = findViewById(R.id.btnStoreSetting);
+		btnStoreSetting.setOnClickListener(this);
 	}
 
 	@Override
@@ -134,7 +137,6 @@ public class WordSetting extends Activity implements OnClickListener
 
 	public class Adapter implements ListAdapter
 	{
-
 		private static final int	NUM_ADAPTING	= 50;
 		private static final int	VOCABULARY_TYPE	= 0;
 		private static final int	SETTING_TYPE	= 1;
@@ -282,7 +284,7 @@ public class WordSetting extends Activity implements OnClickListener
 	@Override
 	public void onClick(View v)
 	{
-		if (v == btnAddWord)
+		if (v == btnStoreSetting)
 		{
 			// showDialog(101);
 			CommonSetting.store(this);

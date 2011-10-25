@@ -12,20 +12,20 @@
 	</ListView>
 	
 	<LinearLayout
-		android:id="@+id/addword"
+		android:id="@+id/buttonBlock"
 		android:padding="5dp"
 		android:orientation="horizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:background="#0A0A0A"
 		android:layout_alignParentBottom="true"
-		android:visibility="gone">
+		android:visibility="visible">
 		
 		<Button
-			android:id="@+id/btnAddWord"
+			android:id="@+id/btnStoreSetting"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/btnAddWord" 
+			android:text="@string/btnStoreSettings" 
 			android:layout_weight="1" />
 	</LinearLayout>
 </RelativeLayout>
