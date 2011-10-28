@@ -2,23 +2,15 @@ package com.voc4u.controller;
 
 import java.util.ArrayList;
 
-import com.voc4u.activity.setting.WordSetting;
-import com.voc4u.core.DBConfig;
-import com.voc4u.core.InitData;
-
-
-
-
-
-
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+
+import com.voc4u.core.DBConfig;
 
 public class DictionaryOpenHelper extends SQLiteOpenHelper
 {
@@ -486,6 +478,43 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		}
 		
 	
+	}
+
+	public ArrayList<Word> getWordsInLesson(int lesson)
+	{
+		mDB = getReadableDatabase();
+		
+		final String query; 
+		
+		query = String.format(DBConfig.DICTIONARY_TABLE_SELECT_BY_LESSON, lesson);
+		
+		Cursor c = rawQuerySQL(mDB, query);
+
+		ArrayList<Word> list = null;
+		
+		if (c != null && c.moveToFirst())
+		{
+			list = new ArrayList<Word>();
+			int firstWordColumn = c.getColumnIndex(DBConfig.WORD_1_COLUMN);
+			int secondWordColumn = c.getColumnIndex(DBConfig.WORD_2_COLUMN);
+			int idWordColumn = c.getColumnIndex(DBConfig.ID_COLUMN);
+			int weight1Column = c.getColumnIndex(DBConfig.WEIGHT_1_COLUMN);
+			int weight2Column = c.getColumnIndex(DBConfig.WEIGHT_2_COLUMN);
+
+			do
+			{
+				String word = c.getString(firstWordColumn);
+				String word2 = c.getString(secondWordColumn);
+				int id = c.getInt(idWordColumn);
+				int weight = c.getInt(weight1Column);
+				int weight2 = c.getInt(weight2Column);
+				list.add(new Word(id, word, word2, weight, weight2));
+			} while (c.moveToNext());
+			
+			
+		}
+		c.close();
+		return list;
 	}
 	
 	

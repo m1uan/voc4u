@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
@@ -96,16 +97,24 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 					
 					String nat = edtNative.getText().toString() + "~";
 					String lern = edtLern.getText().toString() + "~";
-					String tst = BaseActivity.this.getResources().getString(R.string.toas_word_is_add, nat, lern);
 					
-					WordController.getInstance(BaseActivity.this).addWordEx(4, nat,lern, 1, 1);
-					Toast.makeText(BaseActivity.this, tst, Toast.LENGTH_SHORT).show();
+					WordController.getInstance(BaseActivity.this).addWordEx(WordController.CUSTOM_WORD_LESSON, nat,lern, 1, 1);
+					
+					Word word = new Word(WordController.CUSTOM_WORD_LESSON,nat, lern,1,1);
+					onAddCustomWord(word);
+					
 				}
 			});
 			return dialog;
 		}
 		else
 			return super.onCreateDialog(id);
+	}
+
+	protected void onAddCustomWord(Word word)
+	{
+		String tst = getResources().getString(R.string.toas_word_is_add, word.getWord(), word.getWord2());	
+		Toast.makeText(BaseActivity.this, tst, Toast.LENGTH_SHORT).show();
 	}
 
 }

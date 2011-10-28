@@ -18,41 +18,41 @@
 	
 	
 	
-	 <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:id="@+id/txtDistanceMin"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tvOnlyNative"
-                        android:layout_alignParentLeft="true"
-                         />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:id="@+id/txtDistanceMax"
-                        android:layout_alignParentRight="true"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tvOnlyLern"
-                        />
-                    <TextView
-                        android:layout_centerHorizontal="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txtDistance"
-                        android:text="@string/tvUseWords"
-                        android:textStyle="bold"
-                         />
-                </RelativeLayout>
-		
-	<SeekBar
-		android:padding="4dp"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/seekbar"
-		/>
+<!--	 <RelativeLayout-->
+<!--                    android:layout_width="fill_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingLeft="6dp"-->
+<!--                    android:paddingRight="6dp">-->
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:id="@+id/txtDistanceMin"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/tvOnlyNative"-->
+<!--                        android:layout_alignParentLeft="true"-->
+<!--                         />-->
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:id="@+id/txtDistanceMax"-->
+<!--                        android:layout_alignParentRight="true"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/tvOnlyLern"-->
+<!--                        />-->
+<!--                    <TextView-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:id="@+id/txtDistance"-->
+<!--                        android:text="@string/tvUseWords"-->
+<!--                        android:textStyle="bold"-->
+<!--                         />-->
+<!--                </RelativeLayout>-->
+<!--		-->
+<!--	<SeekBar-->
+<!--		android:padding="4dp"-->
+<!--		android:layout_width="fill_parent"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:id="@+id/seekbar"-->
+<!--		/>-->
 	
 	<Button
 		android:layout_width="fill_parent"

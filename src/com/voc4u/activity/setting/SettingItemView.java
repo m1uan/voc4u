@@ -14,7 +14,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.voc4u.controller.WordController;
 import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
-import com.voc4u.setting.Consts;
 
 public class SettingItemView extends LinearLayout implements OnItemSelectedListener, OnSeekBarChangeListener
 {
@@ -28,7 +27,7 @@ public class SettingItemView extends LinearLayout implements OnItemSelectedListe
 //            new LangSpinnerItem( LangType.CZECH_2_ENG, this.getContext() ), 
 //            new LangSpinnerItem( LangType.ENG_2_CZECH, this.getContext() )
 //            };
-	private final  SeekBar mSeeekBar;
+	//private final  SeekBar mSeeekBar;
 private final  Button	btnAddWord;
 	
 	
@@ -45,9 +44,9 @@ private final  Button	btnAddWord;
 		
 		//mSpinner = new Spinner(this, MODE_DROPDOWN);
 		
-		mSeeekBar = (SeekBar)findViewById(R.id.seekbar);
-		mSeeekBar.setMax(Consts.MAX_WORD_NATIVE_LEARN);
-		mSeeekBar.setOnSeekBarChangeListener(this);
+//		mSeeekBar = (SeekBar)findViewById(R.id.seekbar);
+//		mSeeekBar.setMax(Consts.MAX_WORD_NATIVE_LEARN);
+//		mSeeekBar.setOnSeekBarChangeListener(this);
 		
 		btnAddWord = (Button)findViewById(R.id.btnAddWord);
 		btnAddWord.setVisibility(CommonSetting.DEBUG ? View.VISIBLE : View.GONE);
@@ -69,7 +68,7 @@ private final  Button	btnAddWord;
 //			n++;
 //		}
 //		
-		mSeeekBar.setProgress(CommonSetting.langNativeNum);
+		//mSeeekBar.setProgress(CommonSetting.langNativeNum);
 	}
 
 	@Override
@@ -90,7 +89,7 @@ private final  Button	btnAddWord;
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser)
 	{
-		CommonSetting.langNativeNum = mSeeekBar.getProgress();
+		//CommonSetting.langNativeNum = mSeeekBar.getProgress();
 	}
 
 	@Override

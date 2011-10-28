@@ -1,12 +1,7 @@
 package com.voc4u.activity.setting;
 
-import com.voc4u.controller.WordController;
-import com.voc4u.czen1.R;
-
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -16,13 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import com.voc4u.controller.WordController;
+import com.voc4u.czen1.R;
+
 public class ItemView extends LinearLayout implements OnCheckedChangeListener
 {
 
-	private WordController mWordCtrl;
+	private final WordController mWordCtrl;
 	private String mTitle;
 	private int mLesson;
-	private CheckBox chkBox;
+	private final CheckBox chkBox;
 	private ItemStatus mStatus;
 	
 	
@@ -51,6 +49,11 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		final boolean enable = mWordCtrl.isEnableLesson(mLesson);
 		chkBox.setChecked(enable);
 		chkBox.setOnCheckedChangeListener(this);
+	}
+	
+	public int getLesson()
+	{
+		return mLesson;
 	}
 
 	@Override

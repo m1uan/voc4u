@@ -4,30 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.voc4u.activity.init.Init;
-import com.voc4u.activity.setting.WordSetting;
-import com.voc4u.activity.train.Train;
-import com.voc4u.core.InitData;
-import com.voc4u.core.LangSetting;
-import com.voc4u.setting.CommonSetting;
-import com.voc4u.setting.Consts;
-import com.voc4u.setting.LangType;
-
 import junit.framework.Assert;
-
-import android.R;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.text.Editable;
 import android.widget.ArrayAdapter;
+
+import com.voc4u.activity.setting.WordSetting;
+import com.voc4u.core.LangSetting;
+import com.voc4u.setting.CommonSetting;
+import com.voc4u.setting.Consts;
 
 public class WordController
 {
 	private DictionaryOpenHelper mDictionary = null;
-	private ArrayAdapter<String> mAdapter;
-	private Random mRandomGenerator;
+	private final ArrayAdapter<String> mAdapter;
+	private final Random mRandomGenerator;
 	private PublicWord mPublicWord;
 	private boolean mSwitchPoliticy;
 	private int mWeight;
@@ -37,6 +29,8 @@ public class WordController
 	private static int mNativeWordNum = 0;
 	private static int mWordNum = 0;
 	
+	
+	public static final int CUSTOM_WORD_LESSON = 0;
 
 	static WordController mInstance = null;
 
@@ -74,6 +68,18 @@ public class WordController
 
 	}
 
+	
+	public ArrayList<Word> getWordsInLesson(int lesson)
+	{
+		return mDictionary.getWordsInLesson(lesson);
+	}
+	
+	
+	
+	/**
+	 * get the first word which is usable for learning
+	 * @return
+	 */
 	public PublicWord getFirstPublicWord()
 	{
 		Assert.assertNotNull(mDictionary);
@@ -84,15 +90,16 @@ public class WordController
 			
 			mSwitchPoliticy = getSwitchPoliticyOrNot();
 
+			// TODO: load only one list (maybe set the ORDER BY weight1, weight2)
 			// get normaly all words
-			ArrayList<Word> list = mDictionary.getPublicWords(!mSwitchPoliticy, getLastListIds());
-
+			ArrayList<Word> list = mDictionary.getPublicWords(true, getLastListIds());
+			ArrayList<Word> list2 = mDictionary.getPublicWords(false, getLastListIds());
 			if(list == null)
 			{
 				// its posible in the db is less words as is size of last list
 				// get the word without lastlist
 				list = mDictionary.getPublicWords(!mSwitchPoliticy, null);
-				
+				//list = mDictionary.getPublicWords(mSwitchPoliticy, null);
 				// db is null -> open the setting with words
 				if(list == null)
 				{
@@ -100,8 +107,19 @@ public class WordController
 					return null;
 				}
 			}
+			
+			Word w1 = list.get(0);
+			Word w2 = w1;
+			if(list2 != null && list2.size() > 0)
+				w2 = list2.get(0);
+			
+			if(w1.getWeight() < w2.getWeight() || w1.getWeight2() < w2.getWeight2())
+				w1 = w2;
+			
+			mSwitchPoliticy = w1.getWeight() > w1.getWeight2();
+			
 			int pos = 0;//Math.abs(mRandomGenerator.nextInt() % list.size());
-			mPublicWord = new PublicWord(list.get(pos),
+			mPublicWord = new PublicWord(w1,
 					!mSwitchPoliticy ? EPoliticy.PRIMAR : EPoliticy.SECUNDAR);
 			addLastList(mPublicWord);
 
@@ -327,6 +345,7 @@ public class WordController
 			mWeights = 1;
 		}
 
+		@Override
 		protected Long doInBackground(String... urls)
 		{
 			mDone = false;
@@ -344,10 +363,12 @@ public class WordController
 
 		
 
+		@Override
 		protected void onProgressUpdate(Integer... progress)
 		{
 		}
 
+		@Override
 		protected void onPostExecute(Long result)
 		{
 			

@@ -1,7 +1,8 @@
 package com.voc4u.activity.setting;
 
+import java.util.ArrayList;
+
 import junit.framework.Assert;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -15,18 +16,23 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.voc4u.activity.BaseActivity;
+import com.voc4u.activity.train.LastItem;
+import com.voc4u.controller.EPoliticy;
+import com.voc4u.controller.PublicWord;
+import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.core.LangSetting;
 import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
 
-public class WordSetting extends Activity implements OnClickListener
+public class WordSetting extends BaseActivity implements OnClickListener
 {
 
 	private WordController		mWordCtrl;
 	private ListView			mList;
 	private View				btnStoreSetting;
 	private Adapter				mAdapter;
+	public ArrayList<Word>	mCustomWords;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -99,7 +105,8 @@ public class WordSetting extends Activity implements OnClickListener
 				ItemStatus is = item.getStatus();
 				if (is != ItemStatus.NONE)
 				{
-					mWordCtrl.enableLessonAsync(i, is == ItemStatus.ADD);
+					// because 0 is for user owned words
+					mWordCtrl.enableLessonAsync(item.getLesson(), is == ItemStatus.ADD);
 					anyChanges = true;
 				}
 
@@ -133,6 +140,7 @@ public class WordSetting extends Activity implements OnClickListener
 		private static final int	NUM_ADAPTING	= 50;
 		private static final int	VOCABULARY_TYPE	= 0;
 		private static final int	SETTING_TYPE	= 1;
+		private static final int 	CUSTOM_WORDS_TYPE = 2;
 		final private int			mLessonNum;
 		final ItemView[]			mLessons;
 		private int					mLastItem		= 0;
@@ -141,6 +149,12 @@ public class WordSetting extends Activity implements OnClickListener
 		{
 			mLessonNum = LangSetting.LESSON_SIZES.length;
 			mLessons = new ItemView[mLessonNum];
+			mCustomWords = mWordCtrl.getWordsInLesson(WordController.CUSTOM_WORD_LESSON);
+			
+			if(mCustomWords == null)
+				mCustomWords = new ArrayList<Word>();
+			
+			mLastItem = 0;
 		}
 
 		@Override
@@ -160,8 +174,11 @@ public class WordSetting extends Activity implements OnClickListener
 		@Override
 		public int getCount()
 		{
-			// first is setting
-			return mLessonNum + 1;
+			
+			// in list is lessons
+			// setting
+			// custom words
+			return mLessonNum + 1 + mCustomWords.size();
 		}
 
 		public int getLessonCount()
@@ -193,8 +210,10 @@ public class WordSetting extends Activity implements OnClickListener
 		@Override
 		public int getItemViewType(int position)
 		{
-			if (position == 0)
+			if (position == mLessonNum)
 				return SETTING_TYPE;
+			else if(position > mLessonNum)
+				return CUSTOM_WORDS_TYPE;
 			else
 				return VOCABULARY_TYPE;
 		}
@@ -202,11 +221,29 @@ public class WordSetting extends Activity implements OnClickListener
 		@Override
 		public View getView(int position, View convertView, final ViewGroup parent)
 		{
-			if (getItemViewType(position) == VOCABULARY_TYPE)
-				return createWordView(position, convertView);
-			else if (getItemViewType(position) == SETTING_TYPE)
-				return createSettingView(convertView);
+			switch(getItemViewType(position))
+			{
+				case VOCABULARY_TYPE:
+					return createWordView(position, convertView);
+				case SETTING_TYPE:
+					return createSettingView(convertView);
+				case CUSTOM_WORDS_TYPE:
+				{
+					return createCustomWord(convertView, position);
+				}
+			}
+			return convertView;
+		}
 
+		private View createCustomWord(View convertView, int position)
+		{
+			int numItemsBeforeCW = mLessonNum + 1;
+			int absolutePosition = position - numItemsBeforeCW;
+			
+			
+			//if(convertView == null)
+			PublicWord pw = new PublicWord(mCustomWords.get(absolutePosition), EPoliticy.PRIMAR);
+			convertView = new LastItem(WordSetting.this, pw);
 			return convertView;
 		}
 
@@ -227,12 +264,14 @@ public class WordSetting extends Activity implements OnClickListener
 		{
 			ItemView item;
 
-			final int lesson = (position - 1);
+			// it suppose the lesson is the first in list
+			final int lesson = position + 1;
 
 			if (convertView == null)
 			{
 				item = new ItemView(WordSetting.this, mWordCtrl);
-				mLessons[mLastItem++] = item;
+				if(position < mLessons.length)
+					mLessons[position] = item;
 			}
 			else
 				item = (ItemView) convertView;
@@ -274,6 +313,11 @@ public class WordSetting extends Activity implements OnClickListener
 		{
 			// TODO Auto-generated method stub
 
+		}
+
+		public void addCustomWord(Word word)
+		{
+			mCustomWords.add(word);
 		}
 	}
 
@@ -360,4 +404,11 @@ public class WordSetting extends Activity implements OnClickListener
 		return dialog;
 	}
 
+	@Override
+	protected void onAddCustomWord(Word word)
+	{
+		mAdapter.addCustomWord(word);
+		mList.invalidateViews();
+		super.onAddCustomWord(word);
+	}
 }
