@@ -5,7 +5,7 @@
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="#3A3A3A">
+	android:background="@color/cbg_activity">
 	<TextView
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
 		 />
 	
 	<ListView
-		android:background="#3A3A3A"
+		android:background="@color/cbg_list"
 		android:id="@+id/lastList"
 		android:orientation="vertical"
 		android:layout_width="fill_parent"
@@ -36,7 +36,7 @@
 		android:orientation="horizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:background="#0A0A0A"
+		android:background="@color/cbg_activity"
 		android:layout_alignParentBottom="true">
 		
 		<com.google.ads.AdView android:id="@+id/adView"

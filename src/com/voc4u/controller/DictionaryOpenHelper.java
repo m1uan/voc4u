@@ -421,11 +421,18 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		Log.d(TAG, "add word: " + text + " with lesson = " + String.valueOf(lesson));
 	}
 	
+	/**
+	 * remove lesson by her id
+	 * @param lesson if -1 remove all lesson
+	 */
 	public void unloadLesson(int lesson)
 	{
 		mDB = getWritableDatabase();
 		
-		mDB.delete(DBConfig.WORD_TABLE_NAME, DBConfig.LANG_LESSON + "=?",
+		if(lesson == -1)
+			mDB.delete(DBConfig.WORD_TABLE_NAME, null, null);
+		else
+			mDB.delete(DBConfig.WORD_TABLE_NAME, DBConfig.LANG_LESSON + "=?",
 				new String[] { String.valueOf(lesson) });
 		
 	}

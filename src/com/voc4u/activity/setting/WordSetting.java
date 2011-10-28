@@ -9,13 +9,20 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.voc4u.activity.BaseActivity;
+import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.train.LastItem;
 import com.voc4u.controller.EPoliticy;
 import com.voc4u.controller.PublicWord;
@@ -25,30 +32,33 @@ import com.voc4u.core.LangSetting;
 import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
 
-public class WordSetting extends BaseActivity implements OnClickListener
+public class WordSetting extends BaseWordActivity implements OnClickListener, OnItemClickListener
 {
 
 	private WordController		mWordCtrl;
 	private ListView			mList;
 	private View				btnStoreSetting;
 	private Adapter				mAdapter;
-	public ArrayList<Word>	mCustomWords;
-
+	private MenuItem	menuReset;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.word_setting);
-
+		
 		mWordCtrl = WordController.getInstance(this);
 
 		mAdapter = new Adapter();
 
 		mList = (ListView) findViewById(R.id.list);
 		mList.setAdapter(mAdapter);
-
-		if (CommonSetting.DEBUG)
+		mList.setOnItemClickListener(this);
+		
+		
+		//mList.setClickable(true);
+		
+		//if (CommonSetting.DEBUG)
 		{
 			// findViewById(R.id.addword).setVisibility(View.VISIBLE);
 			btnStoreSetting = findViewById(R.id.btnStoreSetting);
@@ -132,6 +142,18 @@ public class WordSetting extends BaseActivity implements OnClickListener
 	protected void superOnBackPresed()
 	{
 		mWordCtrl.runAsyncTask();
+		// without sleep is the word setting returned back
+		// because isn't load any word between 
+		// finish() and resume() new activity
+		try
+		{
+			Thread.sleep(500);
+		}
+		catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		finish();
 	}
 
@@ -144,6 +166,8 @@ public class WordSetting extends BaseActivity implements OnClickListener
 		final private int			mLessonNum;
 		final ItemView[]			mLessons;
 		private int					mLastItem		= 0;
+
+		public ArrayList<Word>	mCustomWords;
 
 		public Adapter()
 		{
@@ -212,10 +236,10 @@ public class WordSetting extends BaseActivity implements OnClickListener
 		{
 			if (position == mLessonNum)
 				return SETTING_TYPE;
-			else if(position > mLessonNum)
-				return CUSTOM_WORDS_TYPE;
-			else
+			else if(position < mLessonNum)
 				return VOCABULARY_TYPE;
+			else
+				return CUSTOM_WORDS_TYPE;	
 		}
 
 		@Override
@@ -244,6 +268,9 @@ public class WordSetting extends BaseActivity implements OnClickListener
 			//if(convertView == null)
 			PublicWord pw = new PublicWord(mCustomWords.get(absolutePosition), EPoliticy.PRIMAR);
 			convertView = new LastItem(WordSetting.this, pw);
+			convertView.setOnCreateContextMenuListener(WordSetting.this);
+			//convertView.setClickable(true);
+			//convertView.setOnClickListener(WordSetting.this);
 			return convertView;
 		}
 
@@ -319,6 +346,7 @@ public class WordSetting extends BaseActivity implements OnClickListener
 		{
 			mCustomWords.add(word);
 		}
+
 	}
 
 	@Override
@@ -366,7 +394,8 @@ public class WordSetting extends BaseActivity implements OnClickListener
 			case BaseActivity.DIALOG_MUST_CHECK_AT_LEAST_ONE:
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle("setting");
+				builder.setIcon(android.R.drawable.ic_dialog_info);
+				builder.setTitle(R.string.btnStoreSettings);
 				builder.setMessage(R.string.vocabulary_you_must_enable_at_least_one_lesson_);
 				builder.setCancelable(true);
 				builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
@@ -395,6 +424,30 @@ public class WordSetting extends BaseActivity implements OnClickListener
 				});
 				break;
 			}
+			case DIALOG_RESET_DB:
+			{
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle(R.string.menu_reset_db);
+				builder.setIcon(android.R.drawable.ic_dialog_alert);
+				builder.setMessage(R.string.dialog_text_confirm_reset_db);
+				builder.setCancelable(true);
+				builder.setPositiveButton(
+				this.getResources().getString(R.string.yes), new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int id)
+					{
+						resetDB();
+					}
+				}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int id)
+					{
+						dialog.cancel();
+					}
+				});
+				dialog = builder.create();
+				break;
+			}
 			default:
 			{
 				return super.onCreateDialog(id);
@@ -404,6 +457,15 @@ public class WordSetting extends BaseActivity implements OnClickListener
 		return dialog;
 	}
 
+	protected void resetDB()
+	{
+		mWordCtrl.unloadAllLesson();
+		CommonSetting.lernCode = null;
+		CommonSetting.nativeCode = null;
+		CommonSetting.store(this);
+		finish();
+	}
+
 	@Override
 	protected void onAddCustomWord(Word word)
 	{
@@ -411,4 +473,47 @@ public class WordSetting extends BaseActivity implements OnClickListener
 		mList.invalidateViews();
 		super.onAddCustomWord(word);
 	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+	{
+		menu.setHeaderTitle("ahoj");
+		menu.add("delete");
+		super.onCreateContextMenu(menu, v, menuInfo);
+	}
+
+	@Override
+	protected int getContentView()
+	{
+		return R.layout.word_setting;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		boolean result = super.onCreateOptionsMenu(menu);
+		menuReset = menu.add(R.string.menu_reset_db);
+		menuReset.setOnMenuItemClickListener(this);
+		return result;
+	}
+	
+	@Override
+	public boolean onMenuItemClick(MenuItem item)
+	{
+		if(menuReset == item)
+		{
+			showDialog(BaseActivity.DIALOG_RESET_DB);
+			return true;
+		}
+		else
+			return super.onMenuItemClick(item);
+	}
+	
 }

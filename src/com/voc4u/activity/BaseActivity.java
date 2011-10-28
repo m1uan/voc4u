@@ -29,6 +29,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 	public static final int	DIALOG_MUST_CHECK_AT_LEAST_ONE			= 102;
 	public static final int	DIALOG_PROGRESS							= 104;
 	public static final int	DIALOG_ADD_WORD_WARN					= 105;
+	public static final int	DIALOG_RESET_DB	= 106;
 
 	private MenuItem		mMenuDictionary;
 	private MenuItem		mSpeachSetting;

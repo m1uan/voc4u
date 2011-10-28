@@ -1,10 +1,10 @@
 package com.voc4u.setting;
 
-import com.voc4u.core.LangSetting;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.voc4u.core.LangSetting;
 
 public class CommonSetting
 {
@@ -54,8 +54,8 @@ public class CommonSetting
 	{
 		//putInt(context, LANG_TYPE, langType == LangType.CZECH_2_ENG ? 0 : 1);
 		putInt(context, LANG_NATIVE_NUM, langNativeNum);
-		putString(context, LANG_NATIVE_CODE, nativeCode.code);
-		putString(context, LANG_LERN_CODE, lernCode.code);
+		putString(context, LANG_NATIVE_CODE, nativeCode != null ? nativeCode.code : "INIT");
+		putString(context, LANG_LERN_CODE, lernCode != null ? lernCode.code : "INIT");
 	}
 	
 	public static void restore(Context context)

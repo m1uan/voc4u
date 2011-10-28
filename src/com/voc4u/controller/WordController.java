@@ -314,6 +314,10 @@ public class WordController
 		}
 	}
 
+	public void unloadAllLesson()
+	{
+		mDictionary.unloadLesson(-1);
+	}
 	
 
 	private class UpdateTask extends AsyncTask<String, Integer, Long>
