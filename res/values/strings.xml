@@ -44,5 +44,6 @@
     <string name="tvUseWords">show words</string>
     <string name="menuAddWord">Add word</string>
     <string name="toas_word_is_add" formatted="false">Word \'%s\' - \'%s\' is added.</string>
+    <string name="dialog_add_custom_word">Add custom word</string>
     
 </resources>

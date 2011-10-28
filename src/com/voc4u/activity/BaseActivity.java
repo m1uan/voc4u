@@ -1,8 +1,10 @@
 package com.voc4u.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +28,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 	public static final int	DIALOG_CONFIRM_CONTINUE_SAVE_SETTING	= 103;
 	public static final int	DIALOG_MUST_CHECK_AT_LEAST_ONE			= 102;
 	public static final int	DIALOG_PROGRESS							= 104;
+	public static final int	DIALOG_ADD_WORD_WARN					= 105;
 
 	private MenuItem		mMenuDictionary;
 	private MenuItem		mSpeachSetting;
@@ -75,7 +78,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 
 			// dialog.
 			dialog.setContentView(R.layout.add_word_dialog);
-			dialog.setTitle("Custom Dialog");
+			dialog.setTitle(R.string.dialog_add_custom_word);
 
 			WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 			lp.copyFrom(dialog.getWindow().getAttributes());
@@ -93,11 +96,17 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 				@Override
 				public void onClick(View v)
 				{
-					dialog.cancel();
-					
 					String nat = edtNative.getText().toString() + "~";
 					String lern = edtLern.getText().toString() + "~";
 					
+					if(nat.length() < 2 || lern.length() < 2)
+					{
+						showDialog(DIALOG_ADD_WORD_WARN);
+						return ;
+					}
+					else
+						dialog.dismiss();
+						
 					WordController.getInstance(BaseActivity.this).addWordEx(WordController.CUSTOM_WORD_LESSON, nat,lern, 1, 1);
 					
 					Word word = new Word(WordController.CUSTOM_WORD_LESSON,nat, lern,1,1);
@@ -107,6 +116,24 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 			});
 			return dialog;
 		}
+		else if(id == DIALOG_ADD_WORD_WARN)
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.dialog_add_custom_word);
+			builder.setMessage("You must fill both fields, fist for you native language and second for lern sence of word.");
+			builder.setCancelable(true);
+			builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					dialog.dismiss();
+				}
+			});
+			// builder.set
+			return builder.create();
+		}
+		
 		else
 			return super.onCreateDialog(id);
 	}
