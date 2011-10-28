@@ -111,6 +111,19 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 			return super.onCreateDialog(id);
 	}
 
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog)
+	{
+		if (id == DIALOG_ADD_WORD)
+		{
+			final EditText edtNative = (EditText) dialog.findViewById(R.id.edtNative);
+			final EditText edtLern = (EditText) dialog.findViewById(R.id.edtLern);
+			edtLern.setText("");
+			edtNative.setText("");
+		}
+		super.onPrepareDialog(id, dialog);
+	}
+	
 	protected void onAddCustomWord(Word word)
 	{
 		String tst = getResources().getString(R.string.toas_word_is_add, word.getWord(), word.getWord2());	
