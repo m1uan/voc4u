@@ -131,13 +131,11 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 
 	private void updateWord(boolean know)
 	{
-		// TODO: no finish() this activity - use the same for show new word
-		mWCtrl.getActualPublicWord();
-		Intent intent = new Intent(this, Train.class);
-		startActivity(intent);
-		finish();
-
 		mWCtrl.updatePublicWord(know);
+		mListAdapter = new LastListAdapter(this);
+		lvLastItems.setAdapter(mListAdapter);
+		setupFirstWord();
+		
 	}
 
 	@Override
