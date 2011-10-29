@@ -330,9 +330,6 @@ public class WordController
 		private ArrayList<Integer> mAddList;
 		private ArrayList<Integer> mRemoveList;
 		
-		
-		
-		
 		public UpdateTask(int less, boolean remove, updateLisener ul)
 		{
 			mLesson = less;
