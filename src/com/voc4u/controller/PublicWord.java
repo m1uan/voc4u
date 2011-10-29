@@ -1,6 +1,5 @@
 package com.voc4u.controller;
 
-import com.voc4u.setting.CommonSetting;
 
 public class PublicWord
 {
@@ -52,6 +51,7 @@ public class PublicWord
 		return success;
 	}
 	
+	@Override
 	public String toString()
 	{
 		return String.format("%s - %s (%d/%d)", getPrimary(), getSecondary(),  mWord.getWeight(), mWord.getWeight2());
@@ -78,13 +78,13 @@ public class PublicWord
 	public String getPrimary()
 	{
 		//return CommonSetting.langType.getCrossBase() ? mWord.getWord() : mWord.getWord2();
-		return mWord.getWord();
+		return mWord.getWord().replace("|", ",");
 	}
 	
 	public String getSecondary()
 	{
 		//return CommonSetting.langType.getCrossBase() ? mWord.getWord2() : mWord.getWord();
-		return mWord.getWord2();
+		return mWord.getWord2().replace("|", ",");
 	}
 
 
