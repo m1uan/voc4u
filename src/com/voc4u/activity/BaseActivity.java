@@ -43,6 +43,8 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 		
 		if(CommonSetting.DEBUG)
 			mAddWord = menu.add(R.string.menuAddWord).setOnMenuItemClickListener(this);
+	
+		
 		
 		return super.onCreateOptionsMenu(menu);
 	}

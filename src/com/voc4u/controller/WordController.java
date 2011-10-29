@@ -272,11 +272,11 @@ public class WordController
 	 */
 	private void addLesson(int lesson, int weights) 
 	{
-		String[] nt = LangSetting.getInitDataFromLT(CommonSetting.nativeCode);
-		String[] lr = LangSetting.getInitDataFromLT(CommonSetting.lernCode);
+		String[] nt = LangSetting.getInitDataFromLT(CommonSetting.nativeCode, lesson);
+		String[] lr = LangSetting.getInitDataFromLT(CommonSetting.lernCode, lesson);
 
-		int start = LangSetting.getLessonStart(lesson);
-		int end = LangSetting.getLessonStart(lesson + 1);
+		int start = 0;
+		int end = nt.length;
 
 		// if it is first lesson which add
 		// to DB set first words as weight1,weight2 to 1,1

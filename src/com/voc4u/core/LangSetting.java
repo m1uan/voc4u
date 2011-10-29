@@ -1,23 +1,16 @@
 package com.voc4u.core;
 
-import com.voc4u.lang.DataCS;
-import com.voc4u.lang.DataDE;
-import com.voc4u.lang.DataEN;
-import com.voc4u.lang.DataES;
-import com.voc4u.lang.DataFR;
-import com.voc4u.lang.DataPL;
-import com.voc4u.lang.DataPT;
+import java.lang.reflect.Field;
+
+import android.content.Context;
+
 import com.voc4u.setting.LangType;
 import com.voc4u.setting.LangTypeText;
-
-import android.R;
-import android.content.Context;
-import android.content.res.Resources;
 
 public class LangSetting
 {
 	public static final String LANG_DE = "DE";
-	public static final String LANG_CZ = "CZ";
+	public static final String LANG_CZ = "CS";
 	public static final String LANG_EN = "EN";
 	public static final String LANG_ES = "ES";
 	public static final String LANG_FR = "FR";
@@ -119,24 +112,44 @@ public class LangSetting
 		return null;
 	}
 	
-	public static String[] getInitDataFromLT(final LangType lt)
+	public static String[] getInitDataFromLT(final LangType lt, int lesson)
 	{
 		final String code = lt.code;
 		
-		if(code.contentEquals(LangSetting.LANG_CZ))
-			return DataCS.text;
-		else if(code.contentEquals(LangSetting.LANG_EN))
-			return DataEN.text;
-		else if(code.contentEquals(LangSetting.LANG_DE))
-			return DataDE.text;
-		else if(code.contentEquals(LangSetting.LANG_FR))
-			return DataFR.text;
-		else if(code.contentEquals(LangSetting.LANG_ES))
-			return DataES.text;
-		else if(code.contentEquals(LangSetting.LANG_PL))
-			return DataPL.text;
-		else if(code.contentEquals(LangSetting.LANG_PT))
-			return DataPT.text;
+		try
+		{
+			String name = String.format("com.voc4u.lang.lesson%d.Data%s", lesson, lt.code);
+			Class cls = Class.forName(name);
+			Field fld = cls.getField("text");
+			Object o = fld.get(null);
+			String[] a = (String[])o;
+			return a;
+		}
+		catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (SecurityException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (NoSuchFieldException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IllegalArgumentException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return null;
 	}
