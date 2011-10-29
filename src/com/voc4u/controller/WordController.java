@@ -11,9 +11,9 @@ import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 
 import com.voc4u.activity.setting.WordSetting;
-import com.voc4u.core.LangSetting;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
+import com.voc4u.setting.LangSetting;
 
 public class WordController
 {

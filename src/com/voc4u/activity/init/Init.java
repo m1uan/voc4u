@@ -9,9 +9,9 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.voc4u.controller.updateLisener;
-import com.voc4u.core.LangSetting;
 import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
+import com.voc4u.setting.LangSetting;
 import com.voc4u.setting.LangType;
 
 public class Init extends Activity implements OnItemSelectedListener, updateLisener
@@ -38,7 +38,7 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		nat.setOnItemSelectedListener(this);
 		ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this,
 				android.R.layout.simple_dropdown_item_1line,
-				LangSetting.getLangTextArray(this));
+				LangSetting.getLangArray());
 		nat.setAdapter(spinnerArrayAdapter);
 		nat.setSelection(0, false);
 	}
@@ -101,7 +101,7 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 	private final LangType[] createArrayWithoutSelectedInNative()
 	{
 		int m = 0;
-		final LangType[] all = LangSetting.getLangTextArray(this);
+		final LangType[] all = LangSetting.getLangArray();
 		LangType[] lLT = new LangType[all.length - 1];
 		for (int i = 0; i != all.length; i++)
 		{

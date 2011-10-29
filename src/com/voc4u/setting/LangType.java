@@ -1,5 +1,7 @@
 package com.voc4u.setting;
 
+import java.util.Locale;
+
 public class LangType
 {		
 	public final int id;
@@ -17,9 +19,11 @@ public class LangType
 		//name = ctx.getResources().getString(res);
 	}
 	
+	@Override
 	public String toString()
 	{
-		return "";
+		Locale loc = new Locale(code);
+		return loc.getDisplayLanguage();
 	}
 
 }

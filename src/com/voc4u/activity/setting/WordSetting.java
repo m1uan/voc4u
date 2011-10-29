@@ -28,9 +28,9 @@ import com.voc4u.controller.EPoliticy;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
-import com.voc4u.core.LangSetting;
 import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
+import com.voc4u.setting.LangSetting;
 
 public class WordSetting extends BaseWordActivity implements OnClickListener, OnItemClickListener
 {
