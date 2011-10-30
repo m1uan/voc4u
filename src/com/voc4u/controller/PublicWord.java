@@ -19,9 +19,9 @@ public class PublicWord
 	public String getTestString()
 	{
 		if(isBasePrimary())
-			return mWord.getWord();
+			return getLern();
 		else
-			return mWord.getWord2();
+			return getNative();
 	}
 
 
@@ -54,7 +54,7 @@ public class PublicWord
 	@Override
 	public String toString()
 	{
-		return String.format("%s - %s (%d/%d)", getPrimary(), getSecondary(),  mWord.getWeight(), mWord.getWeight2());
+		return String.format("%s - %s (%d/%d)", getLern(), getNative(),  mWord.getWeight(), mWord.getWeight2());
 	}
 	
 	private int getTestWeight()
@@ -75,16 +75,16 @@ public class PublicWord
 	}
 
 	
-	public String getPrimary()
+	public String getLern()
 	{
 		//return CommonSetting.langType.getCrossBase() ? mWord.getWord() : mWord.getWord2();
-		return mWord.getWord().replace("|", ",");
+		return mWord.getLern().replace("|", ",");
 	}
 	
-	public String getSecondary()
+	public String getNative()
 	{
 		//return CommonSetting.langType.getCrossBase() ? mWord.getWord2() : mWord.getWord();
-		return mWord.getWord2().replace("|", ",");
+		return mWord.getNative().replace("|", ",");
 	}
 
 

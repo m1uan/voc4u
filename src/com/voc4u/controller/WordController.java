@@ -85,8 +85,10 @@ public class WordController
 		Assert.assertNotNull(mDictionary);
 		if (mDictionary != null)
 		{
+			// add 5 new words
 			if(!mDictionary.isAnyUnknownWord())
-				mDictionary.setupFirstWordWeight();
+				for(int i = 0; i != 5;i++)
+					mDictionary.setupFirstWordWeight();
 			
 			mSwitchPoliticy = getSwitchPoliticyOrNot();
 
@@ -162,7 +164,7 @@ public class WordController
 	private void addLastList(PublicWord publicWord)
 	{
 		mLastList.add(publicWord);
-		if (mLastList.size() > CommonSetting.MAX_LAST_LIST)
+		if (mLastList.size() > Consts.MAX_LAST_LIST)
 			mLastList.remove(0);
 	}
 
@@ -282,7 +284,7 @@ public class WordController
 		// to DB set first words as weight1,weight2 to 1,1
 		// because else isn't work getFirstWords
 		// the last list is bigger as used words
-		boolean initialize = weights == 0 && mDictionary.getCount() < CommonSetting.MAX_LAST_LIST;
+		boolean initialize = weights == 0 && mDictionary.getCount() < Consts.MAX_LAST_LIST;
 		
 		if(initialize)
 			weights = 1;
@@ -305,7 +307,7 @@ public class WordController
 				addWordEx(lesson, slr, snt, weights, weights);
 				
 				// stop initialize first words to used value
-				if(initialize && num++ > CommonSetting.MAX_LAST_LIST)
+				if(initialize && num++ > Consts.MAX_LAST_LIST)
 				{
 					initialize = false;
 					weights = 0;

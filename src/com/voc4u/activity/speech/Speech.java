@@ -87,7 +87,7 @@ public class Speech extends BaseWordActivity implements OnClickListener
 		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
 				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 		intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-				mPublicWord.getSecondary());
+				mPublicWord.getNative());
 		startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
 	}
 
@@ -106,7 +106,7 @@ public class Speech extends BaseWordActivity implements OnClickListener
 				ArrayList<String> matches = data
 						.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 				
-				final String word = mPublicWord.getPrimary();
+				final String word = mPublicWord.getLern();
 				
 				if(isRecognised(matches) || mRepeat++ == MAX_REPEAT)
 				{
@@ -145,7 +145,7 @@ public class Speech extends BaseWordActivity implements OnClickListener
 
 	private boolean isRecognised(ArrayList<String> matches)
 	{
-		return (matches.size() > 0 && matches.get(0).contentEquals(mPublicWord.getPrimary()));
+		return (matches.size() > 0 && matches.get(0).contentEquals(mPublicWord.getLern()));
 	}
 
 }

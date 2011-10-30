@@ -1,21 +1,17 @@
 package com.voc4u.activity.train;
 
-import java.util.zip.Inflater;
-
 import junit.framework.Assert;
-
-import com.voc4u.controller.PublicWord;
-import com.voc4u.czen1.R;
-import com.voc4u.setting.CommonSetting;
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.voc4u.controller.PublicWord;
+import com.voc4u.czen1.R;
+import com.voc4u.setting.Consts;
 
 public class LastItem extends LinearLayout
 {
@@ -58,7 +54,7 @@ public class LastItem extends LinearLayout
 
 	private void setupText3(TextView tv3, PublicWord pw)
 	{
-		tv3.setVisibility(CommonSetting.DEBUG ? View.VISIBLE : View.GONE);
+		tv3.setVisibility(Consts.DEBUG ? View.VISIBLE : View.GONE);
 		tv3.setText("(" + 
 				String.valueOf(pw.getBaseWord().getWeight() 
 						+ "/"
@@ -68,7 +64,7 @@ public class LastItem extends LinearLayout
 
 	private void setupText2(TextView tv2, PublicWord pw)
 	{
-		tv2.setText(pw.getSecondary());
+		tv2.setText(pw.getNative());
 		tv2.setTextColor(getColor(pw));
 	}
 
@@ -79,7 +75,7 @@ public class LastItem extends LinearLayout
 
 	private void setupText1(TextView tv1, PublicWord pw)
 	{
-		tv1.setText(pw.getPrimary());
+		tv1.setText(pw.getLern());
 		tv1.setTextColor(getColor(pw));
 	}
 

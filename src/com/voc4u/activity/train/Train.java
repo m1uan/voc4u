@@ -14,7 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.czen1.R;
-import com.voc4u.setting.CommonSetting;
+import com.voc4u.setting.Consts;
 
 public class Train extends BaseWordActivity implements OnItemClickListener
 {
@@ -75,7 +75,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 			mWord2TextView.setText(mPublicWord.getBaseWord().getWeight() + "/"
 					+ mPublicWord.getBaseWord().getWeight2());
 			mWord2TextView.setVisibility(View.VISIBLE);
-			mWord2TextView.setVisibility(CommonSetting.DEBUG ? View.VISIBLE
+			mWord2TextView.setVisibility(Consts.DEBUG ? View.VISIBLE
 					: View.GONE);
 		}
 	}
@@ -114,7 +114,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 
 	public void onPlayButton(View v)
 	{
-		onPlay(mPublicWord.getPrimary());
+		onPlay(mPublicWord.getLern());
 	}
 
 	public void onDontKnowButton(View v)
@@ -143,7 +143,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 			long arg3)
 	{
 		PublicWord pw = (PublicWord) lvLastItems.getItemAtPosition(position);
-		onPlay(pw.getPrimary());
+		onPlay(pw.getLern());
 	}
 
 	@Override

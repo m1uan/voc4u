@@ -481,7 +481,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		
 			execSQL(getWritableDatabase(), query);
 			
-			Log.i(TAG, String.format("Add new word to round! \'%s\' with id = %d", w.getWord(), w.getId()));
+			Log.i(TAG, String.format("Add new word to round! \'%s\' with id = %d", w.getLern(), w.getId()));
 		}
 		
 	

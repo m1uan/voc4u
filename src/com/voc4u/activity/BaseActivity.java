@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.czen1.R;
-import com.voc4u.setting.CommonSetting;
 
 public class BaseActivity extends Activity implements OnMenuItemClickListener
 {
@@ -41,8 +40,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 		mMenuDictionary = menu.add(R.string.menuDictionary).setOnMenuItemClickListener(this);
 		mSpeachSetting = menu.add(R.string.menuSettingSpeech).setOnMenuItemClickListener(this);
 		
-		if(CommonSetting.DEBUG)
-			mAddWord = menu.add(R.string.menuAddWord).setOnMenuItemClickListener(this);
+		mAddWord = menu.add(R.string.menuAddWord).setOnMenuItemClickListener(this);
 	
 		
 		
@@ -156,7 +154,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 	
 	protected void onAddCustomWord(Word word)
 	{
-		String tst = getResources().getString(R.string.toas_word_is_add, word.getWord(), word.getWord2());	
+		String tst = getResources().getString(R.string.toas_word_is_add, word.getLern(), word.getNative());	
 		Toast.makeText(BaseActivity.this, tst, Toast.LENGTH_SHORT).show();
 	}
 

@@ -13,7 +13,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.voc4u.controller.WordController;
 import com.voc4u.czen1.R;
-import com.voc4u.setting.CommonSetting;
 
 public class SettingItemView extends LinearLayout implements OnItemSelectedListener, OnSeekBarChangeListener
 {
@@ -49,7 +48,7 @@ private final  Button	btnAddWord;
 //		mSeeekBar.setOnSeekBarChangeListener(this);
 		
 		btnAddWord = (Button)findViewById(R.id.btnAddWord);
-		btnAddWord.setVisibility(CommonSetting.DEBUG ? View.VISIBLE : View.GONE);
+		btnAddWord.setVisibility(View.VISIBLE);
 		
 		setup();
 	}

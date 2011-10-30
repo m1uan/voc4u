@@ -1,14 +1,7 @@
 package com.voc4u.activity.speaker;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-
-
-import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -18,7 +11,6 @@ import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.train.LastListAdapter;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.czen1.R;
-import com.voc4u.setting.CommonSetting;
 
 public class Speaker extends BaseWordActivity
 {
@@ -76,7 +68,7 @@ public class Speaker extends BaseWordActivity
 	{
 		if(mKnowButton.isEnabled())
 		{
-			onPlay(mActualPW.getPrimary());
+			onPlay(mActualPW.getLern());
 			return;
 		}
 		
@@ -95,7 +87,7 @@ public class Speaker extends BaseWordActivity
 	public void onNextInUiThread()
 	{
 		mActualPW = mWCtrl.getFirstPublicWord();
-		onPlay(mActualPW.getPrimary());
+		onPlay(mActualPW.getLern());
 		
 		runOnUiThread(new Runnable()
 		{
@@ -127,7 +119,7 @@ public class Speaker extends BaseWordActivity
 	{
 		mActualPW = mWCtrl.getFirstPublicWord();
 		if(play)
-			onPlay(mActualPW.getPrimary());
+			onPlay(mActualPW.getLern());
 		setupUI(true);
 		
 		
@@ -138,7 +130,7 @@ public class Speaker extends BaseWordActivity
 
 	private void setupUI(boolean visibleShowWord)
 	{
-		txtActual.setText(mActualPW.getPrimary());
+		txtActual.setText(mActualPW.getLern());
 		visibleShowWord(visibleShowWord);
 		lvLastItems.invalidateViews();
 	}
@@ -146,7 +138,7 @@ public class Speaker extends BaseWordActivity
 	private void visibleShowWord(boolean visible)
 	{	
 		if(!visible)
-			txtActual.setText(mActualPW.getPrimary());
+			txtActual.setText(mActualPW.getLern());
 		txtActual.setVisibility(visible ? View.GONE : View.VISIBLE);
 		btnShowHelp.setVisibility(visible ? View.VISIBLE : View.GONE );
 	}
@@ -164,5 +156,13 @@ public class Speaker extends BaseWordActivity
 			stopService(mIService);
 		//if(mService != null)
 		//	mService.stop();
+	}
+	
+	@Override
+	public void onDestroy()
+	{
+		if(mIService != null)
+			stopService(mIService);
+		super.onDestroy();
 	}
 }

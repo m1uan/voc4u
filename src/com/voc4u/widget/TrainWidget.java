@@ -184,10 +184,10 @@ public class TrainWidget extends AppWidgetProvider
 
 		remoteViews.setViewVisibility(R.id.word2TextView, View.INVISIBLE);
 		
-		Log.d(TAG, String.format("setupActualWord:%s", pw.getPrimary()));
+		Log.d(TAG, String.format("setupActualWord:%s", pw.getLern()));
 		
-		remoteViews.setTextViewText(R.id.wordTextView, pw.getPrimary());
-		remoteViews.setTextViewText(R.id.word2TextView, pw.getSecondary());
+		remoteViews.setTextViewText(R.id.wordTextView, pw.getLern());
+		remoteViews.setTextViewText(R.id.word2TextView, pw.getNative());
 	}
 
 	private void onWordClick(Context context)

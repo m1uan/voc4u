@@ -24,12 +24,12 @@ public class Word
 		return mId;
 	}
 
-	public final String getWord()
+	public final String getLern()
 	{
 		return mWord;
 	}
 
-	public final String getWord2()
+	public final String getNative()
 	{
 		return mWord2;
 	}
