@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.voc4u.R;
 import com.voc4u.controller.PublicWord;
-import com.voc4u.czen1.R;
 import com.voc4u.setting.Consts;
 
 public class LastItem extends LinearLayout

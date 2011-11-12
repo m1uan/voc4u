@@ -7,10 +7,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.voc4u.R;
 import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.train.LastListAdapter;
 import com.voc4u.controller.PublicWord;
-import com.voc4u.czen1.R;
 
 public class Speaker extends BaseWordActivity
 {

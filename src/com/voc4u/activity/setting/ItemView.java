@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import com.voc4u.R;
 import com.voc4u.controller.WordController;
-import com.voc4u.czen1.R;
 
 public class ItemView extends LinearLayout implements OnCheckedChangeListener
 {

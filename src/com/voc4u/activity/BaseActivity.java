@@ -16,9 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.voc4u.R;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
-import com.voc4u.czen1.R;
 
 public class BaseActivity extends Activity implements OnMenuItemClickListener
 {

@@ -1,26 +1,20 @@
 package com.voc4u.widget;
 
-import com.voc4u.activity.train.Train;
-import com.voc4u.controller.PublicWord;
-import com.voc4u.controller.Word;
-import com.voc4u.controller.WordController;
-import com.voc4u.czen1.R;
-import com.voc4u.czen1.R.id;
-import com.voc4u.czen1.R.layout;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.sax.StartElementListener;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import com.voc4u.R;
+import com.voc4u.activity.train.Train;
+import com.voc4u.controller.PublicWord;
+import com.voc4u.controller.WordController;
 
 public class TrainWidget extends AppWidgetProvider
 	

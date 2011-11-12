@@ -10,17 +10,12 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.voc4u.R;
 import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.train.LastListAdapter;
 import com.voc4u.controller.PublicWord;
-import com.voc4u.controller.WordController;
-import com.voc4u.czen1.R;
-import com.voc4u.setting.CommonSetting;
 
 public class Speech extends BaseWordActivity implements OnClickListener
 {

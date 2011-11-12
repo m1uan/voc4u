@@ -11,9 +11,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.voc4u.R;
 import com.voc4u.activity.init.Init;
 import com.voc4u.controller.WordController;
-import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
 
 public abstract class BaseWordActivity extends BaseActivity implements OnInitListener

@@ -11,9 +11,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.voc4u.R;
 import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.controller.PublicWord;
-import com.voc4u.czen1.R;
 import com.voc4u.setting.Consts;
 
 public class Train extends BaseWordActivity implements OnItemClickListener

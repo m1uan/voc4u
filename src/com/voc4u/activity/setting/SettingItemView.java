@@ -11,8 +11,8 @@ import android.widget.SeekBar;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+import com.voc4u.R;
 import com.voc4u.controller.WordController;
-import com.voc4u.czen1.R;
 
 public class SettingItemView extends LinearLayout implements OnItemSelectedListener, OnSeekBarChangeListener
 {

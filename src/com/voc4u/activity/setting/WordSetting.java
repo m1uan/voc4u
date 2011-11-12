@@ -21,6 +21,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.train.LastItem;
@@ -28,7 +29,6 @@ import com.voc4u.controller.EPoliticy;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
-import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
 

@@ -8,8 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+import com.voc4u.R;
 import com.voc4u.controller.updateLisener;
-import com.voc4u.czen1.R;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
 import com.voc4u.setting.LangType;
