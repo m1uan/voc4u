@@ -319,7 +319,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			ItemView item;
 
 			// it suppose the lesson is the first in list
-			final int lesson = position + 1;
+			
 
 			if (convertView == null)
 			{
@@ -330,7 +330,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			else
 				item = (ItemView) convertView;
 
-			item.setup(lesson);
+			item.setup(position);
 
 			return item;
 		}

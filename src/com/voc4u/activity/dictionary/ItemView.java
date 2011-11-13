@@ -1,5 +1,6 @@
 package com.voc4u.activity.dictionary;
 
+import junit.framework.Assert;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -38,11 +39,18 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		mStatus = ItemStatus.NONE;
 	}
 
-	public void setup(int lesson)
+	public void setup(int position)
 	{
-		mLesson = lesson;
-		mTitle = getContext().getString(R.string.settingItem, lesson);
-
+		mLesson = position + 1;
+		String lessons[] = getContext().getResources().getStringArray(R.array.lessons);
+		
+		Assert.assertTrue("Isn't enought names for lessons", position < lessons.length);
+		
+		if(position < lessons.length)
+			mTitle = lessons[position];
+		else
+			mTitle = getContext().getString(R.string.dictionaryItem, mLesson);
+		
 		final TextView tv = (TextView) findViewById(R.id.text);
 		tv.setText(mTitle);
 

@@ -17,7 +17,7 @@
     <string name="start">start</string>
     <string name="choiceNativeLang">Choice your native language:</string>
     <string name="choiceLernLang">Choice your lern language:</string>
-    <string name="settingItem">Lesson %d</string>
+    <string name="dictionaryItem">Lesson %d</string>
     
     <string name="langCS">Czech</string>
     <string name="langEN">English</string>
@@ -48,4 +48,10 @@
     <string name="menu_reset_db">Reset DB</string>
     <string name="dialog_text_confirm_reset_db">This action back application to init state. This is mean remove all words from database! Are you really sure to continue?</string>
     
+	<string-array name="lessons">
+        <item>Essential</item>
+        <item>Elementary</item>
+        <item>Pre-intermediate</item>
+        <item>Intermediate</item>
+    </string-array>
 </resources>
