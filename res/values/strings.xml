@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World!</string>
-    <string name="app_name">voc4u1</string>
+    <string name="app_name">voc4u</string>
     <string name="language_from_to" formatted="false">I\'m native %1s and lerning %2s</string>
     <string name="lang_english">English</string>
     <string name="lang_czech">Czech</string>

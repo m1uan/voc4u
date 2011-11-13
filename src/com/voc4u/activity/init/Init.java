@@ -1,6 +1,7 @@
 package com.voc4u.activity.init;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.voc4u.R;
+import com.voc4u.activity.BaseActivity;
+import com.voc4u.activity.dictionary.Dictionary;
 import com.voc4u.controller.updateLisener;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
@@ -93,6 +96,9 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		CommonSetting.store(this);
 		CommonSetting.restore(this);
 
+		Intent intent = new Intent(this, Dictionary.class);
+		intent.putExtra(BaseActivity.FROM_INIT, BaseActivity.FROM_INIT);
+		startActivity(intent);
 //		ProgressDialog dialog = ProgressDialog.show(this, "",
 //				"Loading. Please wait...", true);
 //		dialog.show();

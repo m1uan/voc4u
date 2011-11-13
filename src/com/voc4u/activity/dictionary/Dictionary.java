@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -24,6 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.BaseWordActivity;
+import com.voc4u.activity.dashboard.Dashboard;
 import com.voc4u.activity.train.LastItem;
 import com.voc4u.controller.EPoliticy;
 import com.voc4u.controller.PublicWord;
@@ -31,6 +33,7 @@ import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
+import com.voc4u.widget.CommonDialogs;
 
 public class Dictionary extends BaseWordActivity implements OnClickListener, OnItemClickListener
 {
@@ -91,7 +94,8 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 
 		// super is called in store() -> showDialogAboutDurationOfOperation() ->
 		// "YES"
-		super.onBackPressed();
+		if(!CommingFromInit())
+			super.onBackPressed();
 	}
 
 	@Override
@@ -130,13 +134,35 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			showDialog(BaseActivity.DIALOG_MUST_CHECK_AT_LEAST_ONE);
 			// showDialogAboutMustCheckAtleasOneItem();
 		}
-		else if (anyChanges)
+		else if (!CommingFromInit() && anyChanges)
 		{
 			showDialog(BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING);
 			// showDialogAboutDurationOfOperation();
 		}
 		else
-			finish();
+		{
+			ShowDashboardOrFinish();
+		}
+	}
+
+	private void ShowDashboardOrFinish()
+	{
+		// show dashboard because comming from init
+		// and before init was the dashboard finished
+		if(CommingFromInit())
+		{
+			Intent dashboard = new Intent(this, Dashboard.class);
+			startActivity(dashboard);
+		}
+		
+		finish();
+	}
+
+	private boolean CommingFromInit()
+	{
+		Intent intent = getIntent();
+		
+		return intent.hasExtra(FROM_INIT);
 	}
 
 	protected void superOnBackPresed()
@@ -154,7 +180,8 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		finish();
+		
+		ShowDashboardOrFinish();
 	}
 
 	public class Adapter implements ListAdapter
@@ -373,22 +400,29 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 		{
 			case BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING:
 			{
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage(R.string.vocabulary_you_are_make_some_changes).setCancelable(false).setPositiveButton(
-				this.getResources().getString(R.string.yes), new DialogInterface.OnClickListener()
+				dialog = CommonDialogs.confirmDictionarySetting(this, new DialogInterface.OnClickListener()
 				{
 					public void onClick(DialogInterface dialog, int id)
 					{
 						superOnBackPresed();
 					}
-				}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int id)
-					{
-						dialog.cancel();
-					}
 				});
-				dialog = builder.create();
+//				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//				builder.setMessage(R.string.vocabulary_you_are_make_some_changes).setCancelable(false).setPositiveButton(
+//				this.getResources().getString(R.string.yes), new DialogInterface.OnClickListener()
+//				{
+//					public void onClick(DialogInterface dialog, int id)
+//					{
+//						superOnBackPresed();
+//					}
+//				}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
+//				{
+//					public void onClick(DialogInterface dialog, int id)
+//					{
+//						dialog.cancel();
+//					}
+//				});
+//				dialog = builder.create();
 				break;
 			}
 			case BaseActivity.DIALOG_MUST_CHECK_AT_LEAST_ONE:

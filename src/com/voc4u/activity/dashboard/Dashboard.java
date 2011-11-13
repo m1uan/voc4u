@@ -22,8 +22,8 @@ public class Dashboard extends BaseActivity
 		setContentView(R.layout.dashboard);
 		CommonSetting.restore(this);
 		
-		Intent train = new Intent(this, Train.class);
-		startActivity(train);
+//		Intent train = new Intent(this, Train.class);
+//		startActivity(train);
 	}
 	
 	public void onTrainButton(View view)

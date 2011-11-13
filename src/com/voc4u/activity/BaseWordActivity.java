@@ -3,7 +3,6 @@ package com.voc4u.activity;
 import java.util.Locale;
 
 import junit.framework.Assert;
-import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -12,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.voc4u.R;
-import com.voc4u.activity.init.Init;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
 
@@ -37,24 +35,9 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 
 	protected abstract int getContentView();
 
-	public void onResumeSuccess()
-	{
 
-	}
 
-	@Override
-	protected void onResume()
-	{
-		if (CommonSetting.lernCode == null || CommonSetting.nativeCode == null)
-		{
-			Intent init = new Intent(this, Init.class);
-			startActivity(init);
-		}
-		else
-			onResumeSuccess();
 
-		super.onResume();
-	}
 
 	@Override
 	public void onInit(int status)

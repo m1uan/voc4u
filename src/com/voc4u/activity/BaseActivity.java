@@ -17,8 +17,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.voc4u.R;
+import com.voc4u.activity.init.Init;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
+import com.voc4u.setting.CommonSetting;
 
 public class BaseActivity extends Activity implements OnMenuItemClickListener
 {
@@ -30,6 +32,8 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 	public static final int	DIALOG_ADD_WORD_WARN					= 105;
 	public static final int	DIALOG_RESET_DB	= 106;
 
+	public static final String FROM_INIT = "FROM_INIT";
+	
 	private MenuItem		mMenuDictionary;
 	private MenuItem		mSpeachSetting;
 	private MenuItem	mAddWord;
@@ -156,6 +160,26 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 	{
 		String tst = getResources().getString(R.string.toas_word_is_add, word.getLern(), word.getNative());	
 		Toast.makeText(BaseActivity.this, tst, Toast.LENGTH_SHORT).show();
+	}
+	
+	public void onResumeSuccess()
+	{
+
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		if (CommonSetting.lernCode == null || CommonSetting.nativeCode == null)
+		{
+			Intent init = new Intent(this, Init.class);
+			startActivity(init);
+			finish();
+		}
+		else
+			onResumeSuccess();
+
+		super.onResume();
 	}
 
 }
