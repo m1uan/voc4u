@@ -6,11 +6,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.voc4u.R;
 import com.voc4u.controller.PublicWord;
+import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
 
 public class LastItem extends LinearLayout
@@ -50,6 +52,14 @@ public class LastItem extends LinearLayout
 		Assert.assertTrue(tv3 != null);
 		if(tv3 != null)
 			setupText3(tv3, pw);
+		
+		ImageView flag1 = (ImageView)findViewById(R.id.flag1);
+		if(flag1 != null)
+			flag1.setImageResource(CommonSetting.lernCode.getDrawableID(getContext()));
+	
+		ImageView flag2 = (ImageView)findViewById(R.id.flag2);
+		if(flag2 != null)
+			flag2.setImageResource(CommonSetting.nativeCode.getDrawableID(getContext()));
 	}
 
 	private void setupText3(TextView tv3, PublicWord pw)

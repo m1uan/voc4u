@@ -6,10 +6,18 @@
 	android:layout_height="wrap_content"
 	background="#006600"
 	android:padding="3dp">
+	<ImageView 
+	    	android:layout_width="20dp"
+	   		android:layout_height="20dp"
+	   		android:layout_marginRight="5dp"
+	    	android:layout_gravity="center_vertical"
+	    	android:src="@drawable/ic_en"
+	    	android:id="@+id/flag1"/>
 	<TextView
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:text=""
+		android:layout_gravity="center_vertical"
 		android:textStyle="bold"
 		android:id="@+id/text1"
 		android:layout_weight="1" />
@@ -24,12 +32,23 @@
 			android:id="@+id/text3"
 			android:visibility="gone"
 			 />
+		
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text=""
+			android:layout_gravity="center_vertical"
 			android:id="@+id/text2"
 			 />
-	</LinearLayout>
+		<ImageView 
+		    android:layout_marginLeft="5dp"
+	    	android:layout_width="20dp"
+	    	android:layout_height="20dp"
+	    	android:layout_gravity="center_vertical"
+	    	android:id="@+id/flag2"
+	   		android:src="@drawable/ic_cs"/>
+		</LinearLayout>
+		
+	
 
 </LinearLayout>
