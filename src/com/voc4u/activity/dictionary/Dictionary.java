@@ -198,7 +198,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 
 		public Adapter()
 		{
-			mLessonNum = LangSetting.LESSON_SIZES.length;
+			mLessonNum = LangSetting.LESSON_BG_COLOR.length;
 			mLessons = new ItemView[mLessonNum];
 			mCustomWords = mWordCtrl.getWordsInLesson(WordController.CUSTOM_WORD_LESSON);
 			

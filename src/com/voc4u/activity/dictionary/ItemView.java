@@ -14,6 +14,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.voc4u.R;
 import com.voc4u.controller.WordController;
+import com.voc4u.setting.LangSetting;
 
 public class ItemView extends LinearLayout implements OnCheckedChangeListener
 {
@@ -57,6 +58,10 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		final boolean enable = mWordCtrl.isEnableLesson(mLesson);
 		chkBox.setChecked(enable);
 		chkBox.setOnCheckedChangeListener(this);
+		
+		Assert.assertTrue("Isn't enought colors for lessons", position < LangSetting.LESSON_BG_COLOR.length);
+		if(position < LangSetting.LESSON_BG_COLOR.length)
+			setBackgroundResource(LangSetting.LESSON_BG_COLOR[position]);
 	}
 	
 	public int getLesson()
