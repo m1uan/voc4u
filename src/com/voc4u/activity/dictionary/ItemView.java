@@ -14,11 +14,13 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.voc4u.R;
 import com.voc4u.controller.WordController;
+import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
 
 public class ItemView extends LinearLayout implements OnCheckedChangeListener
 {
 
+	private static final int	MAX_EXAMPLES_IN_VIEW	= 10;
 	private final WordController mWordCtrl;
 	private String mTitle;
 	private int mLesson;
@@ -62,8 +64,38 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		Assert.assertTrue("Isn't enought colors for lessons", position < LangSetting.LESSON_BG_COLOR.length);
 		if(position < LangSetting.LESSON_BG_COLOR.length)
 			setBackgroundResource(LangSetting.LESSON_BG_COLOR[position]);
+		
+		String[] aex = LangSetting.getInitDataFromLT(CommonSetting.lernCode, mLesson);
+		String sex = "";
+		
+		if(aex != null && aex.length > 0)
+		{
+			int lex = aex.length > MAX_EXAMPLES_IN_VIEW? MAX_EXAMPLES_IN_VIEW : aex.length;
+
+			sex = getFirstWord(aex[0]);
+			
+			for(int i = 1; i < lex; i++)
+				sex += ", " + getFirstWord(aex[i]);
+		}
+		
+		final TextView ex = (TextView)findViewById(R.id.examples);
+		ex.setText(sex);
 	}
 	
+	private String getFirstWord(final String string)
+	{
+		int inx = string.indexOf("|");
+		if(inx > -1)
+			return string.substring(0, inx);
+		else 
+			return string;
+//		String[] words = string.replace("|", " | ").split("|");
+//		if(words != null && words.length > 0)
+//			return words[0];
+//		
+//		return string;
+	}
+
 	public int getLesson()
 	{
 		return mLesson;

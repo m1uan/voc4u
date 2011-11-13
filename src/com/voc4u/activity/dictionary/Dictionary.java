@@ -296,6 +296,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			PublicWord pw = new PublicWord(mCustomWords.get(absolutePosition), EPoliticy.PRIMAR);
 			convertView = new LastItem(Dictionary.this, pw);
 			convertView.setOnCreateContextMenuListener(Dictionary.this);
+			convertView.setBackgroundResource(R.color.cbg_custom_word);
 			//convertView.setClickable(true);
 			//convertView.setOnClickListener(WordSetting.this);
 			return convertView;

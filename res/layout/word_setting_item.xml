@@ -6,22 +6,34 @@
 	android:layout_height="fill_parent">
 	
 	<ImageView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/icon" />
-		
-	<TextView
+		android:layout_width="40dp"
+		android:layout_height="40dp"
+		android:src="@drawable/icon"
+		android:layout_gravity="center_vertical" />
+	<LinearLayout
+		android:orientation="vertical"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_weight="1"
-		android:text="vocabulary"
-		android:id="@+id/text" />
-		
+		android:layout_weight="1">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textStyle="bold"
+			android:textSize="22sp"
+			android:text="vocabulary"
+			android:id="@+id/text" />
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="seznam,fdaslf,fasfsa,fjasf,fasf,seznam,fdaslf,fasfsa,fjasf,fasfseznam,fdaslf,fasfsa,fjasf,fasf"
+			android:id="@+id/examples" />
+	</LinearLayout>
 	<CheckBox
 		android:id="@+id/checkbox"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:focusable="false"
+		android:layout_gravity="center_vertical"
 		/>
 	
 	</LinearLayout>
