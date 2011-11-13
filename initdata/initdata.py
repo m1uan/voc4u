@@ -24,7 +24,7 @@ actualtype = "java"
 template = { types[0] : "template.cvs" , types[1] : "template.java", types[2] : "template.cpp"}
 prefix = { types[0] : "" , types[1] : "\t\t, \"", types[2] : "\t\t, L\""}
 surfix = { types[0] : " ; " , types[1] : "\" // ", types[2] : "\" // "}
-descend = { types[0] : ".cvs" , types[1] : ".java", types[2] : ".cpp"}
+descend = { types[0] : ".cvs" , types[1] : ".java", types[2] : ".h"}
 initfile = { types[0] : "%(lesson)s - %(lang)s" , types[1] : "package com.voc4u.lang.lesson%(lesson)s\n// %(lang)s", types[2] : "#ifndef _DATA_%(lesson)s_%(name)s\n#define _DATA_%(lesson)s_%(name)s"}
 
 def showHelp(sys):
@@ -109,8 +109,8 @@ def make(srcdir, descdir):
 # make navigation file for cpp
 #
 def makeNavigateCPPFILE():
-    tinc = "#include \"lesson%(lesson)s/Data%(lang)s.cpp\"\n";
-    tifs = "\t\tif( lesson == %(lesson)s && lang == \"%(lang)s\"){ count = DATA_%(lang)s_%(lesson)s::num;return DATA_%(lang)s_%(lesson)s::texts;}\n"
+    tinc = "#include \"lesson%(lesson)s/Data%(lang)s.h\"\n";
+    tifs = "\t\tif( lesson == %(lesson)s && lang == \"%(lang)s\"){ count = DATA_%(lang)s_%(lesson)s::num;return (wchar_t**)DATA_%(lang)s_%(lesson)s::texts;}\n"
     
     inc = ""
     ifs = ""
@@ -139,8 +139,6 @@ if len(sys.argv) < 2 or sys.argv[1] == "--help" or (sys.argv[1] != types[0] and 
 
 actualtype = sys.argv[1]
 
-if actualtype == types[3]:
-    makeNavigateCPPFILE()
 
 
 if len(sys.argv) > 2:
@@ -150,5 +148,7 @@ if len(sys.argv) > 3:
 
 if dir == "--help":
     showHelp(sys)
+elif actualtype == types[3]:
+    makeNavigateCPPFILE()
 else:
 	make(dir, descdir)

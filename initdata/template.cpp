@@ -4,16 +4,14 @@
 class DATA_%(lang)s_%(lesson)s
 {
 public:
-	static const char** texts;
-	static const int num;
+	static const wchar_t* texts[];
+	static const int num = %(num)s;
 };
 
-const char ** __DATA_%(lang)s_%(lesson)s::texts =
+const wchar_t * DATA_%(lang)s_%(lesson)s::texts[] =
 {
 		%(arr)s
 };
-
-const int __DATA_%(lang)s_%(lesson)s::num = %(num)s;
 
 #endif // __DATA_%(lang)s_%(lesson)s
 

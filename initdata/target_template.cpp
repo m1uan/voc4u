@@ -2,7 +2,7 @@
 
 %(include)s
 
-char ** getInitData(String lang, const int lesson, int &count)
+wchar_t ** getInitData(String lang, const int lesson, int &count)
 {
 	%(ifcondition)s
 
