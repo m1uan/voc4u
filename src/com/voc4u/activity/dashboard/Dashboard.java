@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
-import com.voc4u.activity.setting.WordSetting;
+import com.voc4u.activity.dictionary.Dictionary;
 import com.voc4u.activity.speaker.Speaker;
 import com.voc4u.activity.speech.Speech;
 import com.voc4u.activity.train.Train;
@@ -46,7 +46,7 @@ public class Dashboard extends BaseActivity
 	
 	public void onSettingButton(View view)
 	{
-		Intent it = new Intent(this, WordSetting.class);
+		Intent it = new Intent(this, Dictionary.class);
 		startActivity(it);
 	}
 }

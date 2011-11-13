@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 
-import com.voc4u.activity.setting.WordSetting;
+import com.voc4u.activity.dictionary.Dictionary;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
 import com.voc4u.setting.LangSetting;
@@ -449,7 +449,7 @@ public class WordController
 	
 	public void showWordsMenu()
 	{
-		Intent intent = new Intent(mContext, WordSetting.class);
+		Intent intent = new Intent(mContext, Dictionary.class);
 		mContext.startActivity(intent);
 	}
 }

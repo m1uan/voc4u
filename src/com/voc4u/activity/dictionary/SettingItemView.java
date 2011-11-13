@@ -1,4 +1,4 @@
-package com.voc4u.activity.setting;
+package com.voc4u.activity.dictionary;
 
 import android.app.Activity;
 import android.content.Context;

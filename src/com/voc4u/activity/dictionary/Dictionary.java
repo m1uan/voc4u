@@ -1,4 +1,4 @@
-package com.voc4u.activity.setting;
+package com.voc4u.activity.dictionary;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
 
-public class WordSetting extends BaseWordActivity implements OnClickListener, OnItemClickListener
+public class Dictionary extends BaseWordActivity implements OnClickListener, OnItemClickListener
 {
 
 	private WordController		mWordCtrl;
@@ -267,8 +267,8 @@ public class WordSetting extends BaseWordActivity implements OnClickListener, On
 			
 			//if(convertView == null)
 			PublicWord pw = new PublicWord(mCustomWords.get(absolutePosition), EPoliticy.PRIMAR);
-			convertView = new LastItem(WordSetting.this, pw);
-			convertView.setOnCreateContextMenuListener(WordSetting.this);
+			convertView = new LastItem(Dictionary.this, pw);
+			convertView.setOnCreateContextMenuListener(Dictionary.this);
 			//convertView.setClickable(true);
 			//convertView.setOnClickListener(WordSetting.this);
 			return convertView;
@@ -280,7 +280,7 @@ public class WordSetting extends BaseWordActivity implements OnClickListener, On
 
 			if (convertView == null)
 			{
-				convertView = new SettingItemView(WordSetting.this);
+				convertView = new SettingItemView(Dictionary.this);
 				((SettingItemView) convertView).setup();
 			}
 
@@ -296,7 +296,7 @@ public class WordSetting extends BaseWordActivity implements OnClickListener, On
 
 			if (convertView == null)
 			{
-				item = new ItemView(WordSetting.this, mWordCtrl);
+				item = new ItemView(Dictionary.this, mWordCtrl);
 				if(position < mLessons.length)
 					mLessons[position] = item;
 			}
