@@ -141,7 +141,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 		}
 		else
 		{
-			ShowDashboardOrFinish();
+			superOnBackPresed();
 		}
 	}
 

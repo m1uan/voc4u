@@ -34,7 +34,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="vocabulary_you_must_enable_at_least_one_lesson_">You must enable at least one lesson!</string>
-    <string name="database_still_initializing_please_wait">Database with word still initializing, Please wait...</string>
+    <string name="database_still_initializing_please_wait">Dictionary is still apply your previous changes, Please wait...</string>
     <string name="btnStoreSettings">Store settings</string>
     <string name="train">Train</string>
     <string name="speaker">Speaker</string>
