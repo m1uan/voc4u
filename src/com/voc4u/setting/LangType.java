@@ -2,6 +2,9 @@ package com.voc4u.setting;
 
 import java.util.Locale;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 public class LangType
 {		
 	public final int id;
@@ -24,6 +27,14 @@ public class LangType
 	{
 		Locale loc = new Locale(code);
 		return loc.getDisplayLanguage();
+	}
+
+	public int getDrawableID(Context ctx)
+	{
+		Resources r = ctx.getResources();
+		int iId = r.getIdentifier("ic_" + code.toLowerCase(), "drawable", ctx.getPackageName());
+		
+		return iId;
 	}
 
 }

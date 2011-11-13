@@ -3,8 +3,9 @@ package com.voc4u.activity.init;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -36,13 +37,57 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 	{
 		Spinner nat = (Spinner) findViewById(R.id.spnNative);
 		nat.setOnItemSelectedListener(this);
-		ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this,
-				android.R.layout.simple_dropdown_item_1line,
-				LangSetting.getLangArray());
-		nat.setAdapter(spinnerArrayAdapter);
+//		ArrayAdapter spinnerArrayAdapter = new Country(this,
+//				android.R.layout.simple_dropdown_item_1line,
+//				LangSetting.getLangArray());
+		//nat.setAdapter(spinnerArrayAdapter);
+		
+		CountryAdapter ca = new CountryAdapter(LangSetting.getLangArray());
+		nat.setAdapter(ca);
 		nat.setSelection(0, false);
 	}
 
+	
+	class CountryAdapter extends BaseAdapter
+	{
+		final LangType[] mArray;
+		public CountryAdapter(LangType[] array)
+		{
+			mArray = array;
+		}
+
+		@Override
+		public int getCount()
+		{
+			return mArray.length;
+		}
+
+		@Override
+		public LangType getItem(int position)
+		{
+			return mArray[position];
+		}
+
+		@Override
+		public long getItemId(int position)
+		{
+			return 0;
+		}
+		
+		@Override
+		public int getViewTypeCount()
+		{
+			return 1;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent)
+		{
+			return new CountryItem(Init.this.getApplicationContext(), getItem(position));
+		}
+		
+	}
+	
 	public void onStart(View view)
 	{
 		CommonSetting.store(this);
@@ -76,9 +121,11 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		
 		lernLangType = createArrayWithoutSelectedInNative();
 
-		ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this,
-				android.R.layout.simple_dropdown_item_1line, lernLangType);
-		nat.setAdapter(spinnerArrayAdapter);
+//		ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this,
+//				android.R.layout.simple_dropdown_item_1line, lernLangType);
+//		nat.setAdapter(spinnerArrayAdapter);
+		CountryAdapter ca = new CountryAdapter(createArrayWithoutSelectedInNative());
+		nat.setAdapter(ca);
 		nat.setOnItemSelectedListener(new OnItemSelectedListener()
 		{
 
