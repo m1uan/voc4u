@@ -25,28 +25,31 @@ import com.voc4u.setting.CommonSetting;
 public class BaseActivity extends Activity implements OnMenuItemClickListener
 {
 
-	public static final int	DIALOG_ADD_WORD							= 101;
-	public static final int	DIALOG_CONFIRM_CONTINUE_SAVE_SETTING	= 103;
-	public static final int	DIALOG_MUST_CHECK_AT_LEAST_ONE			= 102;
-	public static final int	DIALOG_PROGRESS							= 104;
-	public static final int	DIALOG_ADD_WORD_WARN					= 105;
-	public static final int	DIALOG_RESET_DB	= 106;
-
-	public static final String FROM_INIT = "FROM_INIT";
+	public static final int		DIALOG_ADD_WORD							= 101;
+	public static final int		DIALOG_CONFIRM_CONTINUE_SAVE_SETTING	= 103;
+	public static final int		DIALOG_MUST_CHECK_AT_LEAST_ONE			= 102;
+	public static final int		DIALOG_PROGRESS							= 104;
+	public static final int		DIALOG_ADD_WORD_WARN					= 105;
+	public static final int		DIALOG_RESET_DB							= 106;
+	public static final int		DIALOG_SHOW_INFO						= 107;
 	
-	private MenuItem		mMenuDictionary;
-	private MenuItem		mSpeachSetting;
-	private MenuItem	mAddWord;
+	public static final String	FROM_INIT								= "FROM_INIT";
+
+	private MenuItem			mMenuDictionary;
+	private MenuItem			mSpeachSetting;
+	private MenuItem			mAddWord;
+	private MenuItem	mHelp;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		mMenuDictionary = menu.add(R.string.menuDictionary).setOnMenuItemClickListener(this);
 		mSpeachSetting = menu.add(R.string.menuSettingSpeech).setOnMenuItemClickListener(this);
-		
+
 		mAddWord = menu.add(R.string.menuAddWord).setOnMenuItemClickListener(this);
-	
-		
+
+		if(GetShowInfoType() != null)
+			mHelp = menu.add(R.string.menuHelp).setOnMenuItemClickListener(this);
 		
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -58,8 +61,10 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 			WordController.getInstance(this).showWordsMenu();
 		else if (item == mSpeachSetting)
 			onShowSpeechMenu();
-		else if(item == mAddWord)
+		else if (item == mAddWord)
 			showDialog(DIALOG_ADD_WORD);
+		else if (item == mHelp)
+			showDialog(DIALOG_SHOW_INFO);
 		return true;
 	}
 
@@ -82,7 +87,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 			final Dialog dialog = new Dialog(this);
 
 			// dialog.
-			dialog.setContentView(R.layout.add_word_dialog);
+			dialog.setContentView(R.layout.dialog_add_word);
 			dialog.setTitle(R.string.dialog_add_custom_word);
 
 			WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -103,29 +108,29 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 				{
 					String nat = edtNative.getText().toString() + "~";
 					String lern = edtLern.getText().toString() + "~";
-					
-					if(nat.length() < 2 || lern.length() < 2)
+
+					if (nat.length() < 2 || lern.length() < 2)
 					{
 						showDialog(DIALOG_ADD_WORD_WARN);
-						return ;
+						return;
 					}
 					else
 						dialog.dismiss();
-						
-					WordController.getInstance(BaseActivity.this).addWordEx(WordController.CUSTOM_WORD_LESSON, nat,lern, 1, 1);
-					
-					Word word = new Word(WordController.CUSTOM_WORD_LESSON,nat, lern,1,1);
+
+					WordController.getInstance(BaseActivity.this).addWordEx(WordController.CUSTOM_WORD_LESSON, nat, lern, 1, 1);
+
+					Word word = new Word(WordController.CUSTOM_WORD_LESSON, nat, lern, 1, 1);
 					onAddCustomWord(word);
-					
+
 				}
 			});
 			return dialog;
 		}
-		else if(id == DIALOG_ADD_WORD_WARN)
+		else if (id == DIALOG_ADD_WORD_WARN)
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.dialog_add_custom_word);
-			builder.setMessage("You must fill both fields, fist for you native language and second for lern sence of word.");
+			builder.setMessage(R.string.dialog_text_info_both_text_must_be_filled);
 			builder.setCancelable(true);
 			builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
 			{
@@ -138,7 +143,10 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 			// builder.set
 			return builder.create();
 		}
-		
+		else if(id == DIALOG_SHOW_INFO)
+		{
+			return DialogInfo.create(this);
+		}
 		else
 			return super.onCreateDialog(id);
 	}
@@ -153,20 +161,32 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 			edtLern.setText("");
 			edtNative.setText("");
 		}
-		super.onPrepareDialog(id, dialog);
+		else if (id == DIALOG_SHOW_INFO)
+		{
+			DialogInfo.setup(this, GetShowInfoType(), dialog);
+		}
+		else
+			super.onPrepareDialog(id, dialog);
 	}
-	
+
+	protected String GetShowInfoType()
+	{
+		return null;
+	}
+
 	protected void onAddCustomWord(Word word)
 	{
-		String tst = getResources().getString(R.string.toas_word_is_add, word.getLern(), word.getNative());	
+		String tst = getResources().getString(R.string.toas_word_is_add, word.getLern(), word.getNative());
 		Toast.makeText(BaseActivity.this, tst, Toast.LENGTH_SHORT).show();
 	}
-	
+
 	public void onResumeSuccess()
 	{
-
+		String showtype = GetShowInfoType();
+		if(showtype != null && !DialogInfo.GetChecked(showtype))
+			showDialog(DIALOG_SHOW_INFO);
 	}
-	
+
 	@Override
 	protected void onResume()
 	{

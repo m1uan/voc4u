@@ -23,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.BaseWordActivity;
+import com.voc4u.activity.DialogInfo;
 import com.voc4u.activity.dashboard.Dashboard;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
@@ -518,4 +519,9 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			return super.onMenuItemClick(item);
 	}
 	
+	@Override
+	protected String GetShowInfoType()
+	{
+		return DialogInfo.TYPE_DICTIONARY;
+	}
 }

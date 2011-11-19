@@ -14,14 +14,28 @@ public class CommonSetting
 	public static LangSetting langSetting;
 	public static LangType nativeCode = null;
 	public static LangType lernCode = null;
+	public static boolean NSMInit = false;
+	public static boolean NSMDictionary = false;
 	
 	private static final String	PREFS_FILE	= "preferences";
 	private static final String LANG_NATIVE_CODE = "native_code";
 	private static final String LANG_LERN_CODE = "lern_code";
+	private static final String NSM_INIT = "nsm_init";
+	private static final String NSM_DICTIONARY = "nsm_dictionary";
 	
 	private static SharedPreferences getPrefs(Context context)
 	{
 		return context.getSharedPreferences(PREFS_FILE, Activity.MODE_PRIVATE);
+	}
+	
+	private static void putBoolean(Context context, String key, boolean value)
+	{
+		getPrefs(context).edit().putBoolean(key, value).commit();
+	}
+	
+	private static boolean getBoolean(Context context, String key, boolean defValue)
+	{
+		return getPrefs(context).getBoolean(key, defValue);
 	}
 	
 	private static void putInt(Context context, String key, int value)
@@ -50,6 +64,8 @@ public class CommonSetting
 		putInt(context, LANG_NATIVE_NUM, langNativeNum);
 		putString(context, LANG_NATIVE_CODE, nativeCode != null ? nativeCode.code : "INIT");
 		putString(context, LANG_LERN_CODE, lernCode != null ? lernCode.code : "INIT");
+		putBoolean(context, NSM_INIT, NSMInit);
+		putBoolean(context, NSM_DICTIONARY, NSMDictionary);
 	}
 	
 	public static void restore(Context context)
@@ -62,6 +78,9 @@ public class CommonSetting
 		
 		nativeCode = LangSetting.getLangTypeFromCode(nativeCd);
 		lernCode = LangSetting.getLangTypeFromCode(lernCd);
+		
+		NSMInit = getBoolean(context, NSM_INIT, false);
+		NSMDictionary = getBoolean(context, NSM_DICTIONARY, false);
 		//langSetting = new LangSetting(context);
 	}
 	

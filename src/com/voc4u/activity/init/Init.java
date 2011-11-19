@@ -1,6 +1,7 @@
 package com.voc4u.activity.init;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
+import com.voc4u.activity.DialogInfo;
 import com.voc4u.activity.dictionary.Dictionary;
 import com.voc4u.controller.updateLisener;
 import com.voc4u.setting.CommonSetting;
@@ -33,6 +35,9 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 
 		fillNative();
 		//fillLern();
+		
+		if(!DialogInfo.GetChecked(DialogInfo.TYPE_INIT))
+			showDialog(BaseActivity.DIALOG_SHOW_INFO);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -180,6 +185,24 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 	public void onUpdateDone()
 	{
 		finish();
+	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id)
+	{
+		if(id == BaseActivity.DIALOG_SHOW_INFO)
+			return DialogInfo.create(this);
+		else
+			return super.onCreateDialog(id);
+	}
+	
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog)
+	{
+		if(id == BaseActivity.DIALOG_SHOW_INFO)
+			DialogInfo.setup(this, DialogInfo.TYPE_INIT, dialog);
+		else
+			super.onPrepareDialog(id, dialog);
 	}
 
 }

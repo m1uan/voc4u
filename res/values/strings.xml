@@ -12,6 +12,7 @@
     <string name="btnRepeat">repeat</string>
     <string name="btnStop">end</string>
     <string name="btnAddWord">add</string>
+    <string name="btnCancel">Cancel</string>
     
     
     <string name="start">start</string>
@@ -30,6 +31,7 @@
     <string name="menuDictionary">Dictionary</string>
     <string name="menuHome">Home</string>
     <string name="menuSettingSpeech">Settings speech</string>
+    <string name="menuHelp">help</string>
     <string name="vocabulary_you_are_make_some_changes">You are make some changes, this changes can during some minutes. In this moment will not possible make other changes! Do you want continue?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -47,9 +49,17 @@
     <string name="dialog_add_custom_word">Add custom word</string>
     <string name="menu_reset_db">Reset DB</string>
     <string name="dialog_text_confirm_reset_db">This action back application to init state. This is mean remove all words from database! Are you really sure to continue?</string>
-    
+    <string name="dialog_text_info_both_text_must_be_filled">You must fill both fields, fist for you native language and second for lern sence of word.</string>
     <string name="lesson_custom_word">Custom word</string>
     <string name="IDS_EMPTY_CUSTOM_LIST">Not added custom word yet... You can add custom word to list by button on right.</string>
+	<string name="noshowmore">No show me more</string>
+	
+	<string name="info_title_init">voc4u - init</string>
+	<string name="info_title_dictionary">Dictionary</string>
+	
+	<string name="info_text_init">Select you native language, next select language which you want lern. And let\'s go begin ;-)</string>
+	<string name="info_text_dictionary">On this part you can select the lesson for your training. Any lesson have example with words which contain.</string>	    
+	    
 	<string-array name="lessons">
         <item>Essential</item>
         <item>Elementary</item>
