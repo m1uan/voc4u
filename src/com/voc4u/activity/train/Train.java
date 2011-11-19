@@ -13,6 +13,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.voc4u.R;
 import com.voc4u.activity.BaseWordActivity;
+import com.voc4u.activity.DialogInfo;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.setting.Consts;
 
@@ -150,5 +151,11 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	protected int getContentView()
 	{
 		return R.layout.train;
+	}
+	
+	@Override
+	protected String GetShowInfoType()
+	{
+		return DialogInfo.TYPE_TRAIN;
 	}
 }

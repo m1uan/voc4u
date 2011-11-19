@@ -16,12 +16,14 @@ public class CommonSetting
 	public static LangType lernCode = null;
 	public static boolean NSMInit = false;
 	public static boolean NSMDictionary = false;
+	public static boolean NSMTrain = false;
 	
 	private static final String	PREFS_FILE	= "preferences";
 	private static final String LANG_NATIVE_CODE = "native_code";
 	private static final String LANG_LERN_CODE = "lern_code";
 	private static final String NSM_INIT = "nsm_init";
 	private static final String NSM_DICTIONARY = "nsm_dictionary";
+	private static final String NSM_TRAIN = "nsm_train";
 	
 	private static SharedPreferences getPrefs(Context context)
 	{
@@ -66,6 +68,7 @@ public class CommonSetting
 		putString(context, LANG_LERN_CODE, lernCode != null ? lernCode.code : "INIT");
 		putBoolean(context, NSM_INIT, NSMInit);
 		putBoolean(context, NSM_DICTIONARY, NSMDictionary);
+		putBoolean(context, NSM_TRAIN, NSMTrain);
 	}
 	
 	public static void restore(Context context)
@@ -81,6 +84,8 @@ public class CommonSetting
 		
 		NSMInit = getBoolean(context, NSM_INIT, false);
 		NSMDictionary = getBoolean(context, NSM_DICTIONARY, false);
+		NSMTrain = getBoolean(context, NSM_TRAIN, false);
+		
 		//langSetting = new LangSetting(context);
 	}
 	
