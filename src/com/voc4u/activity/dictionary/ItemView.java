@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -56,8 +57,7 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		else
 			mTitle = getContext().getString(R.string.dictionaryItem, mLesson);
 		
-		if(mWordCtrl.isPrepairing(mLesson))
-			mTitle += " [prepairing]";
+		findViewById(R.id.preparing).setVisibility(mWordCtrl.isPrepairing(mLesson)? View.VISIBLE : View.GONE);
 		
 		
 		final TextView tv = (TextView) findViewById(R.id.text);

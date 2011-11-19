@@ -49,9 +49,9 @@ public class WordController
 		mLastList = new ArrayList<PublicWord>();
 		mNativeWordNum = 0;
 		mContext = activity;
-		
-		mAddList =  new ArrayList<Integer>();
-		mRemoveList =  new ArrayList<Integer>();
+
+		mAddList = new ArrayList<Integer>();
+		mRemoveList = new ArrayList<Integer>();
 	}
 
 	public void addWord(String text, String text2)
@@ -232,8 +232,31 @@ public class WordController
 		return mDictionary.getCount();
 	}
 
+	/**
+	 * testing the lessonworker is in task else only DB check
+	 * 
+	 * @param lesson
+	 * @return
+	 */
 	public boolean isEnableLesson(int lesson)
 	{
+		if (isAsyncRunning())
+		{
+			synchronized (mAddList)
+			{
+				if (mCurrentLesson == lesson)
+					return true;
+
+				for (int l : mAddList)
+					if (l == lesson)
+						return true;
+
+				for (int l : mRemoveList)
+					if (l == lesson)
+						return false;
+			}
+		}
+
 		if (mDictionary != null)
 			return mDictionary.isLessonLoaded(lesson);
 
@@ -257,7 +280,7 @@ public class WordController
 
 	private final ArrayList<Integer>	mAddList;
 	private final ArrayList<Integer>	mRemoveList;
-	private int					mCurrentLesson;
+	private int							mCurrentLesson;
 
 	public void add(int lesson2)
 	{
@@ -272,12 +295,33 @@ public class WordController
 
 	public void remove(int lesson2)
 	{
+		boolean negate;
 		synchronized (mAddList)
 		{
+			negate = negateInList(mAddList, lesson2);
 			if (isInList(mRemoveList, lesson2))
 				return;
-			mRemoveList.add(lesson2);
+			else if(!negate)
+				mRemoveList.add(lesson2);
 		}
+	}
+	
+	private boolean negateInList(final ArrayList<Integer> list, int lesson2)
+	{
+		if (isInList(list, lesson2))
+		{
+			for (int i = 0; i != list.size(); i++)
+			{
+				int les = list.get(i);
+				if (les == lesson2)
+				{
+					list.remove(i);
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 
 	public boolean isPrepairing(int lesson)
@@ -286,15 +330,15 @@ public class WordController
 		{
 			synchronized (mAddList)
 			{
-				if(mCurrentLesson == lesson)
+				if (mCurrentLesson == lesson)
 					return true;
-				
-				for(int l : mAddList)
-					if(l == lesson)
+
+				for (int l : mAddList)
+					if (l == lesson)
 						return true;
-				
-				for(int l : mRemoveList)
-					if(l == lesson)
+
+				for (int l : mRemoveList)
+					if (l == lesson)
 						return true;
 			}
 		}
@@ -320,6 +364,12 @@ public class WordController
 					return true;
 
 		return false;
+	}
+	
+	public void setUpdateListener(updateLisener ul)
+	{
+		if(isAsyncRunning())
+			mAsyncUpdate.setUpdateListener(ul);
 	}
 
 	private class LessonWorker extends AsyncTask<String, Integer, Long>
@@ -442,8 +492,7 @@ public class WordController
 					}
 				}
 
-				if (mUpdateListener != null)
-					mUpdateListener.onUpdateDone();
+				callUpdateListener();
 			}
 		}
 
@@ -451,7 +500,7 @@ public class WordController
 		{
 			boolean removethis = false;
 			boolean anyRemove = false;
-			
+
 			synchronized (mAddList)
 			{
 				for (int r = 0; r != mRemoveList.size(); r++)
@@ -460,16 +509,15 @@ public class WordController
 					mDictionary.unloadLesson(remove);
 					if (remove == lesson)
 						removethis = true;
-					
+
 					anyRemove = true;
 				}
 				mRemoveList.clear();
 			}
-			
-			
+
 			if (anyRemove && mUpdateListener != null)
 				mUpdateListener.onUpdateDone();
-			
+
 			return removethis;
 		}
 
@@ -482,8 +530,26 @@ public class WordController
 		protected void onPostExecute(Long result)
 		{
 			mDone = true;
-			if (mUpdateListener != null)
-				mUpdateListener.onUpdateDone();
+			callUpdateListener();
+			setUpdateListener(null);
+		}
+
+		private void callUpdateListener()
+		{
+			synchronized (mAddList)
+			{
+				if (mUpdateListener != null)
+					mUpdateListener.onUpdateDone();
+			}
+			
+		}
+		
+		public void setUpdateListener(updateLisener ul)
+		{
+			synchronized (mAddList)
+			{
+				mUpdateListener = ul;
+			}
 		}
 
 		public boolean isDone()

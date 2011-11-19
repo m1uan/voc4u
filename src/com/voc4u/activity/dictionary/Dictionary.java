@@ -72,13 +72,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 	@Override
 	protected void onResume()
 	{
-		// FIXME: close dialog when mWordCtrl is finish
-		// if still runing the async task
-		// isn't posible changing anything
-		if (mWordCtrl.isAsyncRunning())
-		{
-			showDialog(BaseActivity.DIALOG_PROGRESS);
-		}
+		mWCtrl.setUpdateListener(this);
 
 		super.onResume();
 	}
@@ -98,6 +92,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 	@Override
 	protected void onPause()
 	{
+		mWCtrl.setUpdateListener(null);
 		super.onPause();
 	}
 

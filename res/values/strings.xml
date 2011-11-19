@@ -28,10 +28,13 @@
     <string name="langPT">Portugal</string>
     <string name="langES">Spain</string>
     
+    <string name="preparing">[preparing]</string>    
+    
     <string name="menuDictionary">Dictionary</string>
     <string name="menuHome">Home</string>
     <string name="menuSettingSpeech">Settings speech</string>
     <string name="menuHelp">help</string>
+    
     <string name="vocabulary_you_are_make_some_changes">You are make some changes, this changes can during some minutes. In this moment will not possible make other changes! Do you want continue?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
