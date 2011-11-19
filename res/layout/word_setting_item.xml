@@ -3,7 +3,9 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="horizontal"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_height="fill_parent"
+	android:padding="3dp"
+	android:minWidth="500dp">
 	
 	<ImageView
 		android:layout_width="40dp"
@@ -35,5 +37,15 @@
 		android:focusable="false"
 		android:layout_gravity="center_vertical"
 		/>
+	<Button
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnAddWord"
+		android:text="@string/btnAddWord"
+		android:onClick="onBtnAddWord"
+		android:focusable="false"
+		android:visibility="gone"
+		android:layout_gravity="center_vertical"
+	/>
 	
 	</LinearLayout>

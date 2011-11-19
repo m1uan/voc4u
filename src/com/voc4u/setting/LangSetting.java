@@ -86,6 +86,9 @@ public class LangSetting
 	{
 		final String code = lt.code;
 
+		if(lesson == 1)
+			lesson = 5;
+		
 		try
 		{
 			String name = String.format("com.voc4u.lang.lesson%d.Data%s", lesson, lt.code);

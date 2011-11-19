@@ -1,5 +1,7 @@
 package com.voc4u.activity.dictionary;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,13 +10,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.voc4u.R;
+import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 
-public class SettingItemView extends LinearLayout implements OnItemSelectedListener, OnSeekBarChangeListener
+public class CustomWordsItem extends LinearLayout implements OnItemSelectedListener, OnSeekBarChangeListener
 {
 
 	private WordController mWordCtrl;
@@ -27,17 +31,27 @@ public class SettingItemView extends LinearLayout implements OnItemSelectedListe
 //            new LangSpinnerItem( LangType.ENG_2_CZECH, this.getContext() )
 //            };
 	//private final  SeekBar mSeeekBar;
-private final  Button	btnAddWord;
+
 	
 	
-	public SettingItemView(Context context)
+	public CustomWordsItem(Context context)
 	{
 		super(context);
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.word_setting_setting_item, this);
-
+		inflater.inflate(R.layout.word_setting_item, this);
 		
+		setBackgroundResource(R.color.cbg_custom_word);
+		
+		findViewById(R.id.checkbox).setVisibility(View.GONE);
+		
+		
+		String title = getContext().getString(R.string.lesson_custom_word);
+		final TextView tv = (TextView) findViewById(R.id.text);
+		tv.setText(title);
+		
+		final Button btnAdd = (Button) findViewById(R.id.btnAddWord);
+		btnAdd.setVisibility(View.VISIBLE);
 		//ArrayAdapter spinnerArrayAdapter = new ArrayAdapter(this.getContext(),
 		//          android.R.layout.simple_dropdown_item_1line, langSpinnerItemArray);
 		
@@ -47,27 +61,41 @@ private final  Button	btnAddWord;
 //		mSeeekBar.setMax(Consts.MAX_WORD_NATIVE_LEARN);
 //		mSeeekBar.setOnSeekBarChangeListener(this);
 		
-		btnAddWord = (Button)findViewById(R.id.btnAddWord);
-		btnAddWord.setVisibility(View.VISIBLE);
+		//btnAddWord = (Button)findViewById(R.id.btnAddWord);
+		//btnAddWord.setVisibility(View.VISIBLE);
 		
-		setup();
+		
 	}
 
-	public void setup()
+	public void setup(final WordController wc)
 	{
-		int n = 0;
-//		for(LangSpinnerItem lsi : langSpinnerItemArray)
-//		{
-//			
-//			if(lsi.getLangType() == CommonSetting.langType)
-//			{
-//				mSpinner.setSelection(n);
-//				break;
-//			}
-//			n++;
-//		}
-//		
-		//mSeeekBar.setProgress(CommonSetting.langNativeNum);
+		
+		final TextView ex = (TextView)findViewById(R.id.examples);
+		String sex;
+		ArrayList<Word> al = wc.getWordsInLesson(WordController.CUSTOM_WORD_LESSON);
+		if(al != null && al.size() > 0)
+		{
+			sex = "";
+			
+			int first = al.size() - ItemView.MAX_EXAMPLES_IN_VIEW;
+			if(first < 0)
+				first = 0;
+			
+			
+			for(int i = first; i != al.size();i++)
+			{
+				sex += ", " + al.get(i).getLern();
+			}
+			
+			sex = sex.substring(2, sex.length());
+		}
+		else
+		{
+			sex = getContext().getString(R.string.IDS_EMPTY_CUSTOM_LIST);
+		}
+		
+		ex.setText(sex);
+
 	}
 
 	@Override

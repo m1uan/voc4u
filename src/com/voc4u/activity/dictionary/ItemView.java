@@ -20,7 +20,7 @@ import com.voc4u.setting.LangSetting;
 public class ItemView extends LinearLayout implements OnCheckedChangeListener
 {
 
-	private static final int	MAX_EXAMPLES_IN_VIEW	= 10;
+	public static final int	MAX_EXAMPLES_IN_VIEW	= 10;
 	private final WordController mWordCtrl;
 	private String mTitle;
 	private int mLesson;

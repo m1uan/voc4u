@@ -11,7 +11,7 @@
     <string name="btnStart">begin</string>
     <string name="btnRepeat">repeat</string>
     <string name="btnStop">end</string>
-    <string name="btnAddWord">add word</string>
+    <string name="btnAddWord">add</string>
     
     
     <string name="start">start</string>
@@ -48,6 +48,8 @@
     <string name="menu_reset_db">Reset DB</string>
     <string name="dialog_text_confirm_reset_db">This action back application to init state. This is mean remove all words from database! Are you really sure to continue?</string>
     
+    <string name="lesson_custom_word">Custom word</string>
+    <string name="IDS_EMPTY_CUSTOM_LIST">Not added custom word yet... You can add custom word to list by button on right.</string>
 	<string-array name="lessons">
         <item>Essential</item>
         <item>Elementary</item>

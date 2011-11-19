@@ -1,7 +1,5 @@
 package com.voc4u.activity.dictionary;
 
-import java.util.ArrayList;
-
 import junit.framework.Assert;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -26,9 +24,6 @@ import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.dashboard.Dashboard;
-import com.voc4u.activity.train.LastItem;
-import com.voc4u.controller.EPoliticy;
-import com.voc4u.controller.PublicWord;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
@@ -188,22 +183,17 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 	{
 		private static final int	NUM_ADAPTING	= 50;
 		private static final int	VOCABULARY_TYPE	= 0;
-		private static final int	SETTING_TYPE	= 1;
+		private static final int	CUSTOM_WORD_TYPE	= 1;
 		private static final int 	CUSTOM_WORDS_TYPE = 2;
 		final private int			mLessonNum;
 		final ItemView[]			mLessons;
 		private int					mLastItem		= 0;
 
-		public ArrayList<Word>	mCustomWords;
-
 		public Adapter()
 		{
 			mLessonNum = LangSetting.LESSON_BG_COLOR.length;
 			mLessons = new ItemView[mLessonNum];
-			mCustomWords = mWordCtrl.getWordsInLesson(WordController.CUSTOM_WORD_LESSON);
 			
-			if(mCustomWords == null)
-				mCustomWords = new ArrayList<Word>();
 			
 			mLastItem = 0;
 		}
@@ -229,7 +219,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			// in list is lessons
 			// setting
 			// custom words
-			return mLessonNum + 1 + mCustomWords.size();
+			return mLessonNum + 1;
 		}
 
 		public int getLessonCount()
@@ -261,12 +251,10 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 		@Override
 		public int getItemViewType(int position)
 		{
-			if (position == mLessonNum)
-				return SETTING_TYPE;
-			else if(position < mLessonNum)
+			if(position < mLessonNum)
 				return VOCABULARY_TYPE;
 			else
-				return CUSTOM_WORDS_TYPE;	
+				return CUSTOM_WORD_TYPE; 
 		}
 
 		@Override
@@ -276,31 +264,14 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			{
 				case VOCABULARY_TYPE:
 					return createWordView(position, convertView);
-				case SETTING_TYPE:
+				case CUSTOM_WORD_TYPE:
 					return createSettingView(convertView);
-				case CUSTOM_WORDS_TYPE:
-				{
-					return createCustomWord(convertView, position);
-				}
+				
 			}
 			return convertView;
 		}
 
-		private View createCustomWord(View convertView, int position)
-		{
-			int numItemsBeforeCW = mLessonNum + 1;
-			int absolutePosition = position - numItemsBeforeCW;
-			
-			
-			//if(convertView == null)
-			PublicWord pw = new PublicWord(mCustomWords.get(absolutePosition), EPoliticy.PRIMAR);
-			convertView = new LastItem(Dictionary.this, pw);
-			convertView.setOnCreateContextMenuListener(Dictionary.this);
-			convertView.setBackgroundResource(R.color.cbg_custom_word);
-			//convertView.setClickable(true);
-			//convertView.setOnClickListener(WordSetting.this);
-			return convertView;
-		}
+		
 
 		private View createSettingView(View convertView)
 		{
@@ -308,9 +279,11 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 
 			if (convertView == null)
 			{
-				convertView = new SettingItemView(Dictionary.this);
-				((SettingItemView) convertView).setup();
+				convertView = new CustomWordsItem(Dictionary.this);
+				
 			}
+			
+			((CustomWordsItem) convertView).setup(mWCtrl);
 
 			return convertView;
 		}
@@ -368,11 +341,6 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 		{
 			// TODO Auto-generated method stub
 
-		}
-
-		public void addCustomWord(Word word)
-		{
-			mCustomWords.add(word);
 		}
 
 	}
@@ -504,7 +472,6 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 	@Override
 	protected void onAddCustomWord(Word word)
 	{
-		mAdapter.addCustomWord(word);
 		mList.invalidateViews();
 		super.onAddCustomWord(word);
 	}
