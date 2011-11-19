@@ -27,11 +27,12 @@ import com.voc4u.activity.DialogInfo;
 import com.voc4u.activity.dashboard.Dashboard;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
+import com.voc4u.controller.updateLisener;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
 import com.voc4u.widget.CommonDialogs;
 
-public class Dictionary extends BaseWordActivity implements OnClickListener, OnItemClickListener
+public class Dictionary extends BaseWordActivity implements OnClickListener, OnItemClickListener, updateLisener
 {
 
 	private WordController		mWordCtrl;
@@ -102,9 +103,9 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 
 	private void store()
 	{
-		boolean anyChanges = false;
+//		boolean anyChanges = false;
 		boolean anyChecked = false;
-
+//
 		for (int i = 0; i != mAdapter.getLessonCount(); i++)
 		{
 			ItemView item = mAdapter.getLessonItem(i);
@@ -112,29 +113,29 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			Assert.assertNotNull(item);
 			if (item != null)
 			{
-				ItemStatus is = item.getStatus();
-				if (is != ItemStatus.NONE)
-				{
-					// because 0 is for user owned words
-					mWordCtrl.enableLessonAsync(item.getLesson(), is == ItemStatus.ADD);
-					anyChanges = true;
-				}
+//				ItemStatus is = item.getStatus();
+//				if (is != ItemStatus.NONE)
+//				{
+//					// because 0 is for user owned words
+//					mWordCtrl.enableLessonAsync(item.getLesson(), is == ItemStatus.ADD, this);
+//					anyChanges = true;
+//				}
 
 				if (item.isChecked())
 					anyChecked = true;
 			}
 		}
-
-		if (!anyChecked)
+//
+		if (!anyChecked && mWCtrl.getWordsInLesson(WordController.CUSTOM_WORD_LESSON).size() < 2)
 		{
 			showDialog(BaseActivity.DIALOG_MUST_CHECK_AT_LEAST_ONE);
 			// showDialogAboutMustCheckAtleasOneItem();
 		}
-		else if (!CommingFromInit() && anyChanges)
-		{
-			showDialog(BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING);
-			// showDialogAboutDurationOfOperation();
-		}
+//		else if (!CommingFromInit() && anyChanges)
+//		{
+//			showDialog(BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING);
+//			// showDialogAboutDurationOfOperation();
+//		}
 		else
 		{
 			superOnBackPresed();
@@ -163,7 +164,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 
 	protected void superOnBackPresed()
 	{
-		mWordCtrl.runAsyncTask();
+		//mWordCtrl.runAsyncTask();
 		// without sleep is the word setting returned back
 		// because isn't load any word between 
 		// finish() and resume() new activity
@@ -523,5 +524,19 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 	protected String GetShowInfoType()
 	{
 		return DialogInfo.TYPE_DICTIONARY;
+	}
+
+	@Override
+	public void onUpdateDone()
+	{
+		runOnUiThread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				mList.invalidateViews();
+			}
+		});
+		
 	}
 }

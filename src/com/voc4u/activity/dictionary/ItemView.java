@@ -3,7 +3,6 @@ package com.voc4u.activity.dictionary;
 import junit.framework.Assert;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.widget.CheckBox;
@@ -25,10 +24,11 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 	private String mTitle;
 	private int mLesson;
 	private final CheckBox chkBox;
-	private ItemStatus mStatus;
+	private final ItemStatus mStatus;
+	private final Dictionary	mDictionary;
 	
 	
-	public ItemView(Context context, WordController wordCtrl)
+	public ItemView(Dictionary context, WordController wordCtrl)
 	{
 		super(context);
 		LayoutInflater inflater = (LayoutInflater) context
@@ -40,6 +40,8 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		chkBox = (CheckBox)findViewById(R.id.checkbox);
 	
 		mStatus = ItemStatus.NONE;
+		
+		mDictionary = context;
 	}
 
 	public void setup(int position)
@@ -53,6 +55,10 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 			mTitle = lessons[position];
 		else
 			mTitle = getContext().getString(R.string.dictionaryItem, mLesson);
+		
+		if(mWordCtrl.isPrepairing(mLesson))
+			mTitle += " [prepairing]";
+		
 		
 		final TextView tv = (TextView) findViewById(R.id.text);
 		tv.setText(mTitle);
@@ -141,20 +147,18 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 
 	protected void setVocabulary(boolean enable)
 	{
-		if(mStatus == ItemStatus.NONE)
-			mStatus = enable ? ItemStatus.ADD : ItemStatus.REMOVE;
-		else if(mStatus == ItemStatus.ADD)
-			mStatus = !enable ? ItemStatus.NONE : ItemStatus.REMOVE;
-		else if(mStatus == ItemStatus.REMOVE)
-			mStatus = enable ? ItemStatus.NONE : ItemStatus.REMOVE;
+//		if(mStatus == ItemStatus.NONE)
+//			mStatus = enable ? ItemStatus.ADD : ItemStatus.REMOVE;
+//		else if(mStatus == ItemStatus.ADD)
+//			mStatus = !enable ? ItemStatus.NONE : ItemStatus.REMOVE;
+//		else if(mStatus == ItemStatus.REMOVE)
+//			mStatus = enable ? ItemStatus.NONE : ItemStatus.REMOVE;
 		
-		//mWordCtrl.enableLesson(mLesson, enable, null);
+		mWordCtrl.enableLessonAsync(mLesson, enable, mDictionary);
+		mDictionary.onUpdateDone();
 	}
 	
-	public ItemStatus getStatus()
-	{
-		return mStatus;
-	}
+	
 
 	public boolean isChecked() 
 	{
