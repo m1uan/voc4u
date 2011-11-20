@@ -159,19 +159,6 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 
 	protected void superOnBackPresed()
 	{
-		//mWordCtrl.runAsyncTask();
-		// without sleep is the word setting returned back
-		// because isn't load any word between 
-		// finish() and resume() new activity
-		try
-		{
-			Thread.sleep(500);
-		}
-		catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		ShowDashboardOrFinish();
 	}
@@ -476,8 +463,8 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
 	{
-		menu.setHeaderTitle("ahoj");
-		menu.add("delete");
+		//menu.setHeaderTitle("ahoj");
+		//menu.add("delete");
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 

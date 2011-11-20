@@ -50,11 +50,11 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	@Override
 	public void onResumeSuccess()
 	{
-		if(mPublicWord == null)
-			setupFirstWord();
-		
 		mListAdapter = new LastListAdapter(this);
 		lvLastItems.setAdapter(mListAdapter);
+		
+		if(mPublicWord == null)
+			setupFirstWord();
 		
 		super.onResumeSuccess();
 	}

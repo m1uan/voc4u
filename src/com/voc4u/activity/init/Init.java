@@ -14,7 +14,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.DialogInfo;
-import com.voc4u.activity.dictionary.Dictionary;
+import com.voc4u.activity.dashboard.Dashboard;
+import com.voc4u.controller.WordController;
 import com.voc4u.controller.updateLisener;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
@@ -100,15 +101,24 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 	{
 		CommonSetting.store(this);
 		CommonSetting.restore(this);
-
-		Intent intent = new Intent(this, Dictionary.class);
+		WordController.getInstance(this).enableLessonAsync(1, true, null);
+		
+		Intent intent = new Intent(this, Dashboard.class);
 		intent.putExtra(BaseActivity.FROM_INIT, BaseActivity.FROM_INIT);
 		startActivity(intent);
-//		ProgressDialog dialog = ProgressDialog.show(this, "",
-//				"Loading. Please wait...", true);
-//		dialog.show();
-//		WordController.getInstance(this).initLesson(this);
-		//new DownloadFilesTask().execute("");
+	
+		// without sleep is the word setting returned back
+		// because isn't load any word between 
+		// finish() and resume() new activity
+		try
+		{
+			Thread.sleep(100);
+		}
+		catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		finish();
 	}
 
