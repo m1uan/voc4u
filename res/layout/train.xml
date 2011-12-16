@@ -39,12 +39,6 @@
 		android:background="@color/cbg_activity"
 		android:layout_alignParentBottom="true">
 		
-		<com.google.ads.AdView android:id="@+id/adView"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         ads:adUnitId="7005464866"
-                         ads:adSize="BANNER"
-                         ads:loadAdOnCreate="true"/>
 		<Button
 			android:id="@+id/dontKnowButton"
 			android:layout_width="fill_parent"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="cbg_list">#3A3A3A</color>
-	<color name="cbg_activity">#3A3A3A</color>
+	<color name="cbg_activity">#FFFFFF</color>
 	<color name="cbg_custom_word">#33334A</color>
 	<color name="cbg_lesson_0">#334A33</color>
 	<color name="cbg_lesson_1">#AA3333</color>

@@ -442,7 +442,7 @@ public class WordController
 			String[] lr = LangSetting.getInitDataFromLT(CommonSetting.lernCode, lesson);
 
 			int start = 0;
-			int end = nt.length;
+			int end = nt.length < lr.length ? nt.length : lr.length;
 
 			// if it is first lesson which add
 			// to DB set first words as weight1,weight2 to 1,1
