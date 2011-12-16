@@ -12,7 +12,7 @@ langs = [ "CS" , "DE", "EN" , "ES", "FR", "PL", "PT"]
 hidden = [ "es", "cs", "de", "lv", "sq", "lt", "tl", "fi", "no", "sl", "bs", "eo", "de " ] 
 dirname = "lesson"
 filename = "Data"
-sourcend = ".txt"
+sourcend = ".csv"
 javafile = "package com.voc4u.lang.lesson%s;\npublic class Data%s\n{\npublic static final String[] text = new String[]{\n%s\n};\n}"
 types = ["plain", "java", "cpp", "make_target_handler_cpp"]
 description = ["make plain text", "make java files from plain text", "make cpp files from plain text", "make navigator for cpp"]
@@ -45,7 +45,7 @@ def hiddenWords(word):
 
 def lastCheck(words):
 	arr = words.split("|")
-	if len(arr) > 0:
+	if len(arr) > 1:
 		words = ""
 		num = 0
 		for a in arr:
@@ -83,11 +83,17 @@ def makeFile(srcpath, descpath, l, la):
     
     arr = ""
     count = 0
+    skipfirstline = True
     for line in open(srcpath, 'r').readlines():
-	    lang = line.split(";");
-	    if len(lang) > 1:
-	         arr += prefix[actualtype] + lastCheck(lang[0]) + surfix[actualtype] + lang[1]
-	         count+=1
+        
+        if skipfirstline == True:
+            skipfirstline = False
+            continue
+
+        lang = line.split(";");
+        if len(lang) > 1:
+            arr += prefix[actualtype] + lastCheck(lang[0]) + surfix[actualtype] + lang[1] + "\n"
+            count+=1
              
     writeDesc(descpath, arr[3:], l , la, count)
 
