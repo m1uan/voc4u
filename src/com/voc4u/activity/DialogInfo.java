@@ -42,8 +42,8 @@ public class DialogInfo
 	public static void setup(final Context context, final String type, final Dialog dialog)
 	{
 		Resources r = context.getResources();
-		int titleid = r.getIdentifier("info_title_" + type, "string", context.getPackageName());
-		int textid = r.getIdentifier("info_text_" + type, "string", context.getPackageName());
+		int titleid = r.getIdentifier("form_" + type, "string", context.getPackageName());
+		int textid = r.getIdentifier("information_" + type, "string", context.getPackageName());
 		
 		dialog.setTitle(titleid);
 		dialog.setOnCancelListener(new Dialog.OnCancelListener()
