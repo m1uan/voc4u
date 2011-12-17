@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -179,12 +180,21 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 		String tst = getResources().getString(R.string.toas_word_is_add, word.getLern(), word.getNative());
 		Toast.makeText(BaseActivity.this, tst, Toast.LENGTH_SHORT).show();
 	}
-
-	public void onResumeSuccess()
+	
+	protected void onCreate(Bundle savedInstanceState)
 	{
+		super.onCreate(savedInstanceState);
+		
+		CommonSetting.restore(this);
+		
 		String showtype = GetShowInfoType();
 		if(showtype != null && !DialogInfo.GetChecked(showtype))
 			showDialog(DIALOG_SHOW_INFO);
+	}
+	
+	public void onResumeSuccess()
+	{
+		
 	}
 
 	@Override

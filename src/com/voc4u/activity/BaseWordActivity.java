@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import com.voc4u.R;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
+import com.voc4u.setting.LangSetting;
 
 public abstract class BaseWordActivity extends BaseActivity implements OnInitListener
 {
@@ -26,8 +27,6 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(getContentView());
-
-		CommonSetting.restore(this);
 
 		mWCtrl = WordController.getInstance(this);
 		mTts = new TextToSpeech(this, this);
@@ -48,14 +47,20 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 			// Set preferred language to US english.
 			// Note that a language may not be available, and the result will
 			// indicate this.
-			int result = mTts.setLanguage(Locale.US);
-			// Try this someday for some interesting results.
-			// int result mTts.setLanguage(Locale.FRANCE);
-			if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED)
+			Locale loc = CommonSetting.lernCode.toLocale();
+			int result = mTts.setLanguage(loc);
+			
+			if(result == TextToSpeech.LANG_NOT_SUPPORTED)
+			{
+				Log.e(TAG, "Language is not available. code: " + loc.getLanguage());
+				result = mTts.setLanguage(Locale.ENGLISH);
+			}
+			
+			if (result == TextToSpeech.LANG_MISSING_DATA)
 			{
 				// Lanuage data is missing or the language is not supported.
 				Log.e(TAG, "Language is not available.");
-			}
+			} 
 			else
 			{
 				// Check the documentation for other possible result codes.

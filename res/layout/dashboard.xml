@@ -19,6 +19,7 @@
 			android:layout_width="225dp"
 			android:layout_height="90dp"
 			android:text="@string/train"
+			android:textColor="@color/blue_button_text"
 			android:layout_centerHorizontal="true"
 			android:onClick="onTrainButton" 
 			android:layout_marginTop="40dp"

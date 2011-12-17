@@ -80,7 +80,7 @@ public class LastItem extends LinearLayout
 
 	private int getColor(PublicWord pw)
 	{
-		return pw.getSuccess() ? Color.LTGRAY : Color.RED;
+		return pw.getSuccess() ? Color.BLACK : Color.RED;
 	}
 
 	private void setupText1(TextView tv1, PublicWord pw)

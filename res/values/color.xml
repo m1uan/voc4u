@@ -7,4 +7,11 @@
 	<color name="cbg_lesson_1">#AA3333</color>
 	<color name="cbg_lesson_2">#7A3333</color>
 	<color name="cbg_lesson_3">#4A3333</color>
+	<color name="texts">#101010</color>
+	<color name="blue_button_text">#ffffff</color>
+	<color name="last_item_color_text">#000000</color>
+	<color name="control_panel">#025883</color>
+	<color name="bg_button_press">#464646</color>
+	<color name="custom_theme_color">#ffffff</color>
+	
 </resources>

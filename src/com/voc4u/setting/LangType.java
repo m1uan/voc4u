@@ -28,6 +28,11 @@ public class LangType
 		Locale loc = new Locale(code);
 		return loc.getDisplayLanguage();
 	}
+	
+	public Locale toLocale()
+	{
+		return new Locale(code);
+	}
 
 	public int getDrawableID(Context ctx)
 	{
