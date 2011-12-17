@@ -19,7 +19,7 @@
 	    	android:layout_gravity="center_vertical"
 	    	android:src="@drawable/ic_en"
 	    	android:id="@+id/flag1"
-	    	android:visibility="visible"
+	    	android:visibility="gone"
 	    	android:layout_alignParentLeft="true"
 	    	android:layout_alignParentTop="true"  />
 	
@@ -31,7 +31,7 @@
 	   		android:src="@drawable/ic_cs"
 	   		android:layout_alignParentRight="true"
 	    	android:layout_alignParentBottom="true"
-	   		android:visibility="visible"/>
+	   		android:visibility="gone"/>
 	</RelativeLayout>
 	<TextView
 		style="@style/LastItemText"

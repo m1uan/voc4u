@@ -2,7 +2,9 @@ package com.voc4u.activity.speaker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,7 +14,7 @@ import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.train.LastListAdapter;
 import com.voc4u.controller.PublicWord;
 
-public class Speaker extends BaseWordActivity
+public class Speaker extends BaseWordActivity implements OnTouchListener
 {
 	private static final int REPEAT_TIMEMILIS = 7000;
 	private Button mDontKnowButton;
@@ -23,7 +25,7 @@ public class Speaker extends BaseWordActivity
 	private Button mKnowButton;
 	
 	SService mService = null;
-	private Button btnShowHelp;
+	//private Button btnShowHelp;
 	private PublicWord mActualPW;
 	private Intent mIService = null;
 	
@@ -36,14 +38,16 @@ public class Speaker extends BaseWordActivity
 		
 		mKnowButton = (Button) findViewById(R.id.nextButton);
 		mKnowButton.setEnabled(false);
+		mKnowButton.setVisibility(View.GONE);
 		
 		txtActual = (TextView) findViewById(R.id.wordTextView);
-		txtActual.setText("");
-
+		txtActual.setOnTouchListener(this);
+		visibleSpokenWord(false);
+		
 		lvLastItems = (ListView) findViewById(R.id.lastList);
 		lvLastItems.setAdapter(new LastListAdapter(this));
 
-		btnShowHelp = (Button) findViewById(R.id.btnHelp);
+		//btnShowHelp = (Button) findViewById(R.id.btnHelp);
 		
 		
 		mNum = 0;
@@ -52,17 +56,31 @@ public class Speaker extends BaseWordActivity
 		//mActualPW = mWCtrl.getFirstPublicWord();
 	}
 
+	
 	@Override
 	protected int getContentView()
 	{
-		return R.layout.speaker;
+		return R.layout.train;
 	}
 
 	public void onBtnHelp(View v)
 	{
-		visibleShowWord(false);
+		visibleSpokenWord(true);
 	}
 	
+	@Override
+	public void onResumeSuccess() 
+	{
+		super.onResumeSuccess();
+		onDontKnowButton(null);
+	}
+	
+	@Override
+	protected void onStop() 
+	{
+		super.onStop();
+		onNextButton(null);
+	}
 	
 	public void onDontKnowButton(View v)
 	{
@@ -79,7 +97,7 @@ public class Speaker extends BaseWordActivity
 		//mService.start();
 		//mHandler.removeCallbacks(mUpdateTimeTask);
 		//mHandler.postDelayed(mUpdateTimeTask, REPEAT_TIMEMILIS);
-		btnShowHelp.setEnabled(true);
+		//btnShowHelp.setEnabled(true);
 		mDontKnowButton.setText(R.string.btnRepeat);
 		mKnowButton.setEnabled(true);
 	}
@@ -95,7 +113,7 @@ public class Speaker extends BaseWordActivity
 			@Override
 			public void run()
 			{
-				setupUI(true);
+				setupUI(false);
 			}
 		});
 		
@@ -130,17 +148,18 @@ public class Speaker extends BaseWordActivity
 
 	private void setupUI(boolean visibleShowWord)
 	{
-		txtActual.setText(mActualPW.getLern());
-		visibleShowWord(visibleShowWord);
+		//txtActual.setText(mActualPW.getLern());
+		visibleSpokenWord(visibleShowWord);
 		lvLastItems.invalidateViews();
 	}
 
-	private void visibleShowWord(boolean visible)
+	private void visibleSpokenWord(boolean visible)
 	{	
-		if(!visible)
-			txtActual.setText(mActualPW.getLern());
-		txtActual.setVisibility(visible ? View.GONE : View.VISIBLE);
-		btnShowHelp.setVisibility(visible ? View.VISIBLE : View.GONE );
+		String str = visible ? 
+				mActualPW.getLern()
+				: getResources().getString(R.string.btnShowSpoke);
+		txtActual.setText(str);
+		txtActual.setClickable(!visible);
 	}
 
 	public void onNextButton(View v)
@@ -164,5 +183,13 @@ public class Speaker extends BaseWordActivity
 		if(mIService != null)
 			stopService(mIService);
 		super.onDestroy();
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) 
+	{
+		if(v == txtActual)
+			visibleSpokenWord(true);
+		return false;
 	}
 }

@@ -32,7 +32,6 @@
             android:textColor="@color/blue_button_text"
             android:textSize="20sp"
             android:textStyle="bold" />
-
         <TextView
             android:id="@+id/word2TextView"
             android:layout_width="fill_parent"
