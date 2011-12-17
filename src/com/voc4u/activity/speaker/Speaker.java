@@ -47,6 +47,9 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 		lvLastItems = (ListView) findViewById(R.id.lastList);
 		lvLastItems.setAdapter(new LastListAdapter(this));
 
+		View nextBtnLayer = findViewById(R.id.nextButtonLayout);
+		if(nextBtnLayer != null)
+			nextBtnLayer.setVisibility(View.GONE);
 		//btnShowHelp = (Button) findViewById(R.id.btnHelp);
 		
 		

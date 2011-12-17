@@ -55,8 +55,10 @@
 		<activity android:name="com.voc4u.activity.init.Init"
                   android:label="@string/app_name" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.voc4u.activity.speech.Speech"
-                  android:label="@string/app_name" android:screenOrientation="portrait">
+        <activity android:name="com.voc4u.activity.listener.Listener"
+                  android:label="@string/app_name" 
+                  android:screenOrientation="portrait"
+                  android:theme="@style/CustomTheme">
                   
         </activity>
 	<activity android:name="com.google.ads.AdActivity"

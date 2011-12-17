@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.voc4u.R;
@@ -39,7 +40,12 @@ public class Listener extends BaseWordActivity implements OnClickListener
 		List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(
 				RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
 		
-
+		Button btnKnow = (Button)findViewById(R.id.nextButton);
+		Button btnDontKnow =  (Button)findViewById(R.id.dontKnowButton);
+		if(btnKnow != null)
+			btnKnow.setVisibility(View.GONE);
+		if(btnDontKnow != null)
+			btnDontKnow.setVisibility(View.GONE);
 		
 		mPublicWord = null;
 	}
@@ -47,7 +53,7 @@ public class Listener extends BaseWordActivity implements OnClickListener
 	@Override
 	protected int getContentView()
 	{
-		return R.layout.speech;
+		return R.layout.train;
 	}
 
 
