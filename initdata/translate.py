@@ -8,11 +8,11 @@ langs = [ "en" , "DE", "CZ"]
 types = ["android", "bada"]
 description = ["make xml files for android", "make xml files for bada"]
 actualtype = "java"
-temprow = {types[0] : "<string name=\"ID\">TEXT</string>", types[1] : "<text id=\"ID\">TEXT</text>"}
+temprow = {types[0] : "<string name=\"ID\" formatted=\"false\">TEXT</string>", types[1] : "<text id=\"ID\">TEXT</text>"}
 template = { types[0] : "android.xml.template" , types[1] : "bada.xml.template"}
 keyToUpper = {types[0] : False, types[1] : True}
 keyPrefix = {types[0] : "", types[1] : "IDS_"}
-textReplaces = {types[0] : [ ["\'" , "\\\'"] ], types[1] : {}}
+textReplaces = {types[0] : [ ["\'" , "\\\'"], ["\"" , "\\\""] ], types[1] : [["\'" , "\\\'"], ["\"" , "\\\""]] }
 
 
 def showHelp(sys):
@@ -95,6 +95,11 @@ def makeFile(srcdir, descdir, la):
     btoupper = keyToUpper[actualtype]
     for line in open(srcpath, 'r').readlines():
         arr += addRowToArr(tempr, btoupper, line)
+        
+    # brutal giga hack :-)
+    # must be make other way!
+    if actualtype == "android" :
+        arr += "<string-array name=\"lessons\"><item>Essential</item><item>Elementary</item><item>Pre-intermediate</item><item>Intermediate</item> </string-array>"
         
     writeDesc(descpath, arr)
 
