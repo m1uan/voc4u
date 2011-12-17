@@ -12,7 +12,7 @@ temprow = {types[0] : "<string name=\"ID\">TEXT</string>", types[1] : "<text id=
 template = { types[0] : "android.xml.template" , types[1] : "bada.xml.template"}
 keyToUpper = {types[0] : False, types[1] : True}
 keyPrefix = {types[0] : "", types[1] : "IDS_"}
-
+textReplaces = {types[0] : [ ["\'" , "\\\'"] ], types[1] : {}}
 
 
 def showHelp(sys):
@@ -50,6 +50,32 @@ def writeDesc(descpath, arr):
     f.close()
     tempfile.close()
 
+
+def addRowToArr(tempr, btoupper, line):
+    arr = ""
+    lang = line.split(";")
+    key = keyPrefix[actualtype] + lang[0]
+    if btoupper:
+        key = key.upper()
+    else:
+        key = key.lower()
+    text = ""
+    if len(lang) > 1:
+        text = lang[1]
+        if text.endswith("\n"):
+            text = text[:-1]
+         
+        replacement = textReplaces[actualtype]   
+        if len(replacement) > 0:
+            for repl in replacement:
+                text = text.replace(repl[0],repl[1])
+            
+        tr = tempr.replace("ID", key).replace("TEXT", text)
+        
+        arr += "\n\t" + tr
+        
+    return arr
+
 def makeFile(srcdir, descdir, la):
     descpath = descdir + "/strings-" + actualtype + "-" + la + ".xml"
     
@@ -68,24 +94,7 @@ def makeFile(srcdir, descdir, la):
     tempr = temprow[actualtype]
     btoupper = keyToUpper[actualtype]
     for line in open(srcpath, 'r').readlines():
-        lang = line.split(";");
-        
-        key = keyPrefix[actualtype] + lang[0]
-        
-        if btoupper:
-            key = key.upper()
-        else:
-            key = key.lower()
-        
-        text = ""
-        if len(lang) > 1:
-            text = lang[1]
-            
-            if text.endswith("\n"):
-                text = text[:-1]
-            
-            tr = tempr.replace("ID", key).replace("TEXT", text)
-            arr += "\n\t" + tr
+        arr += addRowToArr(tempr, btoupper, line)
         
     writeDesc(descpath, arr)
 
