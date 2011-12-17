@@ -78,13 +78,14 @@ def makeFile(srcdir, descdir, la):
             key = key.lower()
         
         text = ""
-        if len(lang)> 1:
-            for tnext in lang[1:-1]:
-                text += tnext
-                
-        tr = tempr.replace("ID", key).replace("TEXT", text)
-        
-        arr += "\n\t" + tr
+        if len(lang) > 1:
+            text = lang[1]
+            
+            if text.endswith("\n"):
+                text = text[:-1]
+            
+            tr = tempr.replace("ID", key).replace("TEXT", text)
+            arr += "\n\t" + tr
         
     writeDesc(descpath, arr)
 
