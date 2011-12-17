@@ -8,8 +8,8 @@ import android.view.View;
 import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.dictionary.Dictionary;
+import com.voc4u.activity.listener.Listener;
 import com.voc4u.activity.speaker.Speaker;
-import com.voc4u.activity.speech.Speech;
 import com.voc4u.activity.train.Train;
 import com.voc4u.setting.CommonSetting;
 
@@ -40,7 +40,7 @@ public class Dashboard extends BaseActivity
 	
 	public void onSpeechButton(View view)
 	{
-		Intent it = new Intent(this, Speech.class);
+		Intent it = new Intent(this, Listener.class);
 		startActivity(it);
 	}
 	

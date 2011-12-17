@@ -1,4 +1,4 @@
-package com.voc4u.activity.speech;
+package com.voc4u.activity.listener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.train.LastListAdapter;
 import com.voc4u.controller.PublicWord;
 
-public class Speech extends BaseWordActivity implements OnClickListener
+public class Listener extends BaseWordActivity implements OnClickListener
 {
 
 	private static final int MAX_REPEAT = 2;
