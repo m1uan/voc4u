@@ -86,7 +86,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		mMenuHomeId = menu.add(R.string.menuHome).setOnMenuItemClickListener(this);
+		mMenuHomeId = menu.add(R.string.btn_menu_home).setOnMenuItemClickListener(this);
 		return super.onCreateOptionsMenu(menu);
 	}
 	

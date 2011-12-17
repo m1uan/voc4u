@@ -44,13 +44,13 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		mMenuDictionary = menu.add(R.string.menuDictionary).setOnMenuItemClickListener(this);
-		mSpeachSetting = menu.add(R.string.menuSettingSpeech).setOnMenuItemClickListener(this);
+		mMenuDictionary = menu.add(R.string.dic_menu_dictionary).setOnMenuItemClickListener(this);
+		mSpeachSetting = menu.add(R.string.btn_menu_speech_setting).setOnMenuItemClickListener(this);
 
-		mAddWord = menu.add(R.string.menuAddWord).setOnMenuItemClickListener(this);
+		mAddWord = menu.add(R.string.add_word_button).setOnMenuItemClickListener(this);
 
 		if(GetShowInfoType() != null)
-			mHelp = menu.add(R.string.menuHelp).setOnMenuItemClickListener(this);
+			mHelp = menu.add(R.string.dic_menu_info).setOnMenuItemClickListener(this);
 		
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -89,7 +89,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 
 			// dialog.
 			dialog.setContentView(R.layout.dialog_add_word);
-			dialog.setTitle(R.string.dialog_add_custom_word);
+			dialog.setTitle(R.string.add_word_title);
 
 			WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 			lp.copyFrom(dialog.getWindow().getAttributes());
@@ -130,8 +130,8 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 		else if (id == DIALOG_ADD_WORD_WARN)
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.dialog_add_custom_word);
-			builder.setMessage(R.string.dialog_text_info_both_text_must_be_filled);
+			builder.setTitle(R.string.add_word_title);
+			builder.setMessage(R.string.msg_must_be_fill_both_edit_field);
 			builder.setCancelable(true);
 			builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
 			{

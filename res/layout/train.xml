@@ -62,7 +62,7 @@
             android:id="@+id/dontKnowButton"
             style="@style/ButtonKnows"
             android:onClick="onDontKnowButton"
-            android:text="@string/dontknow"
+            android:text="@string/btn_dontknow"
             android:layout_weight="1" />
 		
 		<LinearLayout
@@ -76,7 +76,7 @@
            		style="@style/ButtonKnows"
             	
             	android:onClick="onNextButton"
-            	android:text="@string/know" />
+            	android:text="@string/dic_menu_add_word" />
         </LinearLayout>
     </LinearLayout>
 

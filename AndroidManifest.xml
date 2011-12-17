@@ -6,7 +6,7 @@
 	android:versionName="1.0">
 	<application
 		android:icon="@drawable/icon"
-		android:label="@string/app_name">
+		android:label="@string/form_dashboard">
 
 
 <receiver android:name=".widget.TrainWidget" >
@@ -23,7 +23,7 @@
 </receiver>
 
         <activity android:name="com.voc4u.activity.train.Train"
-                  android:label="@string/app_name"
+                  android:label="@string/form_dashboard"
                   android:theme="@style/CustomTheme" >
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -32,7 +32,7 @@
         </activity>
         
          <activity android:name="com.voc4u.activity.speaker.Speaker"
-                  android:label="@string/app_name" 
+                  android:label="@string/form_dashboard" 
                   android:screenOrientation="portrait"
                   android:theme="@style/CustomTheme" >
 <!--            <intent-filter>-->
@@ -42,7 +42,7 @@
         </activity>
         
         <activity android:name="com.voc4u.activity.dashboard.Dashboard"
-                  android:label="@string/app_name">
+                  android:label="@string/form_dashboard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -53,10 +53,10 @@
                   android:label="setting" >
         </activity>
 		<activity android:name="com.voc4u.activity.init.Init"
-                  android:label="@string/app_name" android:screenOrientation="portrait">
+                  android:label="@string/form_dashboard" android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.voc4u.activity.listener.Listener"
-                  android:label="@string/app_name" 
+                  android:label="@string/form_dashboard" 
                   android:screenOrientation="portrait"
                   android:theme="@style/CustomTheme">
                   

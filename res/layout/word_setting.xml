@@ -29,13 +29,13 @@
 		android:layout_height="wrap_content"
 		android:background="#0A0A0A"
 		android:layout_alignParentBottom="true"
-		android:visibility="visible">
+		android:visibility="gone">
 		
 		<Button
 			android:id="@+id/btnStoreSetting"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/btnStoreSettings" 
+			android:text="store setting" 
 			android:layout_weight="1" />
 	</LinearLayout>
 </RelativeLayout>

@@ -66,14 +66,14 @@
             android:id="@+id/dontKnowButton"
             style="@style/ButtonKnows"
             android:onClick="onDontKnowButton"
-            android:text="@string/dontknow" />
+            android:text="@string/btn_dontknow" />
 		</LinearLayout>
         <Button
             android:id="@+id/nextButton"
            	style="@style/ButtonKnows"
             android:layout_weight="1"
             android:onClick="onNextButton"
-            android:text="@string/know" />
+            android:text="@string/btn_know" />
     </LinearLayout>
 
 </RelativeLayout>

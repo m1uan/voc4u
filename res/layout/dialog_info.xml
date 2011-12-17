@@ -21,7 +21,7 @@
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:textStyle="bold"
-         android:text="@string/noshowmore"
+         android:text="@string/btn_noshowmore"
          android:layout_marginLeft="1dp"
          android:layout_gravity="left|center_vertical"
          android:layout_weight="1" />
@@ -37,6 +37,6 @@
 			android:id="@+id/btnCancel"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/btnCancel"  />
+			android:text="@string/btn_cancel"  />
               
 </LinearLayout>

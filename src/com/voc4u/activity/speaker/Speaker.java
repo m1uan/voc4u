@@ -101,7 +101,7 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 		//mHandler.removeCallbacks(mUpdateTimeTask);
 		//mHandler.postDelayed(mUpdateTimeTask, REPEAT_TIMEMILIS);
 		//btnShowHelp.setEnabled(true);
-		mDontKnowButton.setText(R.string.btnRepeat);
+		mDontKnowButton.setText(R.string.btn_speaker_repeat);
 		mKnowButton.setEnabled(true);
 	}
 
@@ -160,7 +160,7 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 	{	
 		String str = visible ? 
 				mActualPW.getLern()
-				: getResources().getString(R.string.btnShowSpoke);
+				: getResources().getString(R.string.tap_for_display);
 		txtActual.setText(str);
 		txtActual.setClickable(!visible);
 	}
@@ -170,7 +170,7 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 		//if (mHandler != null)
 		//	mHandler.removeCallbacks(mUpdateTimeTask);
 		//mService.stop();
-		mDontKnowButton.setText(R.string.btnStart);
+		//mDontKnowButton.setText(R.string.btnStart);
 		//mDontKnowButton.setEnabled(true);
 		mKnowButton.setEnabled(false);
 		

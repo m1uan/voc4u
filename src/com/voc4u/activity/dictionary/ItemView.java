@@ -54,8 +54,8 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		
 		if(position < lessons.length)
 			mTitle = lessons[position];
-		else
-			mTitle = getContext().getString(R.string.dictionaryItem, mLesson);
+//		else
+//			mTitle = getContext().getString(R.string.dictionaryItem, mLesson);
 		
 		findViewById(R.id.preparing).setVisibility(mWordCtrl.isPrepairing(mLesson)? View.VISIBLE : View.GONE);
 		

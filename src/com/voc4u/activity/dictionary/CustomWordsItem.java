@@ -46,7 +46,7 @@ public class CustomWordsItem extends LinearLayout implements OnItemSelectedListe
 		findViewById(R.id.checkbox).setVisibility(View.GONE);
 		
 		
-		String title = getContext().getString(R.string.lesson_custom_word);
+		String title = getContext().getString(R.string.custom_word_item);
 		final TextView tv = (TextView) findViewById(R.id.text);
 		tv.setText(title);
 		
@@ -91,7 +91,7 @@ public class CustomWordsItem extends LinearLayout implements OnItemSelectedListe
 		}
 		else
 		{
-			sex = getContext().getString(R.string.IDS_EMPTY_CUSTOM_LIST);
+			sex = getContext().getString(R.string.empty_custom_list);
 		}
 		
 		ex.setText(sex);

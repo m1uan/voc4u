@@ -9,6 +9,7 @@ import com.voc4u.R;
 
 public class CommonDialogs
 {
+	/*
 	public static Dialog confirmDictionarySetting(Context context, DialogInterface.OnClickListener confirmListener)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -22,4 +23,5 @@ public class CommonDialogs
 		});
 		return builder.create();
 	}
+	*/
 }

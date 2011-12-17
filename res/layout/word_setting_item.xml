@@ -58,7 +58,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:id="@+id/btnAddWord"
-		android:text="@string/btnAddWord"
+		android:text="@string/dic_menu_add_word"
 		android:onClick="onBtnAddWord"
 		android:focusable="false"
 		android:visibility="gone"

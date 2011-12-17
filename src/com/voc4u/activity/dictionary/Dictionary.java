@@ -351,15 +351,15 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 		final Dialog dialog;
 		switch (id)
 		{
-			case BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING:
-			{
-				dialog = CommonDialogs.confirmDictionarySetting(this, new DialogInterface.OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int id)
-					{
-						superOnBackPresed();
-					}
-				});
+//			case BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING:
+//			{
+//				dialog = CommonDialogs.confirmDictionarySetting(this, new DialogInterface.OnClickListener()
+//				{
+//					public void onClick(DialogInterface dialog, int id)
+//					{
+//						superOnBackPresed();
+//					}
+//				});
 //				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 //				builder.setMessage(R.string.vocabulary_you_are_make_some_changes).setCancelable(false).setPositiveButton(
 //				this.getResources().getString(R.string.yes), new DialogInterface.OnClickListener()
@@ -376,16 +376,16 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 //					}
 //				});
 //				dialog = builder.create();
-				break;
-			}
+//				break;
+//			}
 			case BaseActivity.DIALOG_MUST_CHECK_AT_LEAST_ONE:
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setIcon(android.R.drawable.ic_dialog_info);
-				builder.setTitle(R.string.btnStoreSettings);
-				builder.setMessage(R.string.vocabulary_you_must_enable_at_least_one_lesson_);
+				builder.setTitle(R.string.form_dictionary);
+				builder.setMessage(R.string.msg_must_be_any_checked);
 				builder.setCancelable(true);
-				builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+				builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
 				{
 					@Override
 					public void onClick(DialogInterface dialog, int which)
@@ -398,34 +398,34 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 
 				break;
 			}
-			case BaseActivity.DIALOG_PROGRESS:
-			{
-				dialog = ProgressDialog.show(this, "", getString(R.string.database_still_initializing_please_wait), false, true);
-				dialog.setOnCancelListener(new DialogInterface.OnCancelListener()
-				{
-					@Override
-					public void onCancel(DialogInterface dialog)
-					{
-						finish();
-					}
-				});
-				break;
-			}
+//			case BaseActivity.DIALOG_PROGRESS:
+//			{
+//				dialog = ProgressDialog.show(this, "", getString(R.string.database_still_initializing_please_wait), false, true);
+//				dialog.setOnCancelListener(new DialogInterface.OnCancelListener()
+//				{
+//					@Override
+//					public void onCancel(DialogInterface dialog)
+//					{
+//						finish();
+//					}
+//				});
+//				break;
+//			}
 			case DIALOG_RESET_DB:
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle(R.string.menu_reset_db);
+				builder.setTitle(R.string.dic_menu_reset_db);
 				builder.setIcon(android.R.drawable.ic_dialog_alert);
-				builder.setMessage(R.string.dialog_text_confirm_reset_db);
+				builder.setMessage(R.string.msg_reset_db);
 				builder.setCancelable(true);
 				builder.setPositiveButton(
-				this.getResources().getString(R.string.yes), new DialogInterface.OnClickListener()
+				this.getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener()
 				{
 					public void onClick(DialogInterface dialog, int id)
 					{
 						resetDB();
 					}
-				}).setNegativeButton(R.string.no, new DialogInterface.OnClickListener()
+				}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
 				{
 					public void onClick(DialogInterface dialog, int id)
 					{
@@ -485,7 +485,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		boolean result = super.onCreateOptionsMenu(menu);
-		menuReset = menu.add(R.string.menu_reset_db);
+		menuReset = menu.add(R.string.dic_menu_reset_db);
 		menuReset.setOnMenuItemClickListener(this);
 		return result;
 	}
