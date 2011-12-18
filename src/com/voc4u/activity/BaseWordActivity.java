@@ -3,6 +3,9 @@ package com.voc4u.activity;
 import java.util.Locale;
 
 import junit.framework.Assert;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -19,7 +22,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 {
 	private static final String	TAG	= "VOC4UBaseWordActivity";
 	protected WordController	mWCtrl;
-	protected TextToSpeech		mTts;
+	protected TextToSpeech mTts = null;
 	private MenuItem			mMenuHomeId;
 
 	@Override
@@ -29,13 +32,19 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		setContentView(getContentView());
 
 		mWCtrl = WordController.getInstance(this);
-		mTts = new TextToSpeech(this, this);
+		
 	}
 
 	protected abstract int getContentView();
 
 
-
+	@Override
+	public void onResumeSuccess() 
+	{
+		super.onResumeSuccess();
+		if(mTts == null)
+			mTts = new TextToSpeech(this, this);
+	}
 
 
 	@Override
@@ -53,13 +62,16 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 			if(result == TextToSpeech.LANG_NOT_SUPPORTED)
 			{
 				Log.e(TAG, "Language is not available. code: " + loc.getLanguage());
-				result = mTts.setLanguage(Locale.ENGLISH);
+				showDialog(BaseActivity.DIALOG_TTS_LANGUAGE_MISSING);
+				//result = mTts.setLanguage(Locale.ENGLISH);
+				
 			}
 			
 			if (result == TextToSpeech.LANG_MISSING_DATA)
 			{
 				// Lanuage data is missing or the language is not supported.
 				Log.e(TAG, "Language is not available.");
+				showDialog(BaseActivity.DIALOG_TTS_DATA_MISSING);
 			} 
 			else
 			{
@@ -125,5 +137,63 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		}
 		else
 			return super.onMenuItemClick(item);
+	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id) 
+	{
+		Dialog dialog = null;
+		switch(id)
+		{
+			case BaseActivity.DIALOG_TTS_DATA_MISSING:
+			{
+				dialog = ShowDialogForTtsSetting(R.string.msg_tts_data_missing);
+				break;
+			}
+			case BaseActivity.DIALOG_TTS_LANGUAGE_MISSING:
+				dialog = ShowDialogForTtsSetting(R.string.msg_tts_language_missing);
+				break;
+			default:
+				return super.onCreateDialog(id);
+		}
+		
+		return dialog;
+	}
+
+	private Dialog ShowDialogForTtsSetting(int message) 
+	{
+		Dialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.form_dashboard);
+		builder.setIcon(android.R.drawable.ic_dialog_alert);
+		builder.setMessage(message);
+		builder.setCancelable(true);
+		builder.setPositiveButton(
+		this.getResources().getString(android.R.string.yes), new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int id)
+			{
+				showTtsSetting();
+			}
+		}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int id)
+			{
+				dialog.cancel();
+			}
+		});
+		dialog = builder.create();
+		return dialog;
+	}
+	
+	private void showTtsSetting() 
+	{
+		getIntent().putExtra("onShowSpeechMenu", true);
+		if(mTts != null)
+		{
+			mTts.shutdown();
+			mTts = null;
+		}
+		onShowSpeechMenu();
 	}
 }

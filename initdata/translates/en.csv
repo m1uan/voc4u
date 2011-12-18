@@ -52,3 +52,5 @@ toas_word_is_add;word [%s - %s] was added
 btn_menu_home;Home;
 msg_must_be_any_checked;One lesson must be at least checked or must be add few words as custom;
 msg_your_are_sure_disable_lesson;Are you sure you want to disable?
+msg_tts_language_missing;Probably your lern language isn't support in Text to Speech. Do you want go to setting?
+msg_tts_data_missing;Probably missing data in Text to Speech. Do you want go to setting?
