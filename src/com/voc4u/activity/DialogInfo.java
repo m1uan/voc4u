@@ -20,6 +20,7 @@ public class DialogInfo
 	public static final String TYPE_INIT = "init";
 	public static final String TYPE_DICTIONARY = "dictionary";
 	public static final String TYPE_TRAIN = "train";
+	public static final String TYPE_DASHBOARD = "dashboard";
 	
 	public static Dialog create(final Context context)
 	{
@@ -95,6 +96,10 @@ public class DialogInfo
 		{
 			return CommonSetting.NSMTrain;
 		}
+		else if(type.contentEquals(TYPE_DASHBOARD))
+		{
+			return CommonSetting.NSMDashboard;
+		}
 		else
 			// no show dialog which haven't 
 			// common setting value
@@ -114,6 +119,10 @@ public class DialogInfo
 		else if(type.contentEquals(TYPE_TRAIN))
 		{
 			CommonSetting.NSMTrain = isChecked;
+		}
+		else if(type.contentEquals(TYPE_DASHBOARD))
+		{
+			CommonSetting.NSMDashboard = isChecked;
 		}
 	}
 }

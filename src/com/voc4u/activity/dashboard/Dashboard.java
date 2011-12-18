@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
+import com.voc4u.activity.DialogInfo;
 import com.voc4u.activity.dictionary.Dictionary;
 import com.voc4u.activity.listener.Listener;
 import com.voc4u.activity.speaker.Speaker;
@@ -48,5 +49,11 @@ public class Dashboard extends BaseActivity
 	{
 		Intent it = new Intent(this, Dictionary.class);
 		startActivity(it);
+	}
+	
+	@Override
+	protected String GetShowInfoType()
+	{
+		return DialogInfo.TYPE_DICTIONARY;
 	}
 }
