@@ -62,7 +62,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 			if(result == TextToSpeech.LANG_NOT_SUPPORTED)
 			{
 				Log.e(TAG, "Language is not available. code: " + loc.getLanguage());
-				showDialog(BaseActivity.DIALOG_TTS_LANGUAGE_MISSING);
+				//showDialog(BaseActivity.DIALOG_TTS_LANGUAGE_MISSING);
 				//result = mTts.setLanguage(Locale.ENGLISH);
 				
 			}
@@ -71,7 +71,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 			{
 				// Lanuage data is missing or the language is not supported.
 				Log.e(TAG, "Language is not available.");
-				showDialog(BaseActivity.DIALOG_TTS_DATA_MISSING);
+				//showDialog(BaseActivity.DIALOG_TTS_DATA_MISSING);
 			} 
 			else
 			{
@@ -160,7 +160,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		return dialog;
 	}
 
-	private Dialog ShowDialogForTtsSetting(int message) 
+	public Dialog ShowDialogForTtsSetting(int message) 
 	{
 		Dialog dialog;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);

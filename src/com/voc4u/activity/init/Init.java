@@ -1,9 +1,18 @@
 package com.voc4u.activity.init;
 
+import java.util.Locale;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,12 +30,14 @@ import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
 import com.voc4u.setting.LangType;
 
-public class Init extends Activity implements OnItemSelectedListener, updateLisener
+public class Init extends Activity implements OnItemSelectedListener, updateLisener, OnInitListener
 {
+	private static final String TAG = "VOC4UInit";
 	private int mIndex;
 	protected int mLern;
 	private LangType[] lernLangType;
-
+	private TextToSpeech mTts = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -103,9 +114,9 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		CommonSetting.restore(this);
 		WordController.getInstance(this).enableLessonAsync(1, true, null);
 		
-		Intent intent = new Intent(this, Dashboard.class);
-		intent.putExtra(BaseActivity.FROM_INIT, BaseActivity.FROM_INIT);
-		startActivity(intent);
+		showDialog(BaseActivity.DIALOG_PROGRESS);
+		
+		
 	
 		// without sleep is the word setting returned back
 		// because isn't load any word between 
@@ -119,7 +130,7 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		finish();
+		mTts = new TextToSpeech(this, this);
 	}
 
 	
@@ -201,7 +212,17 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 	protected Dialog onCreateDialog(int id)
 	{
 		if(id == BaseActivity.DIALOG_SHOW_INFO)
+		{
 			return DialogInfo.create(this);
+		}
+		else if(id == BaseActivity.DIALOG_TTS_DATA_MISSING)
+		{
+			return ShowDialogForTtsSetting(R.string.msg_tts_data_missing);
+		}
+		else if(id == BaseActivity.DIALOG_PROGRESS)
+		{
+			return ProgressDialog.show(this, "", getString(R.string.preparing), false, false);
+		}
 		else
 			return super.onCreateDialog(id);
 	}
@@ -213,6 +234,113 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 			DialogInfo.setup(this, DialogInfo.TYPE_INIT, dialog);
 		else
 			super.onPrepareDialog(id, dialog);
+	}
+	
+	public Dialog ShowDialogForTtsSetting(int message) 
+	{
+		Dialog dialog;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.form_dashboard);
+		builder.setIcon(android.R.drawable.ic_dialog_alert);
+		builder.setMessage(message);
+		builder.setCancelable(true);
+		builder.setPositiveButton(
+		this.getResources().getString(android.R.string.yes), new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int id)
+			{
+				showTtsSetting();
+			}
+		}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int id)
+			{
+				dialog.cancel();
+				showDashboard();
+			}
+		});
+		dialog = builder.create();
+		return dialog;
+	}
+	
+	private void showTtsSetting() 
+	{
+		ComponentName componentToLaunch = new ComponentName(
+				"com.android.settings",
+				"com.android.settings.TextToSpeechSettings");
+		Intent intent = new Intent();
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		intent.setComponent(componentToLaunch);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
+		//onShowSpeechMenu();
+	}
+
+	@Override
+	protected void onResume() 
+	{
+		// if goes from tts setting
+		if(mTts != null)
+			showDashboard();
+		super.onResume();
+	}
+	
+	@Override
+	public void onInit(int status) 
+	{
+		// status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
+		if (status == TextToSpeech.SUCCESS)
+		{
+			// Set preferred language to US english.
+			// Note that a language may not be available, and the result will
+			// indicate this.
+			Locale loc = CommonSetting.lernCode.toLocale();
+			int result = mTts.setLanguage(loc);
+			
+			if(result == TextToSpeech.LANG_NOT_SUPPORTED)
+			{
+				Log.e(TAG, "Language is not available. code: " + loc.getLanguage());
+				showDialog(BaseActivity.DIALOG_TTS_DATA_MISSING);
+				//result = mTts.setLanguage(Locale.ENGLISH);
+				
+			}
+			
+			if (result == TextToSpeech.LANG_MISSING_DATA)
+			{
+				// Lanuage data is missing or the language is not supported.
+				Log.e(TAG, "Language is not available.");
+				showDialog(BaseActivity.DIALOG_TTS_DATA_MISSING);
+			} 
+			else
+			{
+				// Check the documentation for other possible result codes.
+				// For example, the language may be available for the locale,
+				// but not for the specified country and variant.
+
+				// The TTS engine has been successfully initialized.
+				// Allow the user to press the button for the app to speak
+				// again.
+				// mAgainButton.setEnabled(true);
+				// Greet the user.
+				// sayHello();
+				showDashboard();
+			}
+		}
+		else
+		{
+			// Initialization failed.
+			Log.e(TAG, "Could not initialize TextToSpeech.");
+		}
+		
+		
+	}
+
+	private void showDashboard() 
+	{
+		Intent intent = new Intent(this, Dashboard.class);
+		intent.putExtra(BaseActivity.FROM_INIT, BaseActivity.FROM_INIT);
+		startActivity(intent);
+		finish();
 	}
 
 }
