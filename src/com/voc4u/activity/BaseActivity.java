@@ -192,10 +192,15 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 
 		CommonSetting.restore(this);
 
-		String showtype = GetShowInfoType();
-		if (showtype != null && !DialogInfo.GetChecked(showtype))
-			showDialog(DIALOG_SHOW_INFO);
-
+		boolean showinfo = getIntent().getBooleanExtra("showinfo", true);
+		if(showinfo)
+		{
+			String showtype = GetShowInfoType();
+			if (showtype != null && !DialogInfo.GetChecked(showtype))
+				showDialog(DIALOG_SHOW_INFO);
+			
+			getIntent().putExtra("showinfo", false);
+		}
 	}
 
 	public void onResumeSuccess() {

@@ -54,17 +54,23 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		lvLastItems.setAdapter(mListAdapter);
 		
 		if(mPublicWord == null)
-			setupFirstWord();
+			setupFirstWord(false);
+			
 		
 		super.onResumeSuccess();
 	}
 
-	private void setupFirstWord()
+	private void setupFirstWord(boolean loadNew)
 	{
 		Assert.assertTrue(mWCtrl != null);
 		// load new public word
 		if (mWCtrl != null)
-			mPublicWord = mWCtrl.getFirstPublicWord();
+		{
+			if(loadNew)
+				mPublicWord = mWCtrl.getFirstPublicWord();
+			else
+				mPublicWord = mWCtrl.getActualPublicWord();
+		}
 		
 		//Assert.assertTrue(mPublicWord != null);
 		if (mPublicWord != null)
@@ -135,7 +141,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		mWCtrl.updatePublicWord(know);
 		mListAdapter = new LastListAdapter(this);
 		lvLastItems.setAdapter(mListAdapter);
-		setupFirstWord();
+		setupFirstWord(true);
 		
 	}
 

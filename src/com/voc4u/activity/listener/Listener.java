@@ -65,7 +65,7 @@ public class Listener extends BaseWordActivity implements OnClickListener
 		if(mPublicWord == null)
 		{
 			mRepeat = 0;
-			mPublicWord = mWCtrl.getFirstPublicWord();
+			mPublicWord = mWCtrl.getActualPublicWord();
 			startVoiceRecognitionActivity();
 		}
 		

@@ -75,7 +75,12 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 	public void onResumeSuccess() 
 	{
 		super.onResumeSuccess();
+		
 		onDontKnowButton(null);
+		
+		mIService = new Intent(this, SService.class);
+		startService(mIService);
+		mDontKnowButton.setText(R.string.btn_speaker_repeat);
 	}
 	
 	@Override
@@ -87,27 +92,21 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 	
 	public void onDontKnowButton(View v)
 	{
-		if(mKnowButton.isEnabled())
-		{
-			onPlay(mActualPW.getLern());
-			return;
-		}
+		mActualPW = mWCtrl.getActualPublicWord();
+		if(mActualPW == null)
+			mActualPW = mWCtrl.getFirstPublicWord();
 		
-		//onNext(true);
-		mIService = new Intent(this, SService.class);
-		startService(mIService);
-		//mService = new SService();
-		//mService.start();
-		//mHandler.removeCallbacks(mUpdateTimeTask);
-		//mHandler.postDelayed(mUpdateTimeTask, REPEAT_TIMEMILIS);
-		//btnShowHelp.setEnabled(true);
-		mDontKnowButton.setText(R.string.btn_speaker_repeat);
-		mKnowButton.setEnabled(true);
+		if(mActualPW != null)
+			onPlay(mActualPW.getLern());
 	}
 
-	public void onNextInUiThread()
+	public void onNextInUiThread(boolean getFirst)
 	{
-		mActualPW = mWCtrl.getFirstPublicWord();
+		if(getFirst)
+			mActualPW = mWCtrl.getFirstPublicWord();
+		else
+			mActualPW = mWCtrl.getActualPublicWord();
+		
 		onPlay(mActualPW.getLern());
 		
 		runOnUiThread(new Runnable()

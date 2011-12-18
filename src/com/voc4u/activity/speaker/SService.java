@@ -63,26 +63,18 @@ public class SService extends Service {
 		stop();
 	}
 
-	public static void update()
-	{
-		Date date = new Date();
-		
-		
-		mSpeaker.onNextInUiThread();
-		
-		//YOS_CALL.t.setText( i + "::"+ date.toGMTString()  );
-	}
-
+	
 	private void _startService() 
 	{
+		i = 0;
 		  timer.scheduleAtFixedRate(
 		      new TimerTask() {
 		        public void run() {
-		        	update();
+		        	mSpeaker.onNextInUiThread(i > 0);
 		        	
 		        	if(i++ > 100)
 		        	{
-		        		mSpeaker.onNextButtonUI();
+		        		//mSpeaker.onNextButtonUI();
 		        		//SService.this.stopSelf();
 		        	}
 		        }
