@@ -1,5 +1,7 @@
 package com.voc4u.activity.dictionary;
 
+import java.util.ArrayList;
+
 import junit.framework.Assert;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -32,7 +34,7 @@ import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
 import com.voc4u.widget.CommonDialogs;
 
-public class Dictionary extends BaseWordActivity implements OnClickListener, OnItemClickListener, updateLisener
+public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnClickListener, OnItemClickListener, updateLisener
 {
 
 	private WordController		mWordCtrl;
@@ -61,8 +63,8 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 		//if (CommonSetting.DEBUG)
 		{
 			// findViewById(R.id.addword).setVisibility(View.VISIBLE);
-			btnStoreSetting = findViewById(R.id.btnStoreSetting);
-			btnStoreSetting.setOnClickListener(this);
+			//btnStoreSetting = findViewById(R.id.btnStoreSetting);
+			//btnStoreSetting.setOnClickListener(this);
 		}
 
 		btnStoreSetting = findViewById(R.id.btnStoreSetting);
@@ -96,7 +98,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 		super.onPause();
 	}
 
-	private void store()
+	public boolean testAnyChecked(ItemView without)
 	{
 //		boolean anyChanges = false;
 		boolean anyChecked = false;
@@ -106,7 +108,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			ItemView item = mAdapter.getLessonItem(i);
 
 			Assert.assertNotNull(item);
-			if (item != null)
+			if (item != null && without != item)
 			{
 //				ItemStatus is = item.getStatus();
 //				if (is != ItemStatus.NONE)
@@ -121,20 +123,25 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			}
 		}
 //
-		if (!anyChecked && mWCtrl.getWordsInLesson(WordController.CUSTOM_WORD_LESSON).size() < 2)
+		ArrayList<Word> list = null;
+		if(!anyChecked)
+			list = mWCtrl.getWordsInLesson(WordController.CUSTOM_WORD_LESSON);
+		
+		if (!anyChecked && (list == null || list.size() > 2))
 		{
 			showDialog(BaseActivity.DIALOG_MUST_CHECK_AT_LEAST_ONE);
-			// showDialogAboutMustCheckAtleasOneItem();
+			
+			if(without != null)
+				without.setChecked(true);
+			
+			return false;
 		}
 //		else if (!CommingFromInit() && anyChanges)
 //		{
 //			showDialog(BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING);
 //			// showDialogAboutDurationOfOperation();
 //		}
-		else
-		{
-			superOnBackPresed();
-		}
+		return true;
 	}
 
 	private void ShowDashboardOrFinish()
@@ -288,7 +295,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			else
 				item = (ItemView) convertView;
 
-			item.setup(position);
+			item.setup(position, Dictionary.this);
 
 			return item;
 		}
@@ -335,8 +342,8 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 		if (v == btnStoreSetting)
 		{
 			// showDialog(101);
-			CommonSetting.store(this);
-			store();
+			//CommonSetting.store(this);
+			
 		}
 	}
 
@@ -471,7 +478,7 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 	@Override
 	protected int getContentView()
 	{
-		return R.layout.word_setting;
+		return R.layout.dictionary;
 	}
 
 	@Override
@@ -520,5 +527,10 @@ public class Dictionary extends BaseWordActivity implements OnClickListener, OnI
 			}
 		});
 		
+	}
+	
+	protected boolean hasShowDictionary() 
+	{
+		return false;
 	}
 }

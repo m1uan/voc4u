@@ -50,7 +50,7 @@
         </activity>
         
         <activity android:name="com.voc4u.activity.dictionary.Dictionary"
-                  android:label="setting" >
+                  android:label="@string/form_dictionary" >
         </activity>
 		<activity android:name="com.voc4u.activity.init.Init"
                   android:label="@string/form_dashboard" android:screenOrientation="portrait">

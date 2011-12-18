@@ -39,7 +39,7 @@ public class CustomWordsItem extends LinearLayout implements OnItemSelectedListe
 		super(context);
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.word_setting_item, this);
+		inflater.inflate(R.layout.dictionary_item, this);
 		
 		setBackgroundResource(R.color.cbg_custom_word);
 		

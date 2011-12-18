@@ -76,7 +76,7 @@
            		style="@style/ButtonKnows"
             	
             	android:onClick="onNextButton"
-            	android:text="@string/dic_menu_add_word" />
+            	android:text="@string/btn_know" />
         </LinearLayout>
     </LinearLayout>
 

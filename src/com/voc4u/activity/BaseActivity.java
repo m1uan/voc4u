@@ -44,7 +44,10 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		mMenuDictionary = menu.add(R.string.dic_menu_dictionary).setOnMenuItemClickListener(this);
+		if(hasShowDictionary())
+			mMenuDictionary = menu.add(R.string.dic_menu_dictionary).setOnMenuItemClickListener(this);
+		else
+			mMenuDictionary =  null;
 		mSpeachSetting = menu.add(R.string.btn_menu_speech_setting).setOnMenuItemClickListener(this);
 
 		mAddWord = menu.add(R.string.add_word_button).setOnMenuItemClickListener(this);
@@ -53,6 +56,11 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 			mHelp = menu.add(R.string.dic_menu_info).setOnMenuItemClickListener(this);
 		
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	protected boolean hasShowDictionary() 
+	{
+		return true;
 	}
 
 	@Override
@@ -107,8 +115,8 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 				@Override
 				public void onClick(View v)
 				{
-					String nat = edtNative.getText().toString() + "~";
-					String lern = edtLern.getText().toString() + "~";
+					String nat = edtNative.getText().toString();
+					String lern = edtLern.getText().toString();
 
 					if (nat.length() < 2 || lern.length() < 2)
 					{
@@ -133,7 +141,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener
 			builder.setTitle(R.string.add_word_title);
 			builder.setMessage(R.string.msg_must_be_fill_both_edit_field);
 			builder.setCancelable(true);
-			builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+			builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
 			{
 				@Override
 				public void onClick(DialogInterface dialog, int which)

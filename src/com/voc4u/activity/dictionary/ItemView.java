@@ -17,24 +17,25 @@ import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
 
+
 public class ItemView extends LinearLayout implements OnCheckedChangeListener
 {
 
-	public static final int	MAX_EXAMPLES_IN_VIEW	= 10;
+	public static final int	MAX_EXAMPLES_IN_VIEW	= 50;
 	private final WordController mWordCtrl;
 	private String mTitle;
 	private int mLesson;
 	private final CheckBox chkBox;
 	private final ItemStatus mStatus;
 	private final Dictionary	mDictionary;
-	
+	private TestAnyChecked mTestAnyChecked;
 	
 	public ItemView(Dictionary context, WordController wordCtrl)
 	{
 		super(context);
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.word_setting_item, this);
+		inflater.inflate(R.layout.dictionary_item, this);
 
 		mWordCtrl = wordCtrl;
 		
@@ -45,8 +46,9 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		mDictionary = context;
 	}
 
-	public void setup(int position)
+	public void setup(int position, TestAnyChecked tac)
 	{
+		mTestAnyChecked = tac;
 		mLesson = position + 1;
 		String lessons[] = getContext().getResources().getStringArray(R.array.lessons);
 		
@@ -113,13 +115,16 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 	{
 		if (!isChecked)
 		{
-			if (mWordCtrl.isEnableLesson(mLesson))
+			// test set mTestAnyChecked was set
+			// and test any checked return true -> some items still checked (this is not calced)
+			// and test enable in db when in db take to question to user
+			if ((mTestAnyChecked == null || mTestAnyChecked.testAnyChecked(this)) && mWordCtrl.isEnableLesson(mLesson))
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getContext());
-				builder.setMessage("Are you sure you want to disable?")
+				builder.setMessage(R.string.msg_your_are_sure_disable_lesson)
 						.setCancelable(false).setTitle(mTitle)
-						.setPositiveButton("Yes",
+						.setPositiveButton(android.R.string.yes,
 								new DialogInterface.OnClickListener()
 								{
 									public void onClick(DialogInterface dialog,
@@ -127,7 +132,7 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 									{
 										setVocabulary(false);
 									}
-								}).setNegativeButton("No",
+								}).setNegativeButton(android.R.string.no,
 								new DialogInterface.OnClickListener()
 								{
 									public void onClick(DialogInterface dialog,
@@ -163,6 +168,11 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 	public boolean isChecked() 
 	{
 		return chkBox.isChecked();
+	}
+	
+	public void setChecked(boolean checked)
+	{
+		chkBox.setChecked(checked);
 	}
 
 }
