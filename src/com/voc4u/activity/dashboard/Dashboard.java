@@ -54,6 +54,6 @@ public class Dashboard extends BaseActivity
 	@Override
 	protected String GetShowInfoType()
 	{
-		return DialogInfo.TYPE_DICTIONARY;
+		return DialogInfo.TYPE_DASHBOARD;
 	}
 }
