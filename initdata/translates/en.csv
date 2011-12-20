@@ -1,8 +1,8 @@
 TAP_FOR_DISPLAY;*** tap for display ***;
 FORM_DICTIONARY;Dictionary;
-INFORMATION_INIT;Select you native language, next select language which you want lern. And let's go train ;-)
+INFORMATION_INIT;Select you native language, next select language which you want learn. And let's go train ;-)
 HINT_NATIVE_WORD;native word;
-MSG_OUR_LERN_UNSURPORTED;Our lern language is unsurported by Speech to Text syntetizer;
+MSG_OUR_LERN_UNSURPORTED;Our learn language is unsurported by Speech to Text syntetizer;
 FORM_DASHBOARD;Voc4u;
 BTN_TRAIN;TRAIN;
 START;start;
@@ -11,7 +11,7 @@ SPEECH_TO_TEXT;Try to tell the word on up with the true pronunciation.;
 NOT_SELECTED_YET;Not selected yet...;
 INFORMATION_DASHBOARD;Welcome in Vocabulary For You. The voc4u have three options.\n#1: Train is the main and there you can improve memory of vocabulary, for examle in public transport.\n#2: Speaker mod is about, vocabulary to speech and you can only listening, for examle when you go to bet.\n#3: For otherwise here is mode for trying pronunciation, the Phone listening you and comparing with the regular word.;
 DIC_MENU_DICTIONARY;   Dictionary;
-SELECT_LERN_LANG;Select your lern language:;
+SELECT_LERN_LANG;Select your learn language:;
 LANGUAGE_SELECT;Language selector;
 BTN_NOSHOWMORE;don't show again;
 BTN_KNOW;Know;
@@ -38,7 +38,7 @@ LESSON_4;Intermediate;
 LESSON_3;Pre-Intermediate;
 LESSON_2;Elementary;
 LESSON_1;Basic;
-INFORMATION_TRAIN;Here you can train the your vocabulary. Two button ""know"" and ""don't know"" do display to you next word, but when use the ""don't know"" the word will be show more frequently. Words in Train you can manage in Dictionary access from options menu.;
+INFORMATION_TRAIN;"Here you can train the your vocabulary. Two button """"know"""" and """"don't know"""" do display to you next word, but when use the """"don't know"""" the word will be show more frequently. Words in Train you can manage in Dictionary access from options menu.";
 HINT_LERN_WORD;lern word;
 INFORMATION_DICTIONARY;On this form you can select the lesson for your training. Any lesson have example with words which contain. ;
 DIC_MENU_ADD_WORD;   Add word;
@@ -48,9 +48,9 @@ FORM_INIT;Initialize setting;
 SELECT_NATIVE_LANG;Select your native language:;
 btn_speaker_repeat;repeat;
 btn_menu_speech_setting;speech setting;
-toas_word_is_add;word [%s - %s] was added
+toas_word_is_add;word [%s - %s] was added;
 btn_menu_home;Home;
 msg_must_be_any_checked;One lesson must be at least checked or must be add few words as custom;
-msg_your_are_sure_disable_lesson;Are you sure you want to disable?
-msg_tts_language_missing;Probably your lern language isn't support in Text to Speech. Do you want go to setting?
-msg_tts_data_missing;Probably missing data in Text to Speech. Do you want go to setting?
+msg_your_are_sure_disable_lesson;Are you sure you want to disable?;
+msg_tts_language_missing;Probably your lern language isn't support in Text to Speech. Do you want go to setting?;
+msg_tts_data_missing;Probably missing data in Text to Speech. Do you want go to setting?;
