@@ -107,7 +107,6 @@ public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnCli
 		{
 			ItemView item = mAdapter.getLessonItem(i);
 
-			Assert.assertNotNull(item);
 			if (item != null && without != item)
 			{
 //				ItemStatus is = item.getStatus();
