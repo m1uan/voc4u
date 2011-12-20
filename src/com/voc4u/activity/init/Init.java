@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -50,6 +51,13 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		
 		if(!DialogInfo.GetChecked(DialogInfo.TYPE_INIT))
 			showDialog(BaseActivity.DIALOG_SHOW_INFO);
+	}
+	
+	@Override
+	protected void onDestroy() 
+	{
+		TtsShutdown();
+		super.onDestroy();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -221,7 +229,17 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		}
 		else if(id == BaseActivity.DIALOG_PROGRESS)
 		{
-			return ProgressDialog.show(this, "", getString(R.string.preparing), false, false);
+			ProgressDialog pdlg = ProgressDialog.show(this, "", getString(R.string.preparing), false, true);
+			
+			pdlg.setOnCancelListener(new OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					TtsShutdown();
+				}
+			});
+			
+			return pdlg;
 		}
 		else
 			return super.onCreateDialog(id);
@@ -305,7 +323,7 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 				
 			}
 			
-			if (result == TextToSpeech.LANG_MISSING_DATA)
+			else if (result == TextToSpeech.LANG_MISSING_DATA)
 			{
 				// Lanuage data is missing or the language is not supported.
 				Log.e(TAG, "Language is not available.");
@@ -341,6 +359,15 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		intent.putExtra(BaseActivity.FROM_INIT, BaseActivity.FROM_INIT);
 		startActivity(intent);
 		finish();
+	}
+
+	private void TtsShutdown() {
+		if(mTts != null)
+		{
+			mTts.stop();
+			mTts.shutdown();
+			mTts = null;
+		}
 	}
 
 }
