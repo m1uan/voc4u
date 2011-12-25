@@ -32,7 +32,6 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	public static final int DIALOG_ADD_WORD_WARN = 105;
 	public static final int DIALOG_RESET_DB = 106;
 	public static final int DIALOG_SHOW_INFO = 107;
-	public static final int DIALOG_TTS_LANGUAGE_MISSING = 108;
 	public static final int DIALOG_TTS_DATA_MISSING = 109;
 	
 	public static final String FROM_INIT = "FROM_INIT";

@@ -15,36 +15,34 @@ import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
 import com.voc4u.setting.LangSetting;
 
-public class WordController
-{
-	private DictionaryOpenHelper		mDictionary			= null;
-	private final ArrayAdapter<String>	mAdapter;
-	private final Random				mRandomGenerator;
-	private PublicWord					mPublicWord;
-	private boolean						mSwitchPoliticy;
-	private int							mWeight;
-	private final ArrayList<PublicWord>	mLastList;
-	private LessonWorker				mAsyncUpdate;
-	private final Context				mContext;
-	private static int					mNativeWordNum		= 0;
-	private static int					mWordNum			= 0;
+public class WordController {
+	private DictionaryOpenHelper mDictionary = null;
+	private final ArrayAdapter<String> mAdapter;
+	private final Random mRandomGenerator;
+	private PublicWord mPublicWord;
+	private boolean mSwitchPoliticy;
+	private int mWeight;
+	private final ArrayList<PublicWord> mLastList;
+	private LessonWorker mAsyncUpdate;
+	private final Context mContext;
+	private static int mNativeWordNum = 0;
+	private static int mWordNum = 0;
 
-	public static final int				CUSTOM_WORD_LESSON	= 0;
+	public static final int CUSTOM_WORD_LESSON = 0;
 
-	static WordController				mInstance			= null;
+	static WordController mInstance = null;
 
-	public static WordController getInstance(Context act)
-	{
+	public static WordController getInstance(Context act) {
 		if (mInstance == null)
 			mInstance = new WordController(act);
 
 		return mInstance;
 	}
 
-	protected WordController(Context activity)
-	{
+	protected WordController(Context activity) {
 		mDictionary = new DictionaryOpenHelper(activity);
-		mAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1);
+		mAdapter = new ArrayAdapter<String>(activity,
+				android.R.layout.simple_list_item_1);
 		mRandomGenerator = new Random();
 		mLastList = new ArrayList<PublicWord>();
 		mNativeWordNum = 0;
@@ -54,73 +52,94 @@ public class WordController
 		mRemoveList = new ArrayList<Integer>();
 	}
 
-	public void addWord(String text, String text2)
-	{
+	public void addWord(String text, String text2) {
 		if (mDictionary != null)
 			mDictionary.addWord(DictionaryOpenHelper.CZEN_GROUP, text, text2);
 
 	}
 
-	public void addWordEx(final int lesson, String text, String text2, int weight1, int weight2)
-	{
+	public void addWordEx(final int lesson, String text, String text2,
+			int weight1, int weight2) {
 		if (mDictionary != null)
 			mDictionary.addWordEx(lesson, text, text2, weight1, weight2);
 
 	}
 
-	public ArrayList<Word> getWordsInLesson(int lesson)
-	{
+	public ArrayList<Word> getWordsInLesson(int lesson) {
 		return mDictionary.getWordsInLesson(lesson);
 	}
+
+	static ArrayList<Word> mFistWordList = null;
 
 	/**
 	 * get the first word which is usable for learning
 	 * 
 	 * @return
 	 */
-	public PublicWord getFirstPublicWord()
+	public PublicWord getFirstPublicWord() 
 	{
-		Assert.assertNotNull(mDictionary);
-		if (mDictionary != null)
+		if (mDictionary == null)
+			return null;
+
+		boolean addNewWord = false;
+		
+		if (mFistWordList == null || mFistWordList.size() < 1) 
 		{
-			// add 5 new words
-			if (!mDictionary.isAnyUnknownWord())
-				for (int i = 0; i != 5; i++)
-					mDictionary.setupFirstWordWeight();
+			// try get words
+			mFistWordList = mDictionary.getPublicWords(getLastListIds());
 
-			mSwitchPoliticy = getSwitchPoliticyOrNot();
-
-			// TODO: load only one list (maybe set the ORDER BY weight1,
-			// weight2)
-			// get normaly all words
-			ArrayList<Word> list = mDictionary.getPublicWords(true, getLastListIds());
-			ArrayList<Word> list2 = mDictionary.getPublicWords(false, getLastListIds());
-			if (list == null)
+			// first trial isn't work and last list still empty
+			// try add new words
+			if(mFistWordList == null || mFistWordList.size() < Consts.MAX_LAST_LIST)
 			{
-				// its posible in the db is less words as is size of last list
-				// get the word without lastlist
-				list = mDictionary.getPublicWords(!mSwitchPoliticy, null);
-				// list = mDictionary.getPublicWords(mSwitchPoliticy, null);
-				// db is null -> open the setting with words
-				if (list == null)
+				mDictionary.setupFirstWordWeight(Consts.MAX_LAST_LIST);
+				addNewWord = true;
+			}
+			
+			// first trial isn't work and last list still empty
+			// try again, is expecting the setupFirstWordWeight was add some word
+			while (mFistWordList == null || mFistWordList.size() < 1)
+			{
+				// the last list isn't empty
+				// make his less about one
+				if(mLastList != null && mLastList.size() > 1)
+				{	
+					mLastList.remove(0);
+				}
+				else
 				{
+					// it's seems the mLastList is empty
+					// and the mFirstWordList still empty
 					showWordsMenu();
 					return null;
 				}
+				
+				// try again
+				mFistWordList = mDictionary.getPublicWords(getLastListIds());
 			}
 
-			Word w1 = list.get(0);
-			Word w2 = w1;
-			if (list2 != null && list2.size() > 0)
-				w2 = list2.get(0);
+			
+			// add the word normaly way
+			if (!addNewWord && mDictionary.isAnyUnknownWord()) 
+			{
+				mDictionary.setupFirstWordWeight(5);
+			}
+			
+		}
 
-			if (w1.getWeight() < w2.getWeight() || w1.getWeight2() < w2.getWeight2())
-				w1 = w2;
+		if (mFistWordList != null && mFistWordList.size() > 0) 
+		{
+			Random rand = new Random();
+			int index = rand.nextInt(mFistWordList.size());
+
+			Word w1 = mFistWordList.get(index);
+			mFistWordList.remove(index);
 
 			mSwitchPoliticy = w1.getWeight() > w1.getWeight2();
 
 			int pos = 0;// Math.abs(mRandomGenerator.nextInt() % list.size());
-			mPublicWord = new PublicWord(w1, !mSwitchPoliticy ? EPoliticy.PRIMAR : EPoliticy.SECUNDAR);
+			mPublicWord = new PublicWord(w1,
+					!mSwitchPoliticy ? EPoliticy.PRIMAR : EPoliticy.SECUNDAR);
 			addLastList(mPublicWord);
 
 			return mPublicWord;
@@ -128,71 +147,24 @@ public class WordController
 		return null;
 	}
 
-	private boolean getSwitchPoliticyOrNot()
-	{
-		boolean politicy;
-		final int max = Consts.MAX_WORD_NATIVE_LEARN;
-		int czvsen = Math.abs(mRandomGenerator.nextInt() % max);
-
-		// if can switch
-		if ((max - mWordNum) > CommonSetting.langNativeNum)
-			politicy = czvsen < CommonSetting.langNativeNum;
-		else if (mNativeWordNum < CommonSetting.langNativeNum)
-			politicy = true;
-		else
-			politicy = false;
-
-		if (mWordNum >= max - 1)
-		{
-			mNativeWordNum = 0;
-			mWordNum = 0;
-		}
-		else
-		{
-			mWordNum++;
-
-			if (politicy)
-				mNativeWordNum++;
-		}
-
-		return politicy;
-		// (politicy && !CommonSetting.langType.getCrossBase())
-		// || (!politicy && CommonSetting.langType.getCrossBase());
-	}
-
-	private void addLastList(PublicWord publicWord)
-	{
+	private void addLastList(PublicWord publicWord) {
 		mLastList.add(publicWord);
 		if (mLastList.size() > Consts.MAX_LAST_LIST)
 			mLastList.remove(0);
 	}
 
-	public List<PublicWord> getLastList()
-	{
+	public List<PublicWord> getLastList() {
 		return mLastList;
 	}
 
-	public int[] getLastListIds()
+	public int[] getLastListIds() 
 	{
-		if (mLastList == null || mLastList.size() < 1)
-			return null;
-
-		int[] result = new int[mLastList.size()];
-
-		for (int i = 0; i != mLastList.size(); i++)
-		{
-			result[i] = mLastList.get(i).getId();
-		}
-
-		return result;
-
+		return mDictionary.getLastListIds(mLastList) ;
 	}
 
-	public void updatePublicWord(boolean remember)
-	{
+	public void updatePublicWord(boolean remember) {
 		Assert.assertNotNull(mDictionary);
-		if (mDictionary != null)
-		{
+		if (mDictionary != null) {
 			mPublicWord.setSuccess(remember);
 
 			mPublicWord.setRemember(remember);
@@ -202,33 +174,26 @@ public class WordController
 		}
 	}
 
-	public static int calcWeight(int weight, boolean remember)
-	{
+	public static int calcWeight(int weight, boolean remember) {
 		weight = weight > 0 ? weight : 1;
 
-		if (remember)
-		{
+		if (remember) {
 			return weight < 10000 ? weight * 3 : weight + 30000;
-		}
-		else
-		{
+		} else {
 			weight = weight / 2;
 			return weight < 1 ? 1 : weight;
 		}
 	}
 
-	public boolean isChangedPoliticy()
-	{
+	public boolean isChangedPoliticy() {
 		return mSwitchPoliticy;
 	}
 
-	public PublicWord getActualPublicWord()
-	{
+	public PublicWord getActualPublicWord() {
 		return mPublicWord != null ? mPublicWord : getFirstPublicWord();
 	}
 
-	public long count()
-	{
+	public long count() {
 		return mDictionary.getCount();
 	}
 
@@ -238,12 +203,9 @@ public class WordController
 	 * @param lesson
 	 * @return
 	 */
-	public boolean isEnableLesson(int lesson)
-	{
-		if (isAsyncRunning())
-		{
-			synchronized (mAddList)
-			{
+	public boolean isEnableLesson(int lesson) {
+		if (isAsyncRunning()) {
+			synchronized (mAddList) {
 				if (mCurrentLesson == lesson)
 					return true;
 
@@ -263,29 +225,24 @@ public class WordController
 		return false;
 	}
 
-	public void initLesson(updateLisener ul)
-	{
+	public void initLesson(updateLisener ul) {
 		new LessonWorker(ul).execute("");
 	}
 
-	public Word getPublicWordById(int id)
-	{
+	public Word getPublicWordById(int id) {
 		return mDictionary.getPublicWordById(id);
 	}
 
-	public void unloadAllLesson()
-	{
+	public void unloadAllLesson() {
 		mDictionary.unloadLesson(-1);
 	}
 
-	private final ArrayList<Integer>	mAddList;
-	private final ArrayList<Integer>	mRemoveList;
-	private int							mCurrentLesson;
+	private final ArrayList<Integer> mAddList;
+	private final ArrayList<Integer> mRemoveList;
+	private int mCurrentLesson;
 
-	public void add(int lesson2)
-	{
-		synchronized (mAddList)
-		{
+	public void add(int lesson2) {
+		synchronized (mAddList) {
 			if (isInList(mAddList, lesson2))
 				return;
 
@@ -293,43 +250,34 @@ public class WordController
 		}
 	}
 
-	public void remove(int lesson2)
-	{
+	public void remove(int lesson2) {
 		boolean negate;
-		synchronized (mAddList)
-		{
+		synchronized (mAddList) {
 			negate = negateInList(mAddList, lesson2);
 			if (isInList(mRemoveList, lesson2))
 				return;
-			else if(!negate)
+			else if (!negate)
 				mRemoveList.add(lesson2);
 		}
 	}
-	
-	private boolean negateInList(final ArrayList<Integer> list, int lesson2)
-	{
-		if (isInList(list, lesson2))
-		{
-			for (int i = 0; i != list.size(); i++)
-			{
+
+	private boolean negateInList(final ArrayList<Integer> list, int lesson2) {
+		if (isInList(list, lesson2)) {
+			for (int i = 0; i != list.size(); i++) {
 				int les = list.get(i);
-				if (les == lesson2)
-				{
+				if (les == lesson2) {
 					list.remove(i);
 					return true;
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
-	public boolean isPrepairing(int lesson)
-	{
-		if (isAsyncRunning())
-		{
-			synchronized (mAddList)
-			{
+	public boolean isPrepairing(int lesson) {
+		if (isAsyncRunning()) {
+			synchronized (mAddList) {
 				if (mCurrentLesson == lesson)
 					return true;
 
@@ -355,8 +303,7 @@ public class WordController
 	 *            - item
 	 * @return true if already in list
 	 */
-	private boolean isInList(final ArrayList<Integer> list, int lesson2)
-	{
+	private boolean isInList(final ArrayList<Integer> list, int lesson2) {
 
 		if (list != null)
 			for (int i = 0; i != list.size(); i++)
@@ -365,42 +312,33 @@ public class WordController
 
 		return false;
 	}
-	
-	public void setUpdateListener(updateLisener ul)
-	{
-		if(isAsyncRunning())
+
+	public void setUpdateListener(updateLisener ul) {
+		if (isAsyncRunning())
 			mAsyncUpdate.setUpdateListener(ul);
 	}
 
-	private class LessonWorker extends AsyncTask<String, Integer, Long>
-	{
+	private class LessonWorker extends AsyncTask<String, Integer, Long> {
 
-		updateLisener	mUpdateListener;
+		updateLisener mUpdateListener;
 
-		private Boolean	mDone;
+		private Boolean mDone;
 
-		public LessonWorker(updateLisener ul)
-		{
+		public LessonWorker(updateLisener ul) {
 			mDone = false;
 			mUpdateListener = ul;
 		}
 
-		private int getActualProvidedLesson()
-		{
+		private int getActualProvidedLesson() {
 			int lesson = -1;
-			synchronized (mAddList)
-			{
-				if (mAddList != null && mAddList.size() > 0)
-				{
+			synchronized (mAddList) {
+				if (mAddList != null && mAddList.size() > 0) {
 					lesson = mAddList.get(0);
 					mAddList.remove(0);
 					mCurrentLesson = lesson;
-				}
-				else
-				{
+				} else {
 					mCurrentLesson = -1;
-					synchronized (mDone)
-					{
+					synchronized (mDone) {
 						mDone = false;
 					}
 				}
@@ -410,10 +348,8 @@ public class WordController
 		}
 
 		@Override
-		protected Long doInBackground(String... urls)
-		{
-			while (true)
-			{
+		protected Long doInBackground(String... urls) {
+			while (true) {
 				// get first task for adding
 				int lesson = getActualProvidedLesson();
 				if (lesson < 0)
@@ -436,10 +372,11 @@ public class WordController
 		 * @param weights
 		 *            - normaly 0, but in initial is set to 1
 		 */
-		private void addLessonFromList(int lesson, int weights)
-		{
-			String[] nt = LangSetting.getInitDataFromLT(CommonSetting.nativeCode, lesson);
-			String[] lr = LangSetting.getInitDataFromLT(CommonSetting.lernCode, lesson);
+		private void addLessonFromList(int lesson, int weights) {
+			String[] nt = LangSetting.getInitDataFromLT(
+					CommonSetting.nativeCode, lesson);
+			String[] lr = LangSetting.getInitDataFromLT(CommonSetting.lernCode,
+					lesson);
 
 			int start = 0;
 			int end = nt.length < lr.length ? nt.length : lr.length;
@@ -448,7 +385,8 @@ public class WordController
 			// to DB set first words as weight1,weight2 to 1,1
 			// because else isn't work getFirstWords
 			// the last list is bigger as used words
-			boolean initialize = weights == 0 && mDictionary.getCount() < Consts.MAX_LAST_LIST;
+			boolean initialize = weights == 0
+					&& mDictionary.getCount() < Consts.MAX_LAST_LIST;
 
 			boolean anyRemove = false;
 
@@ -456,19 +394,16 @@ public class WordController
 				weights = 1;
 
 			int num = 0;
-			if (start != -1 && end != -1 && start < nt.length)
-			{
+			if (start != -1 && end != -1 && start < nt.length) {
 				if (end >= nt.length)
 					end = nt.length - 1;
 
-				for (int i = start; i != end; i++)
-				{
+				for (int i = start; i != end; i++) {
 					final String slr = lr[i];
 					final String snt = nt[i];
 
 					// is task for remove all lesson in list
-					synchronized (mAddList)
-					{
+					synchronized (mAddList) {
 						if (mRemoveList != null && mRemoveList.size() > 0)
 							anyRemove = true;
 					}
@@ -479,14 +414,14 @@ public class WordController
 					if (anyRemove && removeLessonFromList(lesson))
 						return;
 
-					if (snt == null || snt.length() < 1 || slr == null || slr.length() < 1)
+					if (snt == null || snt.length() < 1 || slr == null
+							|| slr.length() < 1)
 						continue;
 
 					addWordEx(lesson, slr, snt, weights, weights);
 
 					// stop initialize first words to used value
-					if (initialize && num++ > Consts.MAX_LAST_LIST)
-					{
+					if (initialize && num++ > Consts.MAX_LAST_LIST) {
 						initialize = false;
 						weights = 0;
 					}
@@ -496,15 +431,12 @@ public class WordController
 			}
 		}
 
-		private boolean removeLessonFromList(int lesson)
-		{
+		private boolean removeLessonFromList(int lesson) {
 			boolean removethis = false;
 			boolean anyRemove = false;
 
-			synchronized (mAddList)
-			{
-				for (int r = 0; r != mRemoveList.size(); r++)
-				{
+			synchronized (mAddList) {
+				for (int r = 0; r != mRemoveList.size(); r++) {
 					int remove = mRemoveList.get(r);
 					mDictionary.unloadLesson(remove);
 					if (remove == lesson)
@@ -522,68 +454,56 @@ public class WordController
 		}
 
 		@Override
-		protected void onProgressUpdate(Integer... progress)
-		{
+		protected void onProgressUpdate(Integer... progress) {
 		}
 
 		@Override
-		protected void onPostExecute(Long result)
-		{
+		protected void onPostExecute(Long result) {
 			mDone = true;
 			callUpdateListener();
 			setUpdateListener(null);
 		}
 
-		private void callUpdateListener()
-		{
-			synchronized (mAddList)
-			{
+		private void callUpdateListener() {
+			synchronized (mAddList) {
 				if (mUpdateListener != null)
 					mUpdateListener.onUpdateDone();
 			}
-			
+
 		}
-		
-		public void setUpdateListener(updateLisener ul)
-		{
-			synchronized (mAddList)
-			{
+
+		public void setUpdateListener(updateLisener ul) {
+			synchronized (mAddList) {
 				mUpdateListener = ul;
 			}
 		}
 
-		public boolean isDone()
-		{
-			synchronized (mDone)
-			{
+		public boolean isDone() {
+			synchronized (mDone) {
 				return mDone;
 			}
 		}
 
 	}
 
-	public void enableLessonAsync(int lesson, boolean enable, updateLisener ul)
-	{
+	public void enableLessonAsync(int lesson, boolean enable, updateLisener ul) {
 		if (enable)
 			add(lesson);
 		else
 			remove(lesson);
 
-		if (!isAsyncRunning())
-		{
+		if (!isAsyncRunning()) {
 			mAsyncUpdate = new LessonWorker(ul);
 			mAsyncUpdate.execute("");
 		}
 
 	}
 
-	public boolean isAsyncRunning()
-	{
+	public boolean isAsyncRunning() {
 		return mAsyncUpdate != null && !mAsyncUpdate.isDone();
 	}
 
-	public void showWordsMenu()
-	{
+	public void showWordsMenu() {
 		Intent intent = new Intent(mContext, Dictionary.class);
 		mContext.startActivity(intent);
 	}

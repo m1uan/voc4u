@@ -150,9 +150,6 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 				dialog = ShowDialogForTtsSetting(R.string.msg_tts_data_missing);
 				break;
 			}
-			case BaseActivity.DIALOG_TTS_LANGUAGE_MISSING:
-				dialog = ShowDialogForTtsSetting(R.string.msg_tts_language_missing);
-				break;
 			default:
 				return super.onCreateDialog(id);
 		}

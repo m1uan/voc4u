@@ -1,5 +1,7 @@
 package com.voc4u.core;
 
+import com.voc4u.setting.Consts;
+
 public class DBConfig
 {
 	public static final String WORD_TABLE_NAME = "t_WORD";
@@ -42,8 +44,9 @@ public class DBConfig
 	
 	public static final String DICTIONARY_TABLE_SELECT_20_WEIGHT1 =
 		DICTIONARY_TABLE_SELECT + " ORDER BY "+ WEIGHT_1_COLUMN +" LIMIT 10";
+	
 	public static final String DICTIONARY_TABLE_SELECT_20_WEIGHT1_WHERE =
-		DICTIONARY_TABLE_SELECT + " %s ORDER BY "+ WEIGHT_1_COLUMN +" LIMIT 10";
+		DICTIONARY_TABLE_SELECT + " %s ORDER BY "+ WEIGHT_1_COLUMN +", " + WEIGHT_2_COLUMN ;
 	
 	public static final String DICTIONARY_TABLE_SELECT_BY_LESSON =
 		DICTIONARY_TABLE_SELECT + " WHERE " + DBConfig.LANG_LESSON + " = %d";
@@ -70,10 +73,7 @@ public class DBConfig
 		public static final String SETUP_WEIGHT = "UPDATE "
 			+ DBConfig.WORD_TABLE_NAME + " SET " 
 			+ WEIGHT_1_COLUMN + " = %d ," 
-			+ WEIGHT_2_COLUMN + " = %d WHERE "
-			+ WEIGHT_1_COLUMN + " = %d AND " 
-			+ WEIGHT_2_COLUMN + " = %d AND "
-			+ ID_COLUMN + " = %d";
+			+ WEIGHT_2_COLUMN + " = %d ";
 
 		
 		

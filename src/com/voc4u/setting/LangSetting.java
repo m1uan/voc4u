@@ -86,8 +86,8 @@ public class LangSetting
 	{
 		final String code = lt.code;
 
-//		if(lesson == 1)
-//			lesson = 5;
+		if(lesson == 1)
+			lesson = 5;
 		
 		try
 		{
