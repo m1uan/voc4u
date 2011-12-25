@@ -38,7 +38,7 @@ LESSON_4;Intermediate;
 LESSON_3;Pre-Intermediate;
 LESSON_2;Elementary;
 LESSON_1;Basic;
-INFORMATION_TRAIN;"Here you can train the your vocabulary. Two button """"know"""" and """"don't know"""" do display to you next word, but when use the """"don't know"""" the word will be show more frequently. Words in Train you can manage in Dictionary access from options menu.";
+INFORMATION_TRAIN;Here you can train the your vocabulary. Two button "know" and "don't know" do display to you next word, but when use the "don't know" the word will be show more frequently. Words in Train you can manage in Dictionary access from options menu.;
 HINT_LERN_WORD;lern word;
 INFORMATION_DICTIONARY;On this form you can select the lesson for your training. Any lesson have example with words which contain. ;
 DIC_MENU_ADD_WORD;   Add word;

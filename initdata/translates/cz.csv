@@ -38,12 +38,12 @@ LESSON_4;Pokroèilý;
 LESSON_3;Støednì-Pokroèilý;
 LESSON_2;Zaèateèník;
 LESSON_1;Zakladní;
-INFORMATION_TRAIN;"Tady mùžes trénovat svoji slovní zásobu. Dvì tlaèítka ""Znáš"" a ""Neznáš"" zobrazí další slovo, ale u slov kde jsi zmáèknul ""neznáš"" Ti budou pøedhazovany èastìji.\nUroveò slovní zásoby mužeš nastavit ve slovníku.\nKliknutím na slovo v listu je pøeèteno pomoci integrovaného syntetizatoru";
+INFORMATION_TRAIN;"Tady mùžes trénovat svoji slovní zásobu. Dvì tlaèítka ""Znám"" a ""Neznám"" zobrazí další slovo, ale u slov kde jsi zmáèknul ""Neznám"" Ti budou pøedhazovany èastìji.\nUroveò slovní zásoby mužeš nastavit ve slovníku.\nKliknutím na slovo v listu je pøeèteno pomoci integrovaného syntetizatoru";
 HINT_LERN_WORD;uèený jazyk;
 INFORMATION_DICTIONARY;Zde si mùžeš navolit uroveò slovní zasoby. Aby se Ti lépe vybíralo, má každá obtížnost zobrazena obsažená slova. Do slovníku si mùžeš také pøidat vlastní slovo.;
 DIC_MENU_ADD_WORD;       Pøidej slovo;
 MSG_RESET_DB;Z databaze bude smazano veškeré vaše jazykové nastavaní, aplikace se vrátí do pùvodního stavu!Opravdu chcete pokraèovat?;
-PREPARING;[pøipravuji];
+PREPARING;Pøipravuji...;
 FORM_INIT;Základní nastavení;
 SELECT_NATIVE_LANG;Vyber svùj rodný jazyk:;
 btn_speaker_repeat;Opakuj;
@@ -54,3 +54,5 @@ msg_must_be_any_checked;Alespoò jedna lekce musí být zaškrtnuta.;
 msg_your_are_sure_disable_lesson;Opravdu chcete tuto lekci odebrat?;
 msg_tts_language_missing;Vámi uèený jazyk, není pravdìpodobnì podporovaný syntetizátorem hlasu, chcete pøejít do nastavení Syntezy hlasu?;
 msg_tts_data_missing;V syntetyzatoru hlasu, pravdìpodobnì chybí data, chcete pøejít do nastavení Syntezy hlasu?;
+msg_our_lern_unsurported;Jazyk který se chceš nauèit není podporován hlasovým syntetizérem.
+lesson_5;m1uan
