@@ -117,7 +117,7 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 			// test set mTestAnyChecked was set
 			// and test any checked return true -> some items still checked (this is not calced)
 			// and test enable in db when in db take to question to user
-			if ((mTestAnyChecked == null || mTestAnyChecked.testAnyChecked(this)) && mWordCtrl.isEnableLesson(mLesson))
+			if (mWordCtrl.isEnableLesson(mLesson) && (mTestAnyChecked == null || mTestAnyChecked.testAnyChecked(this)))
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getContext());
