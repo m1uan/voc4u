@@ -464,7 +464,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 	 */
 	public boolean isAnyUnknownWord()
 	{
-		return numUnknownWord() > 0;
+		return numUnknownWord() == 0;
 	}
 
 	long numUnknownWord() 

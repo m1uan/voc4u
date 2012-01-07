@@ -68,7 +68,7 @@ public class DBConfig
 		public static final String GET_ENABLED = "SELECT COUNT(*) FROM " + DBConfig.WORD_TABLE_NAME + " WHERE " + DBConfig.ID_COLUMN + " >= %d AND " + DBConfig.ID_COLUMN + " < %d AND " + DBConfig.WEIGHT_1_COLUMN + " > 0";
 		public static final String GET_LESSON_ENABLED = "SELECT COUNT(*) FROM " + DBConfig.WORD_TABLE_NAME + " WHERE " + DBConfig.LANG_LESSON + " = %d";
 		
-		public static final String EXIST_UNKNOWS_WORDS = "SELECT COUNT(*) FROM " + DBConfig.WORD_TABLE_NAME + " WHERE " + DBConfig.WEIGHT_1_COLUMN + " = 1 OR "+ DBConfig.WEIGHT_2_COLUMN + " = 1";
+		public static final String EXIST_UNKNOWS_WORDS = "SELECT COUNT(*) FROM " + DBConfig.WORD_TABLE_NAME + " WHERE " + DBConfig.WEIGHT_1_COLUMN + " = 1 AND "+ DBConfig.WEIGHT_2_COLUMN + " = 1";
 		
 		public static final String SETUP_WEIGHT = "UPDATE "
 			+ DBConfig.WORD_TABLE_NAME + " SET " 
