@@ -4,7 +4,7 @@
 -->
 <resources>
     
-	<string name="ids_tap_for_display" formatted="false">*** Click to View ***</string>
+	<string name="tap_for_display" formatted="false">*** Click to View ***</string>
 	<string name="form_dictionary" formatted="false">Wörterbuch</string>
 	<string name="information_init" formatted="false">man muss sich seine eigene Muttersprache aussuchen und die Sprache die man lernen will und dann kann man trenieren gehen</string>
 	<string name="hint_native_word" formatted="false">in der Muttersprache</string>

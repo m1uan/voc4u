@@ -6,9 +6,9 @@
     
 	<string name="tap_for_display" formatted="false">*** tap for display ***</string>
 	<string name="form_dictionary" formatted="false">Dictionary</string>
-	<string name="information_init" formatted="false">Select you native language, next select language which you want lern. And let\'s go train </string>
+	<string name="information_init" formatted="false">Select you native language, next select language which you want learn. And let\'s go train</string>
 	<string name="hint_native_word" formatted="false">native word</string>
-	<string name="msg_our_lern_unsurported" formatted="false">Our lern language is unsurported by Speech to Text syntetizer</string>
+	<string name="msg_our_lern_unsurported" formatted="false">Our learn language is unsurported by Speech to Text syntetizer</string>
 	<string name="form_dashboard" formatted="false">Voc4u</string>
 	<string name="btn_train" formatted="false">TRAIN</string>
 	<string name="start" formatted="false">start</string>
@@ -16,17 +16,17 @@
 	<string name="speech_to_text" formatted="false">Try to tell the word on up with the true pronunciation.</string>
 	<string name="not_selected_yet" formatted="false">Not selected yet...</string>
 	<string name="information_dashboard" formatted="false">Welcome in Vocabulary For You. The voc4u have three options.\n#1: Train is the main and there you can improve memory of vocabulary, for examle in public transport.\n#2: Speaker mod is about, vocabulary to speech and you can only listening, for examle when you go to bet.\n#3: For otherwise here is mode for trying pronunciation, the Phone listening you and comparing with the regular word.</string>
-	<string name="dic_menu_dictionary" formatted="false">   Dictionary</string>
-	<string name="select_lern_lang" formatted="false">Select your lern language:</string>
+	<string name="dic_menu_dictionary" formatted="false">Dictionary</string>
+	<string name="select_lern_lang" formatted="false">Select your learn language:</string>
 	<string name="language_select" formatted="false">Language selector</string>
 	<string name="btn_noshowmore" formatted="false">don\'t show again</string>
 	<string name="btn_know" formatted="false">Know</string>
 	<string name="custom_word_empty" formatted="false">Not add word yet</string>
 	<string name="form_train" formatted="false">Train</string>
-	<string name="dic_menu_info" formatted="false">   Help</string>
+	<string name="dic_menu_info" formatted="false">Help</string>
 	<string name="custom_word_item" formatted="false">Custom words</string>
 	<string name="msg_must_be_fill_both_edit_field" formatted="false">For save add word, must be filled both field!</string>
-	<string name="dic_menu_reset_db" formatted="false">   Reset DB</string>
+	<string name="dic_menu_reset_db" formatted="false">Reset DB</string>
 	<string name="train_empty_list" formatted="false">Know or don\'t know</string>
 	<string name="btn_dontknow" formatted="false">Don\'t know</string>
 	<string name="btn_menu" formatted="false">Menu</string>
@@ -44,10 +44,10 @@
 	<string name="lesson_3" formatted="false">Pre-Intermediate</string>
 	<string name="lesson_2" formatted="false">Elementary</string>
 	<string name="lesson_1" formatted="false">Basic</string>
-	<string name="information_train" formatted="false">Here you can train the your vocabulary. Two button \"\"know\"\" and \"\"don\'t know\"\" do display to you next word, but when use the \"\"don\'t know\"\" the word will be show more frequently. Words in Train you can manage in Dictionary access from options menu.</string>
+	<string name="information_train" formatted="false">Here you can train the your vocabulary. Two button \"know\" and \"don\'t know\" do display to you next word, but when use the \"don\'t know\" the word will be show more frequently. Words in Train you can manage in Dictionary access from options menu.</string>
 	<string name="hint_lern_word" formatted="false">lern word</string>
-	<string name="information_dictionary" formatted="false">On this form you can select the lesson for your training. Any lesson have example with words which contain. </string>
-	<string name="dic_menu_add_word" formatted="false">   Add word</string>
+	<string name="information_dictionary" formatted="false">On this form you can select the lesson for your training. Any lesson have example with words which contain.</string>
+	<string name="dic_menu_add_word" formatted="false">Add word</string>
 	<string name="msg_reset_db" formatted="false">From DB will be removed all lessons with their setting. You will must select language setting as on first. Do you want to continue?</string>
 	<string name="preparing" formatted="false">[preparing]</string>
 	<string name="form_init" formatted="false">Initialize setting</string>
