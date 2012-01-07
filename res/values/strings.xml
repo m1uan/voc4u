@@ -45,7 +45,7 @@
 	<string name="lesson_2" formatted="false">Elementary</string>
 	<string name="lesson_1" formatted="false">Basic</string>
 	<string name="information_train" formatted="false">Here you can train the your vocabulary. Two button \"know\" and \"don\'t know\" do display to you next word, but when use the \"don\'t know\" the word will be show more frequently. Words in Train you can manage in Dictionary access from options menu.</string>
-	<string name="hint_lern_word" formatted="false">lern word</string>
+	<string name="hint_lern_word" formatted="false">learn word</string>
 	<string name="information_dictionary" formatted="false">On this form you can select the lesson for your training. Any lesson have example with words which contain.</string>
 	<string name="dic_menu_add_word" formatted="false">Add word</string>
 	<string name="msg_reset_db" formatted="false">From DB will be removed all lessons with their setting. You will must select language setting as on first. Do you want to continue?</string>
@@ -58,7 +58,7 @@
 	<string name="btn_menu_home" formatted="false">Home</string>
 	<string name="msg_must_be_any_checked" formatted="false">One lesson must be at least checked or must be add few words as custom</string>
 	<string name="msg_your_are_sure_disable_lesson" formatted="false">Are you sure you want to disable?</string>
-	<string name="msg_tts_language_missing" formatted="false">Probably your lern language isn\'t support in Text to Speech. Do you want go to setting?</string>
+	<string name="msg_tts_language_missing" formatted="false">Probably your learn language isn\'t support in Text to Speech. Do you want go to setting?</string>
 	<string name="msg_tts_data_missing" formatted="false">Probably missing data in Text to Speech. Do you want go to setting?</string><string-array name="lessons"><item>Essential</item><item>Elementary</item><item>Pre-intermediate</item><item>Intermediate</item> </string-array>
 </resources>
 
