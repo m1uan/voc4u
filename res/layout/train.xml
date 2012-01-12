@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+   	<ImageView 
+	    android:padding="15dp"
+	    android:paddingBottom="0dp"
+	    android:layout_marginBottom="15dp"
+	    android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/bg_logo_transparent"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentBottom="true"
+				/>
+    
+    <RelativeLayout
+        android:id="@+id/word"
+        android:layout_width="fill_parent"
+        android:layout_height="55dp"
+        android:background="@color/control_panel" >
+
+        <TextView
+            android:id="@+id/wordTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textColor="@color/blue_button_text"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/word2TextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/wordTextView"
+            android:text="" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lastList"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/word"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="55dp"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="0dp"
+        android:orientation="horizontal"
+        android:padding="0dp" >
+
+       
+        <Button
+            android:id="@+id/dontKnowButton"
+            style="@style/ButtonKnows"
+            android:onClick="onDontKnowButton"
+            android:text="@string/btn_dontknow"
+            android:layout_weight="1" />
+		
+		<LinearLayout
+		    android:id="@+id/nextButtonLayout"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+       		android:layout_weight="1"
+        	android:paddingLeft="1dp">
+        	<Button
+            	android:id="@+id/nextButton"
+           		style="@style/ButtonKnows"
+            	
+            	android:onClick="onNextButton"
+            	android:text="@string/btn_know" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

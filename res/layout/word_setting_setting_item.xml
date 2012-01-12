@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:focusable="false">
+	
+<!--	<TextView -->
+<!--		android:layout_width="fill_parent"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:text="select native languate"-->
+<!--	/>-->
+<!--	-->
+<!--	<Spinner-->
+<!--		android:layout_width="fill_parent"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:id="@+id/spinner"/>-->
+	
+	
+	
+<!--	 <RelativeLayout-->
+<!--                    android:layout_width="fill_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingLeft="6dp"-->
+<!--                    android:paddingRight="6dp">-->
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:id="@+id/txtDistanceMin"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/tvOnlyNative"-->
+<!--                        android:layout_alignParentLeft="true"-->
+<!--                         />-->
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:id="@+id/txtDistanceMax"-->
+<!--                        android:layout_alignParentRight="true"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/tvOnlyLern"-->
+<!--                        />-->
+<!--                    <TextView-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:id="@+id/txtDistance"-->
+<!--                        android:text="@string/tvUseWords"-->
+<!--                        android:textStyle="bold"-->
+<!--                         />-->
+<!--                </RelativeLayout>-->
+<!--		-->
+<!--	<SeekBar-->
+<!--		android:padding="4dp"-->
+<!--		android:layout_width="fill_parent"-->
+<!--		android:layout_height="wrap_content"-->
+<!--		android:id="@+id/seekbar"-->
+<!--		/>-->
+	
+	<Button
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnAddWord"
+		android:text="@string/dic_menu_add_word"
+		android:onClick="onBtnAddWord"
+		android:visibility="gone"
+	/>
+		
+	</LinearLayout>

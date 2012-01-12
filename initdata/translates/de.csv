@@ -1,0 +1,57 @@
+TAP_FOR_DISPLAY;*** Click to View ***;
+FORM_DICTIONARY;Wörterbuch;
+INFORMATION_INIT;man muss sich seine eigene Muttersprache aussuchen und die Sprache die man lernen will und dann kann man trenieren gehen;-)
+HINT_NATIVE_WORD;in der Muttersprache;
+MSG_OUR_LERN_UNSURPORTED;;
+FORM_DASHBOARD;Voc4u;
+BTN_TRAIN;Treniere;
+START;Anfang;
+SAVE_DICTIONARY;sparen Wörterbuch;
+SPEECH_TO_TEXT;Zu sagen, das Wort mit der korrekten Aussprache.;
+NOT_SELECTED_YET;nicht gewählt...;
+INFORMATION_DASHBOARD;Willkommen in applikation Vocabulary For You. Voc4u  hat 4 möglichkeiten.\n#1: Das trenieren ist das wichtigste, damit kanns du dir die Wörter merken z.B im Bus.\n#2: Das Diktafon lest dir die Wörter wennst du schlafen gehst.\n#3: Im letzten Teil kannst du dir die aussprache verbessern, wenn die aplikation weil es nach derstimme geht;
+DIC_MENU_DICTIONARY;       Wörterbuch;
+SELECT_LERN_LANG;Auswahl der Sprache die man Übersetzen will:;
+LANGUAGE_SELECT;Auswahl der Sprache;
+BTN_KNOW;können;
+BTN_NOSHOWMORE;nicht wirklich zeigen mehr;
+CUSTOM_WORD_EMPTY;Bisher hast du keine eigene Wörter hinzugefügt.;
+FORM_TRAIN;Trenieren;
+DIC_MENU_INFO;       Hilfen;
+CUSTOM_WORD_ITEM;eigenen Worten;
+MSG_MUST_BE_FILL_BOTH_EDIT_FIELD;Das merken von eigenem Wort ist es wichtig die beide Felder zu fühlen!;
+DIC_MENU_RESET_DB;       Reset DB;
+TRAIN_EMPTY_LIST;Weißt du, oder nicht?;
+BTN_DONTKNOW;ich weiß nicht;
+BTN_MENU;Menu;
+ADD_WORD_BUTTON;fügen Sie das Wort;
+BTN_CANCEL;Cancel;
+STT_NOT_SUCCESS;Syntetizator konnte das wort ned wissen, wollen sie ein neues wort?;
+ADD_WORD_TITLE;Fügen Sie eigene das Wort;
+BTN_STOP_LISTENING;Hit durch eine Abstimmung der Worte.;
+STT_ERROR_OCCURRED;Sorry, aber Der rede syntetizator geht ned!;
+FORM_LISTENER;Listener;
+STT_SUCCESS;Ihre Aussprache ist perfekt! :-) Lassen Sie uns mit dem nächsten Wort gehen..;
+EMPTY_CUSTOM_LIST;Weißt du, oder nicht;
+LESSON_5;;
+LESSON_4;fortgeschritten;
+LESSON_3;Medium-Advanced;
+LESSON_2;Anfänger;
+LESSON_1;grundgelegte;
+INFORMATION_TRAIN;Das trenieren von Wörtern. Zwei tasten "kann ich" und "kann ich nicht"  kann das nächste wort angezeit werden aber bei den wörten wo man hindruckt "kann ich nicht"  die werden öffter hergenommen.\nDas Schwirigkeitsgrad kann man am Anfang festgelegen.\nKlicken Sie auf das Wort Liste erfolgt über einen integrierten Synthesizer lesen;
+HINT_LERN_WORD;gelernten Sprache;
+INFORMATION_DICTIONARY;Damit du dir leichter tust,hat jedes schwirigkeitsgrad ein beispielwort da. Das Wörtebuch kann aber auch eigene worte dazu machen.;
+DIC_MENU_ADD_WORD;       Fügen Sie ein Wort;
+MSG_RESET_DB;beim löschen des eigenen Spracheinstellung, wird wieder alles in dem alten gemacht Wollen sie echt weitermachen?;
+PREPARING;[vorbereiten];
+FORM_INIT;Grundeinstellungen;
+SELECT_NATIVE_LANG;Wählen Sie Ihre Muttersprache:;
+btn_speaker_repeat;Repeat
+btn_menu_speech_setting;Einstellungen Sprachsynthese
+toas_word_is_add;Wörtchen [% s -% s] wurde hinzugefügt
+btn_menu_home;Startseite
+msg_must_be_any_checked;mindestens eine Lektion muss überprüft werden.
+msg_your_are_sure_disable_lesson;Sie sicher, dass Sie diese Lektion zu entfernen?
+msg_tts_language_missing;Vámi uèený jazyk, není pravdìpodobnì podporovaný syntetizátorem hlasu, chcete pøejít do nastavení Syntezy hlasu?
+msg_tts_data_missing;In syntetyzatoru Sprach-, Daten fehlen, wenn Sie gehen Einstellung Sprachsynthese wollen?
+lesson_5;m1uan

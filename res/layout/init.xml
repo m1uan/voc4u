@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#FFFFFF">
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textColor="@color/texts"
+			android:text="@string/select_native_lang" />
+
+		<Spinner
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/spnNative" />
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/select_lern_lang"
+			android:textColor="@color/texts" />
+
+		<Spinner
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/spnLern" />
+
+		
+	</LinearLayout>
+	<Button
+	    	android:layout_alignParentBottom="true"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/start"
+			android:onClick="onStart"
+			android:textColor="@color/texts"/>
+</RelativeLayout>

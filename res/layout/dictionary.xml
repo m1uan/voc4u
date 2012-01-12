@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/cbg_activity">
+	
+<!--	<LinearLayout-->
+<!--		android:layout_width="fill_parent"-->
+<!--		android:layout_height="fill_parent"-->
+<!--		android:paddingBottom="50dp"-->
+<!--		android:background="@color/cbg_activity">-->
+		<ListView
+			android:id="@+id/list"
+			android:background="@color/cbg_list"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+		>
+		</ListView>
+<!--	</LinearLayout>-->
+	
+	<LinearLayout
+		android:id="@+id/buttonBlock"
+		android:padding="5dp"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="#0A0A0A"
+		android:layout_alignParentBottom="true"
+		android:visibility="gone">
+		
+		<Button
+			android:id="@+id/btnStoreSetting"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="store setting" 
+			android:layout_weight="1" />
+	</LinearLayout>
+</RelativeLayout>
