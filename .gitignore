@@ -5,3 +5,5 @@ src/com/voc4u/lang/
 local.properties
 .pydevproject
 *~
+initdata/
+.settings/
