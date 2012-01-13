@@ -8,7 +8,7 @@ import sys
 
 
 dirs = [ 1, 2, 3, 4, 5 ]
-langs = [ "CS" , "DE", "EN" , "ES", "FR", "PL", "PT"]
+langs = [ "CS" , "DE", "EN" , "ES", "FR", "PL", "PT", "IT"]
 hidden = [ "es", "cs", "de", "lv", "sq", "lt", "tl", "fi", "no", "sl", "bs", "eo", "de " ] 
 dirname = "lesson"
 filename = "Data"
@@ -116,13 +116,17 @@ def make(srcdir, descdir):
 #
 def makeNavigateCPPFILE():
     tinc = "#include \"lesson%(lesson)s/Data%(lang)s.h\"\n";
-    tifs = "\t\tif( lesson == %(lesson)s && lang == \"%(lang)s\"){ count = DATA_%(lang)s_%(lesson)s::num;return (wchar_t**)DATA_%(lang)s_%(lesson)s::texts;}\n"
+    tifs = "\t\tif( lesson == %(lesson)s && lang == \"%(lang_id)s\"){ count = DATA_%(lang)s_%(lesson)s::num;return (wchar_t**)DATA_%(lang)s_%(lesson)s::texts;}\n"
     
     inc = ""
     ifs = ""
     for lesson in dirs:
         for lang in langs:
-            param = {"lesson" : lesson, "lang" :lang}
+            langid = lang
+            if langid == "CS":
+                langid = "CZ"
+                
+            param = {"lesson" : lesson, "lang_id" : langid, "lang" :lang}
             inc += tinc % param
             ifs += tifs % param
             
