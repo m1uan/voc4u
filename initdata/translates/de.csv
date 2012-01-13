@@ -48,7 +48,7 @@ FORM_INIT;Grundeinstellungen;
 SELECT_NATIVE_LANG;Wählen Sie Ihre Muttersprache:;
 btn_speaker_repeat;Repeat
 btn_menu_speech_setting;Einstellungen Sprachsynthese
-toas_word_is_add;Wörtchen [% s -% s] wurde hinzugefügt
+toas_word_is_add;Wörtchen [%s - %s] wurde hinzugefügt
 btn_menu_home;Startseite
 msg_must_be_any_checked;mindestens eine Lektion muss überprüft werden.
 msg_your_are_sure_disable_lesson;Sie sicher, dass Sie diese Lektion zu entfernen?
