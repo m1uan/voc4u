@@ -125,6 +125,8 @@ def makeNavigateCPPFILE():
             langid = lang
             if langid == "CS":
                 langid = "CZ"
+            if langid == "EN":
+                langid = "GB"
                 
             param = {"lesson" : lesson, "lang_id" : langid, "lang" :lang}
             inc += tinc % param
