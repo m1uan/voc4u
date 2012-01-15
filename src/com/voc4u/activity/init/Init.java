@@ -38,6 +38,8 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 	protected int mLern;
 	private LangType[] lernLangType;
 	private TextToSpeech mTts = null;
+	private LangType ltNative;
+	private LangType ltLearn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -49,8 +51,12 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		fillNative();
 		//fillLern();
 		
+		
+		
 		if(!DialogInfo.GetChecked(DialogInfo.TYPE_INIT))
+		{
 			showDialog(BaseActivity.DIALOG_SHOW_INFO);
+		}
 	}
 	
 	@Override
@@ -70,9 +76,28 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 //				LangSetting.getLangArray());
 		//nat.setAdapter(spinnerArrayAdapter);
 		
-		CountryAdapter ca = new CountryAdapter(LangSetting.getLangArray());
+		LangType[] langs = LangSetting.getLangArray();
+		
+		CountryAdapter ca = new CountryAdapter(langs);
 		nat.setAdapter(ca);
-		nat.setSelection(0, false);
+		
+		Locale def = Locale.getDefault();
+		String sdef = def.getLanguage().toLowerCase();
+		
+		int select = 0;
+		boolean selected = false;
+		for(LangType lt: langs)
+		{
+			String sl = lt.code.toLowerCase();
+			if(sl.contains(sdef))
+			{
+				selected = true;
+				break;
+			}
+			select++;
+		}
+		
+		nat.setSelection(selected ? select : 0, false);
 	}
 
 	
@@ -118,6 +143,8 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 	
 	public void onStart(View view)
 	{
+		CommonSetting.lernCode = ltLearn;
+		CommonSetting.nativeCode = ltNative;
 		CommonSetting.store(this);
 		CommonSetting.restore(this);
 		WordController.getInstance(this).enableLessonAsync(1, true, null);
@@ -147,7 +174,7 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int index,
 			long arg3)
 	{
-		CommonSetting.nativeCode = LangSetting.getLangArray()[index];
+		ltNative = LangSetting.getLangArray()[index];
 		fillLern();
 	}
 
@@ -173,7 +200,7 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3)
 			{
-				CommonSetting.lernCode = LangSetting.getLangTypeFromCode(lernLangType[arg2].code);
+				ltLearn = LangSetting.getLangTypeFromCode(lernLangType[arg2].code);
 			}
 
 			@Override
@@ -194,7 +221,7 @@ public class Init extends Activity implements OnItemSelectedListener, updateLise
 		{
 			LangType source = all[i];
 
-			if (source.id == CommonSetting.nativeCode.id)
+			if (source.id == ltNative.id)
 				continue;
 
 			lLT[m++] = source;
