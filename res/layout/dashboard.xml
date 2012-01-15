@@ -14,6 +14,46 @@
 		android:layout_centerHorizontal="true"
 		android:layout_alignParentBottom="true"
 				/>
+			<TextView 
+			    android:id="@+id/invisibleTop"
+			    android:layout_width="10dp"
+				android:layout_height="20dp"
+				android:visibility="invisible"
+				/>
+			<TextView 
+			    android:visibility="invisible"
+			    android:id="@+id/numOfWordsDesc"
+			    android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:layout_margin="0dp"
+				android:padding="0dp"
+				android:layout_below="@id/invisibleTop" 
+				android:text="know/dont know" 
+				android:layout_centerHorizontal="true"/>
+	    	<TextView 
+	    	    android:visibility="invisible"
+	    	    android:id="@+id/numOfWords"
+	    	    android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="40sp"
+				android:textStyle="bold"
+				android:layout_margin="0dp"
+				android:layout_marginBottom="10dp"
+				android:padding="0dp"
+				android:textColor="#ff6f0f"
+			    android:text="60/100"
+			    android:layout_centerHorizontal="true"
+			    android:layout_below="@id/numOfWordsDesc" />
+	    	
+	    	<TextView 
+			    android:id="@+id/invisibleMiddle"
+			    android:layout_width="10dp"
+				android:layout_height="20dp"
+				android:visibility="invisible"
+				
+			android:layout_below="@id/numOfWords"
+				/>
 		<Button
 			android:id="@+id/trainButton"
 			android:layout_width="225dp"
@@ -22,10 +62,12 @@
 			android:textColor="@color/blue_button_text"
 			android:layout_centerHorizontal="true"
 			android:onClick="onTrainButton" 
-			android:layout_marginTop="40dp"
-			android:padding="0dp"
 			android:background="@drawable/btn_train"
-			android:textSize="30sp"
+			android:layout_marginTop="0dp"
+			android:padding="10dp"
+			android:textSize="25sp"
+			android:layout_below="@id/invisibleMiddle"
+			
 			 />
 			
 <!--			 <Button-->
@@ -39,7 +81,7 @@
 				android:orientation="horizontal"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:padding="5dp"
+				android:padding="0dp"
 				android:layout_centerHorizontal="true"
 				android:layout_below="@id/trainButton">
 				<Button
@@ -48,8 +90,8 @@
 					android:layout_height="90dp"
 					android:text=""
 					android:onClick="onSpeakerButton"
-					android:layout_margin="5dp"
 					android:background="@drawable/btn_speaker"
+					android:layout_margin="1dp"
 					 />
 				<Button
 					android:id="@+id/speechButton"
@@ -57,8 +99,9 @@
 					android:layout_height="90dp"
 					android:text=""
 					android:onClick="onSpeechButton"
-					android:layout_margin="5dp" 
 					android:background="@drawable/btn_listener"
+					android:layout_marginTop="1dp"
+					
 					 />
 			</LinearLayout>
 			

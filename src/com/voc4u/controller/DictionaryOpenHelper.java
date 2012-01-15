@@ -25,6 +25,14 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 
 	SQLiteDatabase mDB = null;
 
+	public enum NUM_WORDS_TYPE
+	{
+		KNOWS,
+		UNKNOWS,
+		UNUSED,
+		ALL
+	}
+	
 	public DictionaryOpenHelper(Context context)
 	{
 		super(context, DBConfig.WORD_TABLE_NAME, null,
@@ -346,14 +354,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 	
 	public long getCount()
 	{
-		 String sql = "SELECT COUNT(*) FROM " + DBConfig.WORD_TABLE_NAME;
-		    SQLiteStatement statement = getReadableDatabase().compileStatement(sql);
-		    long count = statement.simpleQueryForLong();
-		    statement.close();
-		    
-		    Log.i(TAG, "num words in DB is " + String.valueOf(count));
-		    
-		    return count;
+		return getNumWords(NUM_WORDS_TYPE.ALL);
 	}
 	
 	
@@ -467,14 +468,39 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		return numUnknownWord() == 0;
 	}
 
+
+	
 	long numUnknownWord() 
 	{
-		SQLiteStatement statement = getReadableDatabase().compileStatement(DBConfig.EXIST_UNKNOWS_WORDS);
+		return getNumWords(NUM_WORDS_TYPE.UNKNOWS);
+	}
+	
+	
+	public long getNumWords(NUM_WORDS_TYPE type) 
+	{
+		String str;
+		switch(type)
+		{
+		case KNOWS:
+			str = DBConfig.EXIST_KNOWS_WORDS;
+			break;
+		case UNKNOWS:
+			str = DBConfig.EXIST_UNKNOWS_WORDS;
+			break;
+		case UNUSED:
+			str = DBConfig.EXIST_UNUSED_WORDS;
+			break;
+		default:
+			str = "SELECT COUNT(*) FROM " + DBConfig.WORD_TABLE_NAME;
+		}
+		
+		SQLiteStatement statement = getReadableDatabase().compileStatement(str);
 	    long count = statement.simpleQueryForLong();
 	    statement.close();
 	    Log.i(TAG, "num of unknow word (with weight1,waight2=1,1) : " + String.valueOf(count));
 		return count;
 	}
+	
 	
 	/**
 	 * setup first word with weight 0, 0 to 1, 1

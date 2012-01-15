@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 
 import com.voc4u.activity.dictionary.Dictionary;
+import com.voc4u.controller.DictionaryOpenHelper.NUM_WORDS_TYPE;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
 import com.voc4u.setting.LangSetting;
@@ -162,18 +163,31 @@ public class WordController {
 		return mDictionary.getLastListIds(mLastList) ;
 	}
 
-	public void updatePublicWord(boolean remember) {
+	public void updatePublicWord(boolean remember) 
+	{
 		Assert.assertNotNull(mDictionary);
-		if (mDictionary != null) {
+		if (mDictionary != null) 
+		{
 			mPublicWord.setSuccess(remember);
-
 			mPublicWord.setRemember(remember);
-
-			mDictionary.updateWordWeights(mPublicWord.getBaseWord());
-
+			//mDictionary.updateWordWeights(mPublicWord.getBaseWord());
+			new UpdatePublicWordWorker().execute(mPublicWord);
 		}
 	}
 
+	private class UpdatePublicWordWorker extends AsyncTask<PublicWord, Integer, Long> 
+	{
+
+		@Override
+		protected Long doInBackground(PublicWord... arg0) 
+		{
+			mDictionary.updateWordWeights(arg0[0].getBaseWord());
+			return null;
+		}
+		
+	}
+	
+	
 	public static int calcWeight(int weight, boolean remember) {
 		weight = weight > 0 ? weight : 1;
 
@@ -233,7 +247,10 @@ public class WordController {
 		return mDictionary.getPublicWordById(id);
 	}
 
-	public void unloadAllLesson() {
+	public void unloadAllLesson() 
+	{
+		mFistWordList = null;
+		mLastList.clear();
 		mDictionary.unloadLesson(-1);
 	}
 
@@ -398,12 +415,14 @@ public class WordController {
 				if (end >= nt.length)
 					end = nt.length - 1;
 
-				for (int i = start; i != end; i++) {
+				for (int i = start; i != end; i++) 
+				{
 					final String slr = lr[i];
 					final String snt = nt[i];
 
 					// is task for remove all lesson in list
-					synchronized (mAddList) {
+					synchronized (mAddList) 
+					{
 						if (mRemoveList != null && mRemoveList.size() > 0)
 							anyRemove = true;
 					}
@@ -421,9 +440,18 @@ public class WordController {
 					addWordEx(lesson, slr, snt, weights, weights);
 
 					// stop initialize first words to used value
-					if (initialize && num++ > Consts.MAX_LAST_LIST) {
+					if (initialize && num++ > Consts.MAX_LAST_LIST) 
+					{
 						initialize = false;
 						weights = 0;
+					}
+					
+					try
+					{
+						Thread.sleep(20);
+					} catch (InterruptedException e) 
+					{
+						e.printStackTrace();
 					}
 				}
 
@@ -506,5 +534,10 @@ public class WordController {
 	public void showWordsMenu() {
 		Intent intent = new Intent(mContext, Dictionary.class);
 		mContext.startActivity(intent);
+	}
+	
+	public long getNumWordsInDB(NUM_WORDS_TYPE type)
+	{
+		return mDictionary.getNumWords(type);
 	}
 }
