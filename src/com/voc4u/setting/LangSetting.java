@@ -11,6 +11,7 @@ public class LangSetting
 	public static final String		LANG_EN			= "EN";
 	public static final String		LANG_ES			= "ES";
 	public static final String		LANG_FR			= "FR";
+	public static final String		LANG_IT			= "IT";
 	public static final String		LANG_PT			= "PT";
 	public static final String		LANG_PL			= "PL";
 
@@ -19,8 +20,9 @@ public class LangSetting
 	public static final LangType	EN				= new LangType(3, LANG_EN);
 	public static final LangType	ES				= new LangType(4, LANG_ES);
 	public static final LangType	FR				= new LangType(5, LANG_FR);
-	public static final LangType	PL				= new LangType(6, LANG_PL);
-	public static final LangType	PT				= new LangType(7, LANG_PT);
+	public static final LangType	IT				= new LangType(6, LANG_IT);
+	public static final LangType	PL				= new LangType(7, LANG_PL);
+	public static final LangType	PT				= new LangType(8, LANG_PT);
 
 	/**
 	 * num words in lesson size of array is define num of lessons
@@ -49,7 +51,7 @@ public class LangSetting
 
 	public final static LangType[] getLangArray()
 	{
-		return new LangType[] { CZ, (DE), (EN), (ES), (FR), (PL), (PT), };
+		return new LangType[] { CZ, (DE), (EN), (ES), (FR), (IT), (PL), (PT), };
 	}
 
 	public static LangType getLangTypeFromCode(final String code)
