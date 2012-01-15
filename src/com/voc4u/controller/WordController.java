@@ -162,18 +162,31 @@ public class WordController {
 		return mDictionary.getLastListIds(mLastList) ;
 	}
 
-	public void updatePublicWord(boolean remember) {
+	public void updatePublicWord(boolean remember) 
+	{
 		Assert.assertNotNull(mDictionary);
-		if (mDictionary != null) {
+		if (mDictionary != null) 
+		{
 			mPublicWord.setSuccess(remember);
-
 			mPublicWord.setRemember(remember);
-
-			mDictionary.updateWordWeights(mPublicWord.getBaseWord());
-
+			//mDictionary.updateWordWeights(mPublicWord.getBaseWord());
+			new UpdatePublicWordWorker().execute(mPublicWord);
 		}
 	}
 
+	private class UpdatePublicWordWorker extends AsyncTask<PublicWord, Integer, Long> 
+	{
+
+		@Override
+		protected Long doInBackground(PublicWord... arg0) 
+		{
+			mDictionary.updateWordWeights(arg0[0].getBaseWord());
+			return null;
+		}
+		
+	}
+	
+	
 	public static int calcWeight(int weight, boolean remember) {
 		weight = weight > 0 ? weight : 1;
 

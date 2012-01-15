@@ -139,8 +139,11 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	private void updateWord(boolean know)
 	{
 		mWCtrl.updatePublicWord(know);
-		mListAdapter = new LastListAdapter(this);
-		lvLastItems.setAdapter(mListAdapter);
+		
+		//mListAdapter = new LastListAdapter(this);
+		
+		//lvLastItems.setAdapter(mListAdapter);
+		lvLastItems.invalidateViews();
 		setupFirstWord(true);
 		
 	}
