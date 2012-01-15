@@ -398,12 +398,14 @@ public class WordController {
 				if (end >= nt.length)
 					end = nt.length - 1;
 
-				for (int i = start; i != end; i++) {
+				for (int i = start; i != end; i++) 
+				{
 					final String slr = lr[i];
 					final String snt = nt[i];
 
 					// is task for remove all lesson in list
-					synchronized (mAddList) {
+					synchronized (mAddList) 
+					{
 						if (mRemoveList != null && mRemoveList.size() > 0)
 							anyRemove = true;
 					}
@@ -421,9 +423,18 @@ public class WordController {
 					addWordEx(lesson, slr, snt, weights, weights);
 
 					// stop initialize first words to used value
-					if (initialize && num++ > Consts.MAX_LAST_LIST) {
+					if (initialize && num++ > Consts.MAX_LAST_LIST) 
+					{
 						initialize = false;
 						weights = 0;
+					}
+					
+					try
+					{
+						Thread.sleep(20);
+					} catch (InterruptedException e) 
+					{
+						e.printStackTrace();
 					}
 				}
 
