@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 
 import com.voc4u.activity.dictionary.Dictionary;
+import com.voc4u.controller.DictionaryOpenHelper.NUM_WORDS_TYPE;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
 import com.voc4u.setting.LangSetting;
@@ -533,5 +534,10 @@ public class WordController {
 	public void showWordsMenu() {
 		Intent intent = new Intent(mContext, Dictionary.class);
 		mContext.startActivity(intent);
+	}
+	
+	public long getNumWordsInDB(NUM_WORDS_TYPE type)
+	{
+		return mDictionary.getNumWords(type);
 	}
 }
