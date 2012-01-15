@@ -246,7 +246,10 @@ public class WordController {
 		return mDictionary.getPublicWordById(id);
 	}
 
-	public void unloadAllLesson() {
+	public void unloadAllLesson() 
+	{
+		mFistWordList = null;
+		mLastList.clear();
 		mDictionary.unloadLesson(-1);
 	}
 
