@@ -22,6 +22,7 @@ import com.voc4u.activity.init.Init;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
+import com.voc4u.ws.AddWord;
 
 public class BaseActivity extends Activity implements OnMenuItemClickListener {
 
@@ -126,12 +127,15 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 					} else
 						dialog.dismiss();
 
-					WordController.getInstance(BaseActivity.this).addWordEx(
-							WordController.CUSTOM_WORD_LESSON, nat, lern, 1, 1);
+					//WordController.getInstance(BaseActivity.this).addWordEx(
+					//		WordController.CUSTOM_WORD_LESSON, nat, lern, 1, 1);
 
 					Word word = new Word(WordController.CUSTOM_WORD_LESSON,
 							nat, lern, 1, 1);
 					onAddCustomWord(word);
+					
+					// add word to internet
+					new AddWord(word);
 
 				}
 			});
@@ -167,8 +171,8 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 					.findViewById(R.id.edtNative);
 			final EditText edtLern = (EditText) dialog
 					.findViewById(R.id.edtLern);
-			edtLern.setText("");
-			edtNative.setText("");
+			edtLern.setText("hello");
+			edtNative.setText("ahoj");
 		} else if (id == DIALOG_SHOW_INFO) {
 			DialogInfo.setup(this, GetShowInfoType(), dialog);
 		} else

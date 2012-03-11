@@ -4,7 +4,8 @@
 	package="com.voc4u"
 	android:versionCode="110"
 	android:versionName="1.1">
-	
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<!-- <uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> -->
 	<uses-sdk
