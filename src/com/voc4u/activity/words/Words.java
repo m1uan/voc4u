@@ -102,7 +102,7 @@ public class Words extends BaseWordActivity {
 			
 			Word w = getItem(index);
 			
-			((TextView)arg1).setText(w.getLern() + " - " + w.getNative());
+			((TextView)arg1).setText(w.getLern() + " - " + w.getNative() + " - " + w.getWSID());
 			return arg1;
 		}
 		

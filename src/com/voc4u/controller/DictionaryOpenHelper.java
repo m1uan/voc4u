@@ -558,6 +558,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 			int idWordColumn = c.getColumnIndex(DBConfig.ID_COLUMN);
 			int weight1Column = c.getColumnIndex(DBConfig.WEIGHT_1_COLUMN);
 			int weight2Column = c.getColumnIndex(DBConfig.WEIGHT_2_COLUMN);
+			int wsidColumn = c.getColumnIndex(DBConfig.WS_WORD_ID);
 
 			do
 			{
@@ -566,7 +567,10 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 				int id = c.getInt(idWordColumn);
 				int weight = c.getInt(weight1Column);
 				int weight2 = c.getInt(weight2Column);
-				list.add(new Word(id, word, word2, weight, weight2));
+				String wsid = c.getString(wsidColumn);
+				Word w = new Word(id, word, word2, weight, weight2);
+				w.setWSID(wsid);
+				list.add(w);
 			} while (c.moveToNext());
 			
 			

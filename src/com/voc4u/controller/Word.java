@@ -7,6 +7,7 @@ public class Word
 	private final String mWord2;
 	private int mWeight;
 	private int mWeight2;
+	private String mWSID;
 	
 	
 	
@@ -52,6 +53,14 @@ public class Word
 	public final void setWeight2(int weight)
 	{
 		mWeight2 = weight;
+	}
+
+	public void setWSID(String wsid) {
+		mWSID = wsid;
+	}
+	
+	public String getWSID(){
+		return mWSID;
 	}
 	
 

@@ -47,7 +47,8 @@ public class DBConfig
 			+ DBConfig.WORD_1_COLUMN + ","
 			+ DBConfig.WORD_2_COLUMN + ","
 			+ DBConfig.WEIGHT_1_COLUMN + ","
-			+ DBConfig.WEIGHT_2_COLUMN 
+			+ DBConfig.WEIGHT_2_COLUMN + ","
+			+ DBConfig.WS_WORD_ID
 			+ " FROM " + DBConfig.WORD_TABLE_NAME;
 	
 	
