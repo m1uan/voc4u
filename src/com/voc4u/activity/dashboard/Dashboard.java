@@ -14,6 +14,7 @@ import com.voc4u.activity.dictionary.Dictionary;
 import com.voc4u.activity.listener.Listener;
 import com.voc4u.activity.speaker.Speaker;
 import com.voc4u.activity.train.Train;
+import com.voc4u.activity.words.Words;
 import com.voc4u.controller.DictionaryOpenHelper.NUM_WORDS_TYPE;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
@@ -57,7 +58,8 @@ public class Dashboard extends BaseActivity
 	
 	public void onTrainButton(View view)
 	{
-		Intent it = new Intent(this, Train.class);
+		//Intent it = new Intent(this, Train.class);
+		Intent it = new Intent(this, Words.class);
 		startActivity(it);
 	}
 	

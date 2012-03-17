@@ -118,8 +118,8 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 
 				@Override
 				public void onClick(View v) {
-					String nat = edtNative.getText().toString();
-					String lern = edtLern.getText().toString();
+					String nat = edtNative.getText().toString().replace(",", "|");
+					String lern = edtLern.getText().toString().replace(",", "|");
 
 					if (nat.length() < 2 || lern.length() < 2) {
 						showDialog(DIALOG_ADD_WORD_WARN);
@@ -127,15 +127,17 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 					} else
 						dialog.dismiss();
 
-					//WordController.getInstance(BaseActivity.this).addWordEx(
-					//		WordController.CUSTOM_WORD_LESSON, nat, lern, 1, 1);
+					WordController wc = WordController.getInstance(BaseActivity.this);
+					
+					long id = wc.addWordEx(
+							WordController.CUSTOM_WORD_LESSON, nat, lern, 1, 1);
 
 					Word word = new Word(WordController.CUSTOM_WORD_LESSON,
 							nat, lern, 1, 1);
 					onAddCustomWord(word);
 					
 					// add word to internet
-					new AddWord(word);
+					new AddWord(word, id, wc);
 
 				}
 			});
@@ -171,8 +173,8 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 					.findViewById(R.id.edtNative);
 			final EditText edtLern = (EditText) dialog
 					.findViewById(R.id.edtLern);
-			edtLern.setText("hello");
-			edtNative.setText("ahoj");
+			edtLern.setText("ahoj");
+			edtNative.setText("hello");
 		} else if (id == DIALOG_SHOW_INFO) {
 			DialogInfo.setup(this, GetShowInfoType(), dialog);
 		} else

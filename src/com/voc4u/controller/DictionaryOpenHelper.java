@@ -98,16 +98,16 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
-		if(oldVersion == 1)
+		if(oldVersion < 2)
 		{
-			
+			db.execSQL(DBConfig.DICTIONARY_TABLE_UPDATE2);
+			db.execSQL(DBConfig.REMOVE_WORD_TABLE_CREATE);
 		}
 	}
 
 	public void addWord(int group, String text, String text2)
 	{
 		addWordEx(group, text, text2, 0, 0);
-
 	}
 
 	/**
@@ -218,6 +218,14 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 				weight, id);
 		execSQL(DB, query);
 
+	}
+	
+	public void updateWordWS(final long id, final String ws_id) 
+	{
+		SQLiteDatabase DB = getWritableDatabase();
+		String query = String.format(DBConfig.DICTIONARY_TABLE_UPDATE_WSID,
+				ws_id, id);
+		execSQL(DB, query);
 	}
 
 	private void execSQL(SQLiteDatabase DB, String query)
@@ -407,7 +415,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		return result;
 	}
 
-	public void addWordEx(int lesson, String text, String text2,
+	public long addWordEx(int lesson, String text, String text2,
 			int weight1, int weight2)
 	{
 		mDB = getWritableDatabase();
@@ -420,11 +428,13 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		values.put(DBConfig.WEIGHT_1_COLUMN, weight1);
 		values.put(DBConfig.WEIGHT_2_COLUMN, weight2);
 		
-		mDB.insert(DBConfig.WORD_TABLE_NAME, null, values);
+		long id = mDB.insert(DBConfig.WORD_TABLE_NAME, null, values);
 		//db.delete(DBAdapter.TableName, "Id=? AND QstnrId=? AND QstnId=?",
         //new String[] { Id.toString(), QuestionnaireId, QuestionId });
 		
 		Log.d(TAG, "add word: " + text + " with lesson = " + String.valueOf(lesson));
+		
+		return id;
 	}
 	
 	/**
@@ -564,6 +574,8 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		c.close();
 		return list;
 	}
+
+
 	
 	
 	

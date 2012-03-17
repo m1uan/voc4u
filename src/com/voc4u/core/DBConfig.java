@@ -5,7 +5,9 @@ import com.voc4u.setting.Consts;
 public class DBConfig
 {
 	public static final String WORD_TABLE_NAME = "t_WORD";
-	public static final int DATABASE_VERSION = 1;
+	public static final String REMOVE_WORD_TABLE_NAME = "t_REMOVE_WORD";
+	
+	public static final int DATABASE_VERSION = 2;
 	public static final String KEY_WORD = "name";
 	public static final String KEY_DEFINITION = "list";
 	public static final String ID_COLUMN = "ID";
@@ -14,6 +16,7 @@ public class DBConfig
 	public static final String WORD_2_COLUMN = "word_2";
 	public static final String WEIGHT_1_COLUMN = "weight_1";
 	public static final String WEIGHT_2_COLUMN = "weight_2";
+	public static final String WS_WORD_ID = "ws_id";
 
 	public static final String DICTIONARY_TABLE_CREATE = "CREATE TABLE "
 			+ DBConfig.WORD_TABLE_NAME + "( " + ID_COLUMN
@@ -22,7 +25,17 @@ public class DBConfig
 			+ DBConfig.WORD_2_COLUMN + " VARCHAR(50)" + ", "
 			+ DBConfig.WEIGHT_1_COLUMN + " INT" + ", "
 			+ DBConfig.WEIGHT_2_COLUMN + " INT" + ");";
-
+	
+	public static final String DICTIONARY_TABLE_UPDATE2 = "ALTER TABLE "
+			+ DBConfig.WORD_TABLE_NAME + " ADD " + DBConfig.WS_WORD_ID + " VARCHAR(250) NULL DEFAULT NULL";
+	
+	public static final String DICTIONARY_TABLE_UPDATE_WSID = "UPDATE "
+			+ DBConfig.WORD_TABLE_NAME + " SET " + WS_WORD_ID + "=\'%s\' WHERE " + ID_COLUMN + " = %d";
+	
+	public static final String REMOVE_WORD_TABLE_CREATE = "CREATE TABLE "
+			+ DBConfig.REMOVE_WORD_TABLE_NAME + "( " + ID_COLUMN
+			+ " INTEGER PRIMARY KEY " + ", " + DBConfig.WS_WORD_ID + " VARCHAR(250));";
+	
 	public static final String DICTIONARY_TABLE_INSERT = "INSERT INTO "
 			+ DBConfig.WORD_TABLE_NAME + " (" + DBConfig.LANG_LESSON + ", "
 			+ DBConfig.WORD_1_COLUMN + ", " + DBConfig.WORD_2_COLUMN + ", "
@@ -36,6 +49,8 @@ public class DBConfig
 			+ DBConfig.WEIGHT_1_COLUMN + ","
 			+ DBConfig.WEIGHT_2_COLUMN 
 			+ " FROM " + DBConfig.WORD_TABLE_NAME;
+	
+	
 	public static final String DICTIONARY_TABLE_SELECT_WEIGHT1 =
 		DICTIONARY_TABLE_SELECT + " WHERE "+ WEIGHT_1_COLUMN +" > 0 ORDER BY "+ WEIGHT_1_COLUMN +" LIMIT 1";
 	

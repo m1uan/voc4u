@@ -19,6 +19,12 @@
                   android:theme="@style/CustomTheme" >
         </activity>
         
+        <activity android:name="com.voc4u.activity.words.Words"
+                  android:label="@string/form_dashboard" 
+                  android:screenOrientation="portrait"
+                  android:theme="@style/CustomTheme" >
+        </activity>
+        
          <activity android:name="com.voc4u.activity.speaker.Speaker"
                   android:label="@string/form_dashboard" 
                   android:screenOrientation="portrait"

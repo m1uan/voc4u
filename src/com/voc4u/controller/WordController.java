@@ -59,11 +59,20 @@ public class WordController {
 
 	}
 
-	public void addWordEx(final int lesson, String text, String text2,
+	public long addWordEx(final int lesson, String text, String text2,
 			int weight1, int weight2) {
+		long result = -1;
+		
 		if (mDictionary != null)
-			mDictionary.addWordEx(lesson, text, text2, weight1, weight2);
-
+			result = mDictionary.addWordEx(lesson, text, text2, weight1, weight2);
+		
+		return result;
+	}
+	
+	public void updateWordWS(final long id, final String ws_id)
+	{
+		if (mDictionary != null)
+			mDictionary.updateWordWS(id, ws_id);
 	}
 
 	public ArrayList<Word> getWordsInLesson(int lesson) {
