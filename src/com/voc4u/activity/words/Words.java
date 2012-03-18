@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.BaseWordActivity;
+import com.voc4u.activity.train.LastItem;
 import com.voc4u.controller.Word;
 
 import android.app.Activity;
@@ -95,14 +96,17 @@ public class Words extends BaseWordActivity {
 
 		@Override
 		public View getView(int index, View arg1, ViewGroup arg2) {
+			
 			if(arg1 == null)
 			{
-				arg1 = new TextView(Words.this);
+				
+				arg1 = new WordsItem(Words.this);
 			}
 			
 			Word w = getItem(index);
 			
-			((TextView)arg1).setText(w.getLern() + " - " + w.getNative() + " - " + w.getWSID());
+			
+			((WordsItem)arg1).setup(w);
 			return arg1;
 		}
 		
