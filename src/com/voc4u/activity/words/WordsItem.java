@@ -3,7 +3,9 @@ package com.voc4u.activity.words;
 import junit.framework.Assert;
 import android.app.Activity;
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,7 +26,6 @@ public class WordsItem extends LinearLayout
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.train_last_item, this);
-		
 		
 	}
 
@@ -53,4 +54,16 @@ public class WordsItem extends LinearLayout
 		if(flag2 != null)
 			flag2.setImageResource(CommonSetting.nativeCode.getDrawableID(getContext()));
 	}
+
+	public void createMenu(ContextMenu menu) {
+		menu.setHeaderTitle(mWord.getLern());
+		menu.add(0,1,0,"play");
+		menu.add(0,2,0,"edit");
+		menu.add(0,3,0,"delete");
+	}
+
+	public void onContextItemSelected(MenuItem item) {
+		int i = item.getItemId();
+	}
+	
 }

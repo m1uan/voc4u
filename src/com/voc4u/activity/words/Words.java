@@ -10,8 +10,12 @@ import com.voc4u.controller.Word;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -59,8 +63,27 @@ public class Words extends BaseWordActivity {
 			
 		mList = (ListView)findViewById(R.id.list);
 		mList.setAdapter(mAdapter);
+		
+		registerForContextMenu(mList);
 	}
 	
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		// TODO Auto-generated method stub
+		super.onCreateContextMenu(menu, v, menuInfo);
+		
+		
+		((WordsItem)((AdapterContextMenuInfo)menuInfo).targetView).createMenu(menu);
+		
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		((WordsItem)((AdapterContextMenuInfo)item.getMenuInfo()).targetView).onContextItemSelected(item);
+		return super.onContextItemSelected(item);
+	}
 	
 	public class Adapter extends BaseAdapter
 	{
