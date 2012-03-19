@@ -45,6 +45,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		mPublicWord = null;
 		lvLastItems = (ListView) findViewById(R.id.lastList);
 		lvLastItems.setOnItemClickListener(this);
+		registerForContextMenu(lvLastItems);
 	}
 	
 	@Override

@@ -58,14 +58,14 @@ public class Dashboard extends BaseActivity
 	
 	public void onTrainButton(View view)
 	{
-		//Intent it = new Intent(this, Train.class);
-		Intent it = new Intent(this, Words.class);
+		Intent it = new Intent(this, Train.class);
 		startActivity(it);
 	}
 	
 	public void onSpeakerButton(View view)
 	{
-		Intent it = new Intent(this, Speaker.class);
+		Intent it = new Intent(this, Words.class);
+		//Intent it = new Intent(this, Speaker.class);
 		startActivity(it);
 	}
 	

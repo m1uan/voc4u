@@ -10,10 +10,15 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.voc4u.R;
+import com.voc4u.activity.words.WordsItem;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
@@ -115,7 +120,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		super.onDestroy();
 	}
 
-	protected void onPlay(String text)
+	public void onPlay(String text)
 	{
 		Assert.assertTrue(mTts != null && text != null && text.length() > 0);
 		if (mTts != null && text != null && text.length() > 0)
@@ -193,4 +198,24 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		}
 		onShowSpeechMenu();
 	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		// TODO Auto-generated method stub
+		super.onCreateContextMenu(menu, v, menuInfo);
+		
+		
+		((WordsItem)((AdapterContextMenuInfo)menuInfo).targetView).createMenu(menu);
+		
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		WordsItem iw = (WordsItem)((AdapterContextMenuInfo)item.getMenuInfo()).targetView;
+		iw.onContextItemSelected(item, this);
+		return super.onContextItemSelected(item);
+	}
+	
+	
 }

@@ -11,14 +11,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.voc4u.R;
+import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.controller.Word;
 import com.voc4u.setting.CommonSetting;
 
 public class WordsItem extends LinearLayout
 {
+	public static final int DELETE = 3;
+	public static final int EDIT = 2;
+	public static final int PLAY = 1;
 	Word mWord;
 	
+	protected final TextView tv1;
+	protected final TextView tv2;
+	protected final TextView tv3;
 	public WordsItem(Context context)
 	{
 		super(context);
@@ -27,15 +34,17 @@ public class WordsItem extends LinearLayout
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.train_last_item, this);
 		
+		
+		tv1 = (TextView)findViewById(R.id.text1);
+		tv2 = (TextView)findViewById(R.id.text2);
+		tv3 = (TextView)findViewById(R.id.text3);
 	}
 
 	public void setup(Word w)
 	{
 		mWord = w;
 		
-		TextView tv1 = (TextView)findViewById(R.id.text1);
-		TextView tv2 = (TextView)findViewById(R.id.text2);
-		TextView tv3 = (TextView)findViewById(R.id.text3);
+		
 		
 		if(tv1 != null)
 			tv1.setText(mWord.getLern());
@@ -57,13 +66,26 @@ public class WordsItem extends LinearLayout
 
 	public void createMenu(ContextMenu menu) {
 		menu.setHeaderTitle(mWord.getLern());
-		menu.add(0,1,0,"play");
-		menu.add(0,2,0,"edit");
-		menu.add(0,3,0,"delete");
+		menu.add(0, PLAY, 0,"play");
+		menu.add(0, EDIT, 0,"edit");
+		menu.add(0, DELETE, 0,"delete");
 	}
 
-	public void onContextItemSelected(MenuItem item) {
+	public boolean onContextItemSelected(MenuItem item, BaseWordActivity bwa) {
 		int i = item.getItemId();
+		switch(i)
+		{
+		case PLAY:
+			bwa.onPlay(mWord.getLern());
+			break;
+		case EDIT:
+			break;
+		case DELETE:
+			break;
+		default:
+			return false;
+		}
+		return true;
 	}
 	
 }
