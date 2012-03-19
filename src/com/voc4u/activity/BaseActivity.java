@@ -34,6 +34,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	public static final int DIALOG_RESET_DB = 106;
 	public static final int DIALOG_SHOW_INFO = 107;
 	public static final int DIALOG_TTS_DATA_MISSING = 109;
+	public static final int DIALOG_EDIT_WORD = 110;
 	
 	public static final String FROM_INIT = "FROM_INIT";
 
@@ -42,6 +43,11 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	private MenuItem mAddWord;
 	private MenuItem mHelp;
 
+	interface OnWordAdd
+	{
+		long onWordAdd(WordController wc, String learn, String nativ);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (hasShowDictionary())
@@ -95,50 +101,13 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	{
 		if (id == DIALOG_ADD_WORD) 
 		{
-			// Context mContext = getApplicationContext();
-			final Dialog dialog = new Dialog(this);
-
-			// dialog.
-			dialog.setContentView(R.layout.dialog_add_word);
-			dialog.setTitle(R.string.add_word_title);
-
-			WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-			lp.copyFrom(dialog.getWindow().getAttributes());
-			lp.width = WindowManager.LayoutParams.FILL_PARENT;
-			// lp.height = WindowManager.LayoutParams.FILL_PARENT;
-			// dialog.show();
-			dialog.getWindow().setAttributes(lp);
-
-			final EditText edtNative = (EditText) dialog
-					.findViewById(R.id.edtNative);
-			final EditText edtLern = (EditText) dialog
-					.findViewById(R.id.edtLern);
-			Button btnAdd = (Button) dialog.findViewById(R.id.btnAdd);
-			btnAdd.setOnClickListener(new OnClickListener() {
-
+			final Dialog dialog = createDialogAddWord(new OnWordAdd() {
+				
 				@Override
-				public void onClick(View v) {
-					String nat = edtNative.getText().toString().replace(",", "|");
-					String lern = edtLern.getText().toString().replace(",", "|");
-
-					if (nat.length() < 2 || lern.length() < 2) {
-						showDialog(DIALOG_ADD_WORD_WARN);
-						return;
-					} else
-						dialog.dismiss();
-
-					WordController wc = WordController.getInstance(BaseActivity.this);
-					
+				public long onWordAdd(WordController wc, String learn, String nativ) {
 					long id = wc.addWordEx(
-							WordController.CUSTOM_WORD_LESSON, nat, lern, 1, 1);
-
-					Word word = new Word(WordController.CUSTOM_WORD_LESSON,
-							nat, lern, 1, 1);
-					onAddCustomWord(word);
-					
-					// add word to internet
-					new AddWord(word, id, wc);
-
+							WordController.CUSTOM_WORD_LESSON, learn, nativ, 1, 1);
+					return id;
 				}
 			});
 			return dialog;
@@ -166,15 +135,64 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 			return super.onCreateDialog(id);
 	}
 
+	protected Dialog createDialogAddWord(final OnWordAdd onWordAdd) {
+		// Context mContext = getApplicationContext();
+		final Dialog dialog = new Dialog(this);
+
+		// dialog.
+		dialog.setContentView(R.layout.dialog_add_word);
+		dialog.setTitle(R.string.add_word_title);
+
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		lp.copyFrom(dialog.getWindow().getAttributes());
+		lp.width = WindowManager.LayoutParams.FILL_PARENT;
+		// lp.height = WindowManager.LayoutParams.FILL_PARENT;
+		// dialog.show();
+		dialog.getWindow().setAttributes(lp);
+
+		final EditText edtNative = (EditText) dialog
+				.findViewById(R.id.edtNative);
+		final EditText edtLern = (EditText) dialog
+				.findViewById(R.id.edtLearn);
+		Button btnAdd = (Button) dialog.findViewById(R.id.btnAdd);
+		btnAdd.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String nat = edtNative.getText().toString().replace(",", "|");
+				String lern = edtLern.getText().toString().replace(",", "|");
+
+				if (nat.length() < 2 || lern.length() < 2) {
+					showDialog(DIALOG_ADD_WORD_WARN);
+					return;
+				} else
+					dialog.dismiss();
+
+				WordController wc = WordController.getInstance(BaseActivity.this);
+				
+				long id = onWordAdd.onWordAdd(wc, lern, nat);
+
+				Word word = new Word(WordController.CUSTOM_WORD_LESSON,
+						nat, lern, 1, 1);
+				onAddCustomWord(word);
+				
+				// add word to internet
+				new AddWord(word, id, wc);
+
+			}
+		});
+		return dialog;
+	}
+
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
 		if (id == DIALOG_ADD_WORD) {
 			final EditText edtNative = (EditText) dialog
 					.findViewById(R.id.edtNative);
 			final EditText edtLern = (EditText) dialog
-					.findViewById(R.id.edtLern);
-			edtLern.setText("ahoj");
-			edtNative.setText("hello");
+					.findViewById(R.id.edtLearn);
+			edtLern.setText("hello");
+			edtNative.setText("ahoj");
 		} else if (id == DIALOG_SHOW_INFO) {
 			DialogInfo.setup(this, GetShowInfoType(), dialog);
 		} else

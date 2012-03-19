@@ -14,14 +14,20 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.voc4u.R;
 import com.voc4u.activity.words.WordsItem;
+import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
+import com.voc4u.ws.AddWord;
 
 public abstract class BaseWordActivity extends BaseActivity implements OnInitListener
 {
@@ -29,7 +35,11 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	protected WordController	mWCtrl;
 	protected TextToSpeech mTts = null;
 	private MenuItem			mMenuHomeId;
+	private Word mSelectedWord;
 
+	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -42,6 +52,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 
 	protected abstract int getContentView();
 
+	
 
 	@Override
 	public void onResumeSuccess() 
@@ -155,13 +166,68 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 				dialog = ShowDialogForTtsSetting(R.string.msg_tts_data_missing);
 				break;
 			}
+			case BaseActivity.DIALOG_EDIT_WORD:
+			{
+				dialog = createDialogAddWord(new OnWordAdd() {
+					
+					@Override
+					public long onWordAdd(WordController wc, String learn, String nativ) {
+						doRedrawList();
+						if(mSelectedWord != null)
+						{
+							mSelectedWord.setLearn(learn);
+							mSelectedWord.setNative(nativ);
+							wc.updateWord(mSelectedWord.getId(), mSelectedWord.getLern(), mSelectedWord.getNative());
+							
+							return mSelectedWord.getId();
+						}
+						return 0;
+					}
+
+					
+				});
+				break;
+			}
 			default:
 				return super.onCreateDialog(id);
 		}
 		
 		return dialog;
 	}
+	
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
+		if (id == DIALOG_ADD_WORD) {
+			final EditText edtNative = (EditText) dialog
+					.findViewById(R.id.edtNative);
+			final EditText edtLern = (EditText) dialog
+					.findViewById(R.id.edtLearn);
+			edtLern.setText("hello");
+			edtNative.setText("ahoj");
+		}
+		else if(id == DIALOG_EDIT_WORD)
+		{
+			final EditText edtNative = (EditText) dialog
+					.findViewById(R.id.edtNative);
+			final EditText edtLern = (EditText) dialog
+					.findViewById(R.id.edtLearn);
+			if(mSelectedWord != null)
+			{
+				edtLern.setText(mSelectedWord.getLern());
+				edtNative.setText(mSelectedWord.getNative());
+			}
+		}
+		else if (id == DIALOG_SHOW_INFO) {
+			DialogInfo.setup(this, GetShowInfoType(), dialog);
+		} else
+			super.onPrepareDialog(id, dialog);
+	}
 
+	public void doRedrawList() 
+	{
+		
+	}
+	
 	public Dialog ShowDialogForTtsSetting(int message) 
 	{
 		Dialog dialog;
@@ -211,11 +277,32 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	}
 	
 	@Override
-	public boolean onContextItemSelected(MenuItem item) {
+	public boolean onContextItemSelected(MenuItem item)
+	{
 		WordsItem iw = (WordsItem)((AdapterContextMenuInfo)item.getMenuInfo()).targetView;
 		iw.onContextItemSelected(item, this);
-		return super.onContextItemSelected(item);
+		
+		// for on dialog prepare
+		mSelectedWord = iw.getWord();
+		
+		int i = item.getItemId();
+		switch(i)
+		{
+		case WordsItem.PLAY:
+			onPlay(mSelectedWord.getLern());
+			break;
+		case WordsItem.EDIT:
+			showDialog(BaseActivity.DIALOG_EDIT_WORD);
+			break;
+		case WordsItem.DELETE:
+			break;
+		default:
+			return super.onContextItemSelected(item);
+		}
+		return true;
 	}
+	
+	
 	
 	
 }

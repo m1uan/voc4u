@@ -75,6 +75,12 @@ public class WordController {
 			mDictionary.updateWordWS(id, ws_id);
 	}
 
+	public void updateWord(final long id, final String learn, final String nativ)
+	{
+		if (mDictionary != null)
+			mDictionary.updateWord(id, learn, nativ);
+	}
+	
 	public ArrayList<Word> getWordsInLesson(int lesson) {
 		return mDictionary.getWordsInLesson(lesson);
 	}

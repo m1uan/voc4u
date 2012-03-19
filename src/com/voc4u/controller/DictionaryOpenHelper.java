@@ -227,6 +227,14 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 				ws_id, id);
 		execSQL(DB, query);
 	}
+	
+	public void updateWord(final long id, final String learn, final String nativ) 
+	{
+		SQLiteDatabase DB = getWritableDatabase();
+		String query = String.format(DBConfig.DICTIONARY_TABLE_UPDATE_WORD,
+				learn, nativ, id);
+		execSQL(DB, query);
+	}
 
 	private void execSQL(SQLiteDatabase DB, String query)
 	{

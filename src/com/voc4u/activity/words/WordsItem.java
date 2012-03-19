@@ -88,4 +88,9 @@ public class WordsItem extends LinearLayout
 		return true;
 	}
 	
+	
+	public Word getWord()
+	{
+		return mWord;
+	}
 }

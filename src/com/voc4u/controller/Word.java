@@ -3,8 +3,8 @@ package com.voc4u.controller;
 public class Word
 {
 	private final int mId;
-	private final String mWord;
-	private final String mWord2;
+	private String mWord;
+	private String mWord2;
 	private int mWeight;
 	private int mWeight2;
 	private String mWSID;
@@ -63,5 +63,15 @@ public class Word
 		return mWSID;
 	}
 	
+	
+	public void setLearn(String learn)
+	{
+		mWord = learn;
+	}
+	
+	public void setNative(String nativ)
+	{
+		mWord2 = nativ;
+	}
 
 }

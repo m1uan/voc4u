@@ -32,6 +32,9 @@ public class DBConfig
 	public static final String DICTIONARY_TABLE_UPDATE_WSID = "UPDATE "
 			+ DBConfig.WORD_TABLE_NAME + " SET " + WS_WORD_ID + "=\'%s\' WHERE " + ID_COLUMN + " = %d";
 	
+	public static final String DICTIONARY_TABLE_UPDATE_WORD = "UPDATE "
+			+ DBConfig.WORD_TABLE_NAME + " SET " + WORD_1_COLUMN + "=\'%s\', " + WORD_2_COLUMN + "=\'%s\' WHERE " + ID_COLUMN + " = %d";
+	
 	public static final String REMOVE_WORD_TABLE_CREATE = "CREATE TABLE "
 			+ DBConfig.REMOVE_WORD_TABLE_NAME + "( " + ID_COLUMN
 			+ " INTEGER PRIMARY KEY " + ", " + DBConfig.WS_WORD_ID + " VARCHAR(250));";

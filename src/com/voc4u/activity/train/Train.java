@@ -168,4 +168,10 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	{
 		return DialogInfo.TYPE_TRAIN;
 	}
+	
+	@Override
+	public void doRedrawList()
+	{
+		lvLastItems.invalidate();
+	}
 }

@@ -13,7 +13,7 @@
                android:layout_marginRight="10dp"
                />
     <EditText
-               android:id="@+id/edtNative"
+               android:id="@+id/edtLearn"
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"/>
 
@@ -24,7 +24,7 @@
               android:textColor="#FFF"
               />
    	<EditText
-               android:id="@+id/edtLern"
+               android:id="@+id/edtNative"
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"/>
                

@@ -140,4 +140,10 @@ public class Words extends BaseWordActivity {
 	protected int getContentView() {
 		return R.layout.dictionary;
 	}
+	
+	@Override
+	public void doRedrawList() 
+	{
+		mList.invalidateViews();
+	}
 }
