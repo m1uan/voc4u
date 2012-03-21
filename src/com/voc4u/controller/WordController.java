@@ -555,4 +555,9 @@ public class WordController {
 	{
 		return mDictionary.getNumWords(type);
 	}
+
+	public void removeWord(Word selectedWord) {
+		mDictionary.removeWord(selectedWord);
+		mDictionary.removeWordWS(selectedWord);
+	}
 }

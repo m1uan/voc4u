@@ -15,6 +15,7 @@ import com.voc4u.R;
 import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.DialogInfo;
 import com.voc4u.controller.PublicWord;
+import com.voc4u.controller.Word;
 import com.voc4u.setting.Consts;
 
 public class Train extends BaseWordActivity implements OnItemClickListener
@@ -172,6 +173,8 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	@Override
 	public void doRedrawList()
 	{
-		lvLastItems.invalidate();
+		lvLastItems.invalidateViews();
 	}
+	
+
 }

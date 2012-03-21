@@ -198,6 +198,6 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 	@Override
 	public void doRedrawList()
 	{
-		lvLastItems.invalidate();
+		lvLastItems.invalidateViews();
 	}
 }

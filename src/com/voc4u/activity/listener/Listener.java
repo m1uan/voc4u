@@ -152,6 +152,6 @@ public class Listener extends BaseWordActivity implements OnClickListener
 	@Override
 	public void doRedrawList()
 	{
-		lvLastItems.invalidate();
+		lvLastItems.invalidateViews();
 	}
 }

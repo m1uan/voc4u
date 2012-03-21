@@ -1,5 +1,6 @@
 package com.voc4u.activity;
 
+import java.util.List;
 import java.util.Locale;
 
 import junit.framework.Assert;
@@ -23,6 +24,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.voc4u.R;
 import com.voc4u.activity.words.WordsItem;
+import com.voc4u.controller.PublicWord;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
@@ -295,6 +297,9 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 			showDialog(BaseActivity.DIALOG_EDIT_WORD);
 			break;
 		case WordsItem.DELETE:
+			removeFromList(mSelectedWord);
+			mWCtrl.removeWord(mSelectedWord);
+			doRedrawList();
 			break;
 		default:
 			return super.onContextItemSelected(item);
@@ -302,7 +307,36 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		return true;
 	}
 	
-	
+	/**
+	 * remove from last list
+	 * @param w
+	 */
+	protected void removeFromList(Word w)
+	{
+		List<PublicWord>lastlist = mWCtrl.getLastList();
+		
+		if(lastlist.size() < 1)
+		{
+			return ;
+		}
+		
+		int i = 0;
+		int[] ids = mWCtrl.getLastListIds();
+		
+		
+		
+		for(int id : ids)
+		{
+			if(id == w.getId())
+			{
+				
+				lastlist.remove(i);
+				break;
+			}
+			i++;
+		}
+		
+	}
 	
 	
 }

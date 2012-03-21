@@ -133,6 +133,21 @@ public class Words extends BaseWordActivity {
 			return arg1;
 		}
 		
+		void removeWord(Word w)
+		{
+			int rindex = 0;
+			for(Word wi : mWords)
+			{
+				if(wi.getId() == w.getId())
+				{
+					mWords.remove(rindex);
+					break;
+				}
+				rindex++;
+			}
+			
+		}
+		
 	}
 
 
@@ -145,5 +160,12 @@ public class Words extends BaseWordActivity {
 	public void doRedrawList() 
 	{
 		mList.invalidateViews();
+	}
+	
+	@Override
+	protected void removeFromList(Word w) 
+	{
+		mAdapter.removeWord(w);
+		super.removeFromList(w);
 	}
 }

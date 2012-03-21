@@ -235,7 +235,23 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 				learn, nativ, id);
 		execSQL(DB, query);
 	}
+	
+	public void removeWord(Word selectedWord) {
+		SQLiteDatabase DB = getWritableDatabase();
+		String query = String.format(DBConfig.DICTIONARY_TABLE_DELETE_WORD,
+				selectedWord.getId());
+		execSQL(DB, query);
+		
+	}
 
+	public void removeWordWS(Word selectedWord) {
+		SQLiteDatabase DB = getWritableDatabase();
+		String query = String.format(DBConfig.DICTIONARY_TABLE_DELETE_WORD,
+				selectedWord.getId());
+		execSQL(DB, query);
+		
+	}
+	
 	private void execSQL(SQLiteDatabase DB, String query)
 	{
 		DB.execSQL(query);
@@ -586,6 +602,8 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		c.close();
 		return list;
 	}
+
+
 
 
 	
