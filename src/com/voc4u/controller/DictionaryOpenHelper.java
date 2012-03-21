@@ -100,8 +100,15 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 	{
 		if(oldVersion < 2)
 		{
+			//db.execSQL("drop table " + DBConfig.REMOVE_WORD_TABLE_NAME);
+			//db.execSQL("alter table t_WORD drop column ws_id");
 			db.execSQL(DBConfig.DICTIONARY_TABLE_UPDATE2);
 			db.execSQL(DBConfig.REMOVE_WORD_TABLE_CREATE);
+		}
+		if(oldVersion < 3)
+		{
+			//db.execSQL(DBConfig.REMOVE_WORD_TABLE_UPDATE3_1);
+			//db.execSQL(DBConfig.REMOVE_WORD_TABLE_UPDATE3_2);
 		}
 	}
 
