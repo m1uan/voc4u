@@ -252,11 +252,13 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 	}
 
 	public void removeWordWS(Word selectedWord) {
+		String wsid =  selectedWord.getWSID();
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(DBConfig.WORD_1_COLUMN, selectedWord.getLern());
+		initialValues.put(DBConfig.WORD_2_COLUMN, selectedWord.getNative());
+		initialValues.put(DBConfig.WS_WORD_ID, wsid);
 		SQLiteDatabase DB = getWritableDatabase();
-		String query = String.format(DBConfig.DICTIONARY_TABLE_DELETE_WORD,
-				selectedWord.getId());
-		execSQL(DB, query);
-		
+		DB.insert(DBConfig.REMOVE_WORD_TABLE_NAME, null, initialValues);
 	}
 	
 	private void execSQL(SQLiteDatabase DB, String query)

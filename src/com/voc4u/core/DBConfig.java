@@ -43,14 +43,14 @@ public class DBConfig
 			+ " INTEGER PRIMARY KEY " + ", " + DBConfig.WS_WORD_ID + " VARCHAR(250) NULL DEFAULT NULL,"
 			+ WORD_1_COLUMN + " VARCHAR(50) NULL DEFAULT NULL,"
 			+ WORD_2_COLUMN + " VARCHAR(50) NULL DEFAULT NULL)";
-	public static final String REMOVE_WORD_TABLE_UPDATE3_1 = "ALTER TABLE "
-			+ DBConfig.REMOVE_WORD_TABLE_NAME + " ADD " + WORD_1_COLUMN + " VARCHAR(50) NULL DEFAULT NULL";
 	
-	public static final String REMOVE_WORD_TABLE_UPDATE3_2 = "ALTER TABLE "
-			+ DBConfig.REMOVE_WORD_TABLE_NAME + " ADD " + WORD_2_COLUMN + " VARCHAR(50) NULL DEFAULT NULL";
-			//+ WORD_2_COLUMN + " VARCHAR(50) NULL DEFAULT NULL)";
+	public static final String REMOVE_WORD_TABLE_INSERT = "INSERT INTO "
+			+ DBConfig.REMOVE_WORD_TABLE_NAME + " ("  
+			+ DBConfig.WORD_1_COLUMN + ", " + DBConfig.WORD_2_COLUMN + ", "
+			+ DBConfig.WS_WORD_ID 
+			+ ") VALUES (?, ?, ?)";
 	
-	public static final String DICTIONARY_TABLE_INSERT = "INSERT INTO "
+	static final String DICTIONARY_TABLE_INSERT = "INSERT INTO "
 			+ DBConfig.WORD_TABLE_NAME + " (" + DBConfig.LANG_LESSON + ", "
 			+ DBConfig.WORD_1_COLUMN + ", " + DBConfig.WORD_2_COLUMN + ", "
 			+ DBConfig.WEIGHT_1_COLUMN + "," + DBConfig.WEIGHT_2_COLUMN

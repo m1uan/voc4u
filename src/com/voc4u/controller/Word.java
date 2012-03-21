@@ -7,7 +7,7 @@ public class Word
 	private String mWord2;
 	private int mWeight;
 	private int mWeight2;
-	private String mWSID;
+	private String mWSID = null;
 	
 	
 	
