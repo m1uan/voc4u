@@ -172,12 +172,11 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 				
 				long id = onWordAdd.onWordAdd(wc, lern, nat);
 
-				Word word = new Word(WordController.CUSTOM_WORD_LESSON,
-						nat, lern, 1, 1);
+				Word word = new Word(id, nat, lern, 1, 1);
 				onAddCustomWord(word);
 				
 				// add word to internet
-				new AddWord(word, id, wc);
+				new AddWord(word, wc);
 
 			}
 		});

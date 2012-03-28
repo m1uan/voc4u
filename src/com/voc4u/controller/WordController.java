@@ -85,6 +85,11 @@ public class WordController {
 		return mDictionary.getWordsInLesson(lesson);
 	}
 
+	public ArrayList<Word> getUnaddedWords()
+	{
+		return mDictionary.getUnaddedWords();
+	}
+	
 	static ArrayList<Word> mFistWordList = null;
 
 	/**
@@ -173,7 +178,7 @@ public class WordController {
 		return mLastList;
 	}
 
-	public int[] getLastListIds() 
+	public long[] getLastListIds() 
 	{
 		return mDictionary.getLastListIds(mLastList) ;
 	}

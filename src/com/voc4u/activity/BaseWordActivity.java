@@ -61,7 +61,12 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	{
 		super.onResumeSuccess();
 		if(mTts == null)
+		{
 			mTts = new TextToSpeech(this, this);
+		}
+		
+		new AddWord(mWCtrl);
+		
 	}
 
 
@@ -321,11 +326,11 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		}
 		
 		int i = 0;
-		int[] ids = mWCtrl.getLastListIds();
+		long[] ids = mWCtrl.getLastListIds();
 		
 		
 		
-		for(int id : ids)
+		for(long id : ids)
 		{
 			if(id == w.getId())
 			{

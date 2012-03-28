@@ -1,5 +1,7 @@
 package com.voc4u.ws;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,15 +17,23 @@ import com.wildfuse.wilda.network.Response;
 
 public class AddWord {
 
-	final long mId;
+	
 	final WordController mWCtrl;
-	public AddWord(Word w, long id, WordController wc) 
+	public AddWord(Word w, WordController wc) 
 	{
-		mId = id;
 		mWCtrl = wc;
 		new AsyncManager<Word, Boolean>(new Controller()).execute(w);
 	}
 
+	
+	public AddWord(WordController wc)
+	{
+		mWCtrl = wc;
+		
+		
+		new AsyncManager<Void, Boolean>(new ControllerMulti()).execute();
+		
+	}
 	 
 	
 	protected void add(Word w) throws RequestException
@@ -35,14 +45,13 @@ public class AddWord {
 		req.addUrlParam("nc", CommonSetting.nativeCode.code);
 		Response resp = NetworkManager.execute(req);
 		String resps = resp.getBody();
-		w.getId();
 		try {
 			JSONObject js = new JSONObject(resps);
 			int error = js.getInt("error");
 			if(error == 0)
 			{
 				String ids = js.getString("word");
-				mWCtrl.updateWordWS(mId, ids);
+				mWCtrl.updateWordWS(w.getId(), ids);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -62,6 +71,58 @@ public class AddWord {
 		@Override
 		public Boolean doInBackground(Word... args) throws RequestException {
 			add(args[0]);
+			return new Boolean(true);
+		}
+
+		@Override
+		public void onBackgroundJobComplete(Boolean result) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onFailure(RequestException e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onPostExecute() {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+	
+	public class ControllerMulti implements IAsyncController<Void, Boolean> 
+	{
+
+		@Override
+		public void onPreExecute() throws RequestException {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public Boolean doInBackground(Void... args) throws RequestException {
+			// TODO: add mutext
+			// TODO: test the conection
+			ArrayList<Word> words = mWCtrl.getUnaddedWords();
+			if(words == null)
+			{
+				return new Boolean(false);
+			}
+			
+			for(Word w : words)
+			{
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				add(w);
+			}
 			return new Boolean(true);
 		}
 

@@ -2,7 +2,7 @@ package com.voc4u.controller;
 
 public class Word
 {
-	private final int mId;
+	private final long mId;
 	private String mWord;
 	private String mWord2;
 	private int mWeight;
@@ -11,7 +11,7 @@ public class Word
 	
 	
 	
-	public Word(int id, String word, String word2, int weight, int weight2)
+	public Word(long id, String word, String word2, int weight, int weight2)
 	{
 		this.mId = id;
 		this.mWord = word;
@@ -20,7 +20,7 @@ public class Word
 		mWeight2 = weight2;
 	}
 	
-	public final int getId()
+	public final long getId()
 	{
 		return mId;
 	}
@@ -73,5 +73,7 @@ public class Word
 	{
 		mWord2 = nativ;
 	}
+
+
 
 }

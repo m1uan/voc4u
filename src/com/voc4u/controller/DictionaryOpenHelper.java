@@ -282,7 +282,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		execSQL(mDB, query);
 	}
 
-	public String createWhereFromIds(int[] ids, boolean not)
+	public String createWhereFromIds(long[] ids, boolean not)
 	{
 		final String and = " AND ";
 		String result = "";
@@ -295,7 +295,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 			
 			result += "(";
 			
-			for(int id : ids)
+			for(long id : ids)
 			{
 				result += DBConfig.ID_COLUMN + "=" + String.valueOf(id) + OR;
 			}
@@ -314,18 +314,18 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 	 * @param ids - ids which will be skiped
 	 * @return array wiht words
 	 */
-	public ArrayList<Word> getPublicWords(int[] ids)
+	public ArrayList<Word> getPublicWords(long[] ids)
 	{
 		return getWords(true, Consts.MAX_LAST_LIST, ids);
 	}
 
 	
-	public int[] getLastListIds(ArrayList<PublicWord> list) 
+	public long[] getLastListIds(ArrayList<PublicWord> list) 
 	{
 		if (list == null || list.size() < 1)
 			return null;
 
-		int[] result = new int[list.size()];
+		long[] result = new long[list.size()];
 
 		for (int i = 0; i != list.size(); i++) 
 		{
@@ -336,12 +336,71 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 
 	}
 	
-	public ArrayList<Word> getWords(boolean onlyUsed, int limit, int[] ids) 
+	public ArrayList<Word> getWords(boolean onlyUsed, int limit, long[] ids) 
 	{
 		mDB = getWritableDatabase();
 		String where = createWhereFromIds(ids, true);
 		String query; 
 		
+		query = createQueryForGetWords(onlyUsed, limit, where);
+		
+		Cursor c = rawQuerySQL(mDB, query);
+
+		return createWordListFromCursor(c, false);
+	}
+	
+	public ArrayList<Word> getUnaddedWords() 
+	{
+		mDB = getReadableDatabase();
+		String where = " WHERE (" /*+ DBConfig.WS_WORD_ID + " = NULL OR "*/ + DBConfig.WS_WORD_ID + " is null)";// AND " + DBConfig.LANG_LESSON + " = 0";
+		String query; 
+		
+		query = createQueryForGetWords(false, 20, where);
+		
+		Cursor c = rawQuerySQL(mDB, query);
+
+		return createWordListFromCursor(c, true);
+	}
+
+	private ArrayList<Word> createWordListFromCursor(Cursor c, boolean withWSID) {
+		ArrayList<Word> list = null;
+		
+		final int firstWordColumn = c.getColumnIndex(DBConfig.WORD_1_COLUMN);
+		final int secondWordColumn = c.getColumnIndex(DBConfig.WORD_2_COLUMN);
+		final int idWordColumn = c.getColumnIndex(DBConfig.ID_COLUMN);
+		final int weight1Column = c.getColumnIndex(DBConfig.WEIGHT_1_COLUMN);
+		final int weight2Column = c.getColumnIndex(DBConfig.WEIGHT_2_COLUMN);
+		final int wsidColumn = withWSID ? c.getColumnIndex(DBConfig.WS_WORD_ID) : 0;
+	
+		
+		if (c != null && c.moveToFirst())
+		{
+			list = new ArrayList<Word>();
+			
+			do
+			{
+				String word = c.getString(firstWordColumn);
+				String word2 = c.getString(secondWordColumn);
+				int id = c.getInt(idWordColumn);
+				int weight = c.getInt(weight1Column);
+				int weight2 = c.getInt(weight2Column);
+				
+				Word w = new Word(id, word, word2, weight, weight2);
+				list.add(w);
+				if(withWSID)
+				{
+					w.setWSID(c.getString(wsidColumn));
+				}
+			} while (c.moveToNext());	
+			
+		}
+		c.close();
+		return list;
+	}
+
+	private String createQueryForGetWords(boolean onlyUsed, int limit,
+			String where) {
+		String query;
 		if(onlyUsed)
 		{
 			if(where == null || where.length() < 1)
@@ -354,34 +413,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		query = String.format(DBConfig.DICTIONARY_TABLE_SELECT_20_WEIGHT1_WHERE, where);
 		if(limit > 0)
 			query += " LIMIT " + String.valueOf(limit);
-		
-		Cursor c = rawQuerySQL(mDB, query);
-
-		ArrayList<Word> list = null;
-		
-		if (c != null && c.moveToFirst())
-		{
-			list = new ArrayList<Word>();
-			int firstWordColumn = c.getColumnIndex(DBConfig.WORD_1_COLUMN);
-			int secondWordColumn = c.getColumnIndex(DBConfig.WORD_2_COLUMN);
-			int idWordColumn = c.getColumnIndex(DBConfig.ID_COLUMN);
-			int weight1Column = c.getColumnIndex(DBConfig.WEIGHT_1_COLUMN);
-			int weight2Column = c.getColumnIndex(DBConfig.WEIGHT_2_COLUMN);
-
-			do
-			{
-				String word = c.getString(firstWordColumn);
-				String word2 = c.getString(secondWordColumn);
-				int id = c.getInt(idWordColumn);
-				int weight = c.getInt(weight1Column);
-				int weight2 = c.getInt(weight2Column);
-				list.add(new Word(id, word, word2, weight, weight2));
-			} while (c.moveToNext());
-			
-			
-		}
-		c.close();
-		return list;
+		return query;
 	}
 	
 
@@ -554,7 +586,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		if (list == null || list.size() < 1)
 			return;
 
-		int[] ids = new int[list.size()];
+		long[] ids = new long[list.size()];
 
 		for (int i = 0; i != list.size(); i++) 
 		{
@@ -581,35 +613,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		
 		Cursor c = rawQuerySQL(mDB, query);
 
-		ArrayList<Word> list = null;
-		
-		if (c != null && c.moveToFirst())
-		{
-			list = new ArrayList<Word>();
-			int firstWordColumn = c.getColumnIndex(DBConfig.WORD_1_COLUMN);
-			int secondWordColumn = c.getColumnIndex(DBConfig.WORD_2_COLUMN);
-			int idWordColumn = c.getColumnIndex(DBConfig.ID_COLUMN);
-			int weight1Column = c.getColumnIndex(DBConfig.WEIGHT_1_COLUMN);
-			int weight2Column = c.getColumnIndex(DBConfig.WEIGHT_2_COLUMN);
-			int wsidColumn = c.getColumnIndex(DBConfig.WS_WORD_ID);
-
-			do
-			{
-				String word = c.getString(firstWordColumn);
-				String word2 = c.getString(secondWordColumn);
-				int id = c.getInt(idWordColumn);
-				int weight = c.getInt(weight1Column);
-				int weight2 = c.getInt(weight2Column);
-				String wsid = c.getString(wsidColumn);
-				Word w = new Word(id, word, word2, weight, weight2);
-				w.setWSID(wsid);
-				list.add(w);
-			} while (c.moveToNext());
-			
-			
-		}
-		c.close();
-		return list;
+		return createWordListFromCursor(c, false);
 	}
 
 
