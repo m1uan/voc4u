@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 
 import com.voc4u.activity.dictionary.Dictionary;
 import com.voc4u.controller.DictionaryOpenHelper.NUM_WORDS_TYPE;
+import com.voc4u.controller.DictionaryOpenHelper.RemovedWord;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
 import com.voc4u.setting.LangSetting;
@@ -64,32 +65,34 @@ public class WordController {
 		long result = -1;
 		
 		if (mDictionary != null)
-			result = mDictionary.addWordEx(lesson, text, text2, weight1, weight2);
-		
+			result = mDictionary.addWordEx(lesson, text, text2, weight1,
+					weight2);
+
 		return result;
 	}
-	
-	public void updateWordWS(final long id, final String ws_id)
-	{
+
+	public void updateWordWS(final long id, final String ws_id) {
 		if (mDictionary != null)
 			mDictionary.updateWordWS(id, ws_id);
 	}
 
-	public void updateWord(final long id, final String learn, final String nativ)
-	{
+	public void updateWord(final long id, final String learn, final String nativ) {
 		if (mDictionary != null)
 			mDictionary.updateWord(id, learn, nativ);
 	}
-	
+
 	public ArrayList<Word> getWordsInLesson(int lesson) {
 		return mDictionary.getWordsInLesson(lesson);
 	}
 
-	public ArrayList<Word> getUnaddedWords()
-	{
+	public ArrayList<Word> getUnaddedWords() {
 		return mDictionary.getUnaddedWords();
 	}
-	
+
+	public ArrayList<RemovedWord> getRemovedWords() {
+		return mDictionary.getRemovedWords();
+	}
+
 	static ArrayList<Word> mFistWordList = null;
 
 	/**
@@ -97,59 +100,51 @@ public class WordController {
 	 * 
 	 * @return
 	 */
-	public PublicWord getFirstPublicWord() 
-	{
+	public PublicWord getFirstPublicWord() {
 		if (mDictionary == null)
 			return null;
 
 		boolean addNewWord = false;
-		
-		if (mFistWordList == null || mFistWordList.size() < 1) 
-		{
+
+		if (mFistWordList == null || mFistWordList.size() < 1) {
 			// try get words
 			mFistWordList = mDictionary.getPublicWords(getLastListIds());
 
 			// first trial isn't work and last list still empty
 			// try add new words
-			if(mFistWordList == null || mFistWordList.size() < Consts.MAX_LAST_LIST)
-			{
+			if (mFistWordList == null
+					|| mFistWordList.size() < Consts.MAX_LAST_LIST) {
 				mDictionary.setupFirstWordWeight(Consts.MAX_LAST_LIST);
 				addNewWord = true;
 			}
-			
+
 			// first trial isn't work and last list still empty
-			// try again, is expecting the setupFirstWordWeight was add some word
-			while (mFistWordList == null || mFistWordList.size() < 1)
-			{
+			// try again, is expecting the setupFirstWordWeight was add some
+			// word
+			while (mFistWordList == null || mFistWordList.size() < 1) {
 				// the last list isn't empty
 				// make his less about one
-				if(mLastList != null && mLastList.size() > 1)
-				{	
+				if (mLastList != null && mLastList.size() > 1) {
 					mLastList.remove(0);
-				}
-				else
-				{
+				} else {
 					// it's seems the mLastList is empty
 					// and the mFirstWordList still empty
 					showWordsMenu();
 					return null;
 				}
-				
+
 				// try again
 				mFistWordList = mDictionary.getPublicWords(getLastListIds());
 			}
 
-			
 			// add the word normaly way
-			if (!addNewWord && mDictionary.isAnyUnknownWord()) 
-			{
+			if (!addNewWord && mDictionary.isAnyUnknownWord()) {
 				mDictionary.setupFirstWordWeight(5);
 			}
-			
+
 		}
 
-		if (mFistWordList != null && mFistWordList.size() > 0) 
-		{
+		if (mFistWordList != null && mFistWordList.size() > 0) {
 			Random rand = new Random();
 			int index = rand.nextInt(mFistWordList.size());
 
@@ -178,36 +173,31 @@ public class WordController {
 		return mLastList;
 	}
 
-	public long[] getLastListIds() 
-	{
-		return mDictionary.getLastListIds(mLastList) ;
+	public long[] getLastListIds() {
+		return mDictionary.getLastListIds(mLastList);
 	}
 
-	public void updatePublicWord(boolean remember) 
-	{
+	public void updatePublicWord(boolean remember) {
 		Assert.assertNotNull(mDictionary);
-		if (mDictionary != null) 
-		{
+		if (mDictionary != null) {
 			mPublicWord.setSuccess(remember);
 			mPublicWord.setRemember(remember);
-			//mDictionary.updateWordWeights(mPublicWord.getBaseWord());
+			// mDictionary.updateWordWeights(mPublicWord.getBaseWord());
 			new UpdatePublicWordWorker().execute(mPublicWord);
 		}
 	}
 
-	private class UpdatePublicWordWorker extends AsyncTask<PublicWord, Integer, Long> 
-	{
+	private class UpdatePublicWordWorker extends
+			AsyncTask<PublicWord, Integer, Long> {
 
 		@Override
-		protected Long doInBackground(PublicWord... arg0) 
-		{
+		protected Long doInBackground(PublicWord... arg0) {
 			mDictionary.updateWordWeights(arg0[0].getBaseWord());
 			return null;
 		}
-		
+
 	}
-	
-	
+
 	public static int calcWeight(int weight, boolean remember) {
 		weight = weight > 0 ? weight : 1;
 
@@ -267,8 +257,7 @@ public class WordController {
 		return mDictionary.getPublicWordById(id);
 	}
 
-	public void unloadAllLesson() 
-	{
+	public void unloadAllLesson() {
 		mFistWordList = null;
 		mLastList.clear();
 		mDictionary.unloadLesson(-1);
@@ -435,14 +424,12 @@ public class WordController {
 				if (end >= nt.length)
 					end = nt.length - 1;
 
-				for (int i = start; i != end; i++) 
-				{
+				for (int i = start; i != end; i++) {
 					final String slr = lr[i];
 					final String snt = nt[i];
 
 					// is task for remove all lesson in list
-					synchronized (mAddList) 
-					{
+					synchronized (mAddList) {
 						if (mRemoveList != null && mRemoveList.size() > 0)
 							anyRemove = true;
 					}
@@ -460,17 +447,14 @@ public class WordController {
 					addWordEx(lesson, slr, snt, weights, weights);
 
 					// stop initialize first words to used value
-					if (initialize && num++ > Consts.MAX_LAST_LIST) 
-					{
+					if (initialize && num++ > Consts.MAX_LAST_LIST) {
 						initialize = false;
 						weights = 0;
 					}
-					
-					try
-					{
+
+					try {
 						Thread.sleep(20);
-					} catch (InterruptedException e) 
-					{
+					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
@@ -555,14 +539,19 @@ public class WordController {
 		Intent intent = new Intent(mContext, Dictionary.class);
 		mContext.startActivity(intent);
 	}
-	
-	public long getNumWordsInDB(NUM_WORDS_TYPE type)
-	{
+
+	public long getNumWordsInDB(NUM_WORDS_TYPE type) {
 		return mDictionary.getNumWords(type);
 	}
 
-	public void removeWord(Word selectedWord) {
+	public void removeWord(Word selectedWord) 
+	{
 		mDictionary.removeWord(selectedWord);
 		mDictionary.removeWordWS(selectedWord);
+	}
+
+	public void removeFromDeleteList(long id) 
+	{
+		mDictionary.removeFromDeleteList(id);
 	}
 }

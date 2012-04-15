@@ -30,6 +30,7 @@ import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.LangSetting;
 import com.voc4u.ws.AddWord;
+import com.voc4u.ws.DeleteWord;
 
 public abstract class BaseWordActivity extends BaseActivity implements OnInitListener
 {
@@ -66,6 +67,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		}
 		
 		new AddWord(mWCtrl);
+		new DeleteWord(mWCtrl);
 		
 	}
 

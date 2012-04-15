@@ -33,6 +33,14 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		ALL
 	}
 	
+	public class RemovedWord
+	{
+		public long id;
+		public String ws_id;
+		public String learn;
+		public String nativ;
+	}
+	
 	public DictionaryOpenHelper(Context context)
 	{
 		super(context, DBConfig.WORD_TABLE_NAME, null,
@@ -44,6 +52,8 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 	{
 
 		db.execSQL(DBConfig.DICTIONARY_TABLE_CREATE);
+		db.execSQL(DBConfig.DICTIONARY_TABLE_UPDATE2);
+		db.execSQL(DBConfig.REMOVE_WORD_TABLE_CREATE);
 		// db.execSQL("INSERT INTO "+ DBConfig.DATABASE_NAME +
 		// " ("+ DBConfig.LANG_ID_COLUMN +", "+ DBConfig.WORD_1_COLUMN +", "+
 		// DBConfig.WORD_2_COLUMN +", "+ DBConfig.ITER_COLUMN +") VALUES" +
@@ -362,6 +372,40 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		return createWordListFromCursor(c, true);
 	}
 
+	public ArrayList<RemovedWord> getRemovedWords()
+	{
+		ArrayList<RemovedWord> removedWord = null;
+		mDB = getReadableDatabase();
+		Cursor c = rawQuerySQL(mDB, "SELECT * FROM " + DBConfig.REMOVE_WORD_TABLE_NAME);
+		
+		final int idC = c.getColumnIndex(DBConfig.ID_COLUMN);
+		final int wsidC = c.getColumnIndex(DBConfig.WS_WORD_ID);
+		final int word1C = c.getColumnIndex(DBConfig.WORD_1_COLUMN);
+		final int word2C = c.getColumnIndex(DBConfig.WORD_2_COLUMN);
+		
+		if (c != null && c.moveToFirst())
+		{
+			removedWord = new ArrayList<RemovedWord>();
+			
+			do
+			{
+				RemovedWord rw = new RemovedWord();
+				rw.id = c.getInt(idC);
+				rw.ws_id = c.getString(wsidC);
+				rw.learn = c.getString(word1C);
+				rw.nativ = c.getString(word2C);
+				
+				
+				removedWord.add(rw);
+				
+			} while (c.moveToNext());	
+			
+		}
+		c.close();
+		
+		return removedWord;
+	}
+	
 	private ArrayList<Word> createWordListFromCursor(Cursor c, boolean withWSID) {
 		ArrayList<Word> list = null;
 		
@@ -614,6 +658,12 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 		Cursor c = rawQuerySQL(mDB, query);
 
 		return createWordListFromCursor(c, false);
+	}
+
+	public void removeFromDeleteList(long id) 
+	{
+		mDB = getWritableDatabase();
+		mDB.execSQL("DELETE FROM " + DBConfig.REMOVE_WORD_TABLE_NAME + " WHERE " + DBConfig.ID_COLUMN + " = " + id);
 	}
 
 
