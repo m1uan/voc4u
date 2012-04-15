@@ -1,6 +1,6 @@
 TAP_FOR_DISPLAY;*** tap for display ***;
 FORM_DICTIONARY;Dictionary;
-INFORMATION_INIT;Select you native language, next select language which you want learn. And let's go train ;-)
+INFORMATION_INIT;Select you native language, next select language which you want learn. And let's go train :-)\nThis setting is showed only once, when you decide change it, you must go to Dictionary and there Reset DB.
 HINT_NATIVE_WORD;native word;
 MSG_OUR_LERN_UNSURPORTED;Our learn language is unsurported by Speech to Text syntetizer;
 FORM_DASHBOARD;Voc4u;
@@ -54,3 +54,7 @@ msg_must_be_any_checked;One lesson must be at least checked or must be add few w
 msg_your_are_sure_disable_lesson;Are you sure you want to disable?;
 msg_tts_language_missing;Probably your learn language isn't support in Text to Speech. Do you want go to setting?;
 msg_tts_data_missing;Probably missing data in Text to Speech. Do you want go to setting?;
+ctx_menu_delete;delete
+ctx_menu_play;play
+ctx_menu_edit;edit
+confirm_you_want_realy_delete;do you want delete the word?

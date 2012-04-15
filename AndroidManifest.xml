@@ -2,9 +2,10 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.voc4u"
-	android:versionCode="110"
-	android:versionName="1.1">
-	
+	android:versionCode="120"
+	android:versionName="1.2">
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<!-- <uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> -->
 	<uses-sdk
@@ -15,6 +16,12 @@
 
         <activity android:name="com.voc4u.activity.train.Train"
                   android:label="@string/form_dashboard"
+                  android:theme="@style/CustomTheme" >
+        </activity>
+        
+        <activity android:name="com.voc4u.activity.words.Words"
+                  android:label="@string/form_dashboard" 
+                  android:screenOrientation="portrait"
                   android:theme="@style/CustomTheme" >
         </activity>
         
@@ -39,7 +46,7 @@
 		<activity android:name="com.voc4u.activity.init.Init"
                   android:label="@string/form_dashboard" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.voc4u.activity.listener.Listener"
+        <activity android:name=".activity.listener.Listener"
                   android:label="@string/form_dashboard" 
                   android:screenOrientation="portrait"
                   android:theme="@style/CustomTheme">

@@ -149,4 +149,9 @@ public class Listener extends BaseWordActivity implements OnClickListener
 		return (matches.size() > 0 && matches.get(0).contentEquals(mPublicWord.getLern()));
 	}
 
+	@Override
+	public void doRedrawList()
+	{
+		lvLastItems.invalidateViews();
+	}
 }

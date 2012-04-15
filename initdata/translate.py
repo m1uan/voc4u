@@ -4,7 +4,7 @@
 import os
 import sys
 
-langs = [ "en" , "DE", "CZ", "FR"]
+langs = [ "en" , "DE", "CZ", "FR", "ES"]
 types = ["android", "bada"]
 description = ["make xml files for android", "make xml files for bada"]
 actualtype = "java"

@@ -194,4 +194,10 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 			visibleSpokenWord(true);
 		return false;
 	}
+	
+	@Override
+	public void doRedrawList()
+	{
+		lvLastItems.invalidateViews();
+	}
 }
