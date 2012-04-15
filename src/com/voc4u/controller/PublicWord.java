@@ -88,7 +88,7 @@ public class PublicWord
 	}
 
 
-	public int getId()
+	public long getId()
 	{
 		return mWord.getId();
 	}

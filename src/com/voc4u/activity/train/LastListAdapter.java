@@ -44,7 +44,19 @@ public class LastListAdapter extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		return new LastItem(parent.getContext(), getItem(position));
+		LastItem li;
+		if(convertView != null)
+		{
+			li = (LastItem)convertView;
+		}
+		else
+		{
+			li = new LastItem(parent.getContext());
+		}
+		
+		li.setup(getItem(position));
+		
+		return li;
 	}
 
 }
