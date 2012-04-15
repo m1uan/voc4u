@@ -3,17 +3,25 @@ package com.voc4u.activity;
 import java.util.List;
 import java.util.Locale;
 
+import yuku.iconcontextmenu.IconContextMenu;
+import yuku.iconcontextmenu.IconContextMenuOnClickListener;
+
 import junit.framework.Assert;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -21,6 +29,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.Toast;
 
 import com.voc4u.R;
 import com.voc4u.activity.words.WordsItem;
@@ -39,6 +48,8 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	protected TextToSpeech mTts = null;
 	private MenuItem			mMenuHomeId;
 	private Word mSelectedWord;
+	private IconContextMenu iconContextMenu;
+	private WordsItem mSelectedWordItem;
 
 	
 	
@@ -51,6 +62,60 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 
 		mWCtrl = WordController.getInstance(this);
 		
+		
+		Resources res = getResources();
+		iconContextMenu = new IconContextMenu(this);
+        iconContextMenu.addItem(res, res.getString(R.string.ctx_menu_play), R.drawable.ic_menu_play_clip, WordsItem.PLAY);
+        iconContextMenu.addItem(res, res.getString(R.string.ctx_menu_edit), R.drawable.ic_menu_edit, WordsItem.EDIT);
+        iconContextMenu.addItem(res, res.getString(R.string.ctx_menu_delete), R.drawable.ic_menu_delete, WordsItem.DELETE);
+ 
+        //set onclick listener for context menu
+        iconContextMenu.setOnClickListener(new IconContextMenuOnClickListener() {
+            @Override
+            public void onClick(int menuId) 
+            {
+            	if(mSelectedWordItem != null)
+            	{
+            		mSelectedWord = mSelectedWordItem.getWord();
+            		switch(menuId)
+            		{
+            		case WordsItem.PLAY:
+            			onPlay(mSelectedWord.getLern());
+            			break;
+            		case WordsItem.EDIT:
+            			showDialog(BaseActivity.DIALOG_EDIT_WORD);
+            			break;
+            		case WordsItem.DELETE:
+            		{
+            			 new AlertDialog.Builder(BaseWordActivity.this)
+            		        .setIcon(android.R.drawable.ic_dialog_alert)
+            		        .setTitle(R.string.ctx_menu_delete)
+            		        .setMessage(R.string.confirm_you_want_realy_delete)
+            		        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+            		            @Override
+            		            public void onClick(DialogInterface dialog, int which) {
+            		            	removeFromList(mSelectedWord);
+                        			mWCtrl.removeWord(mSelectedWord);
+                        			doRedrawList();
+            		                   
+            		            }
+
+            		        })
+            		        .setNegativeButton(android.R.string.no, null)
+            		        .show();
+            			
+            		}
+            			break;
+            		}
+            		mSelectedWordItem = null;
+            	}
+                
+            }
+        });
+        
+       
+        
 	}
 
 	protected abstract int getContentView();
@@ -197,6 +262,12 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 				});
 				break;
 			}
+			case 1564:
+				if(mSelectedWordItem != null)
+				{
+					dialog = iconContextMenu.createMenu(mSelectedWordItem.getWord().getLern());
+				}
+				break;
 			default:
 				return super.onCreateDialog(id);
 		}
@@ -280,10 +351,14 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		// TODO Auto-generated method stub
 		super.onCreateContextMenu(menu, v, menuInfo);
 		
+		mSelectedWordItem = ((WordsItem)((AdapterContextMenuInfo)menuInfo).targetView);
+		//((WordsItem)((AdapterContextMenuInfo)menuInfo).targetView).createMenu(menu);
+		//IconContextMenu icm = new IconContextMenu(this.getApplicationContext(), menu);
 		
-		((WordsItem)((AdapterContextMenuInfo)menuInfo).targetView).createMenu(menu);
-		
+		 showDialog(1564);
 	}
+	
+	
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item)

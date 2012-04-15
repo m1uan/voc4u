@@ -46,7 +46,7 @@
 		<activity android:name="com.voc4u.activity.init.Init"
                   android:label="@string/form_dashboard" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.voc4u.activity.listener.Listener"
+        <activity android:name=".activity.listener.Listener"
                   android:label="@string/form_dashboard" 
                   android:screenOrientation="portrait"
                   android:theme="@style/CustomTheme">

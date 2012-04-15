@@ -1,5 +1,6 @@
 package com.voc4u.activity.words;
 
+import yuku.iconcontextmenu.IconContextMenu;
 import junit.framework.Assert;
 import android.app.Activity;
 import android.content.Context;
@@ -65,10 +66,13 @@ public class WordsItem extends LinearLayout
 	}
 
 	public void createMenu(ContextMenu menu) {
-		menu.setHeaderTitle(mWord.getLern());
-		menu.add(0, PLAY, 0,"play");
-		menu.add(0, EDIT, 0,"edit");
-		menu.add(0, DELETE, 0,"delete");
+		
+		//menu.setTitle(mWord.getLern());
+	
+		//menu.setHeaderTitle(mWord.getLern());
+//		menu.add(0, PLAY, 0,"play").setIcon(R.drawable.ic_lock_silent_mode_off);
+//		menu.add(0, EDIT, 0,"edit").setIcon(R.drawable.ic_menu_compose);
+//		menu.add(0, DELETE, 0,"delete").setIcon(R.drawable.ic_menu_block);
 	}
 
 	public boolean onContextItemSelected(MenuItem item, BaseWordActivity bwa) {
@@ -92,5 +96,10 @@ public class WordsItem extends LinearLayout
 	public Word getWord()
 	{
 		return mWord;
+	}
+
+	public void onMenuClick(int menuId) {
+		// TODO Auto-generated method stub
+		
 	}
 }
