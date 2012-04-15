@@ -65,32 +65,7 @@ public class WordsItem extends LinearLayout
 			flag2.setImageResource(CommonSetting.nativeCode.getDrawableID(getContext()));
 	}
 
-	public void createMenu(ContextMenu menu) {
-		
-		//menu.setTitle(mWord.getLern());
-	
-		//menu.setHeaderTitle(mWord.getLern());
-//		menu.add(0, PLAY, 0,"play").setIcon(R.drawable.ic_lock_silent_mode_off);
-//		menu.add(0, EDIT, 0,"edit").setIcon(R.drawable.ic_menu_compose);
-//		menu.add(0, DELETE, 0,"delete").setIcon(R.drawable.ic_menu_block);
-	}
 
-	public boolean onContextItemSelected(MenuItem item, BaseWordActivity bwa) {
-		int i = item.getItemId();
-		switch(i)
-		{
-		case PLAY:
-			bwa.onPlay(mWord.getLern());
-			break;
-		case EDIT:
-			break;
-		case DELETE:
-			break;
-		default:
-			return false;
-		}
-		return true;
-	}
 	
 	
 	public Word getWord()
@@ -98,8 +73,5 @@ public class WordsItem extends LinearLayout
 		return mWord;
 	}
 
-	public void onMenuClick(int menuId) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }

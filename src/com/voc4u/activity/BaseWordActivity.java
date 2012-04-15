@@ -364,7 +364,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	public boolean onContextItemSelected(MenuItem item)
 	{
 		WordsItem iw = (WordsItem)((AdapterContextMenuInfo)item.getMenuInfo()).targetView;
-		iw.onContextItemSelected(item, this);
+		
 		
 		// for on dialog prepare
 		mSelectedWord = iw.getWord();

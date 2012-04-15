@@ -40,7 +40,7 @@ public class AddWord {
 	{
 		Request req = new Request4("add");
 		req.addUrlParam("l", w.getLern().replace(",", "|"));
-		req.addUrlParam("n", w.getNative().replace(",", "|"));
+		req.addUrlParam("c", w.getNative().replace(",", "|"));
 		req.addUrlParam("lc", CommonSetting.lernCode.code);
 		req.addUrlParam("nc", CommonSetting.nativeCode.code);
 		Response resp = NetworkManager.execute(req);

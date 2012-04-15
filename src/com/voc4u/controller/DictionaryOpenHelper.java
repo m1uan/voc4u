@@ -362,7 +362,7 @@ public class DictionaryOpenHelper extends SQLiteOpenHelper
 	public ArrayList<Word> getUnaddedWords() 
 	{
 		mDB = getReadableDatabase();
-		String where = " WHERE (" /*+ DBConfig.WS_WORD_ID + " = NULL OR "*/ + DBConfig.WS_WORD_ID + " is null)";// AND " + DBConfig.LANG_LESSON + " = 0";
+		String where = " WHERE (" + DBConfig.LANG_LESSON + " = 0 AND " + DBConfig.WS_WORD_ID + " is null)";// AND " + DBConfig.LANG_LESSON + " = 0";
 		String query; 
 		
 		query = createQueryForGetWords(false, 20, where);

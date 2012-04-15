@@ -33,7 +33,7 @@ public class DBConfig
 			+ DBConfig.WORD_TABLE_NAME + " SET " + WS_WORD_ID + "=\'%s\' WHERE " + ID_COLUMN + " = %d";
 	
 	public static final String DICTIONARY_TABLE_UPDATE_WORD = "UPDATE "
-			+ DBConfig.WORD_TABLE_NAME + " SET " + WORD_1_COLUMN + "=\'%s\', " + WORD_2_COLUMN + "=\'%s\' WHERE " + ID_COLUMN + " = %d";
+			+ DBConfig.WORD_TABLE_NAME + " SET " + WORD_1_COLUMN + "=\'%s\', " + WORD_2_COLUMN + "=\'%s\', " + LANG_LESSON + " = 0 WHERE " + ID_COLUMN + " = %d";
 	
 	public static final String DICTIONARY_TABLE_DELETE_WORD = "DELETE FROM "
 			+ DBConfig.WORD_TABLE_NAME + " WHERE " + ID_COLUMN + " = %d";
