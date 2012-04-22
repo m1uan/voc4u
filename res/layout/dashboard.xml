@@ -5,30 +5,27 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:background="#FFFFFF">
-	<ImageView 
-	    android:padding="15dp"
-	    android:paddingBottom="3dp"
-	    android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/bg_logo"
-		android:layout_centerHorizontal="true"
-		android:layout_alignParentBottom="true"
-				/>
-			<TextView 
-			    android:id="@+id/invisibleTop"
-			    android:layout_width="10dp"
-				android:layout_height="20dp"
-				android:visibility="invisible"
-				/>
+	
+    <RelativeLayout
+        android:id="@+id/infoPanel"
+        android:layout_width="fill_parent"
+		android:layout_height="70dp"
+		android:background="@color/control_panel"
+		android:layout_alignParentTop="true"
+		android:padding="5dp"
+		>"
+	
+	
+	
 			<TextView 
 			    android:visibility="invisible"
 			    android:id="@+id/numOfWordsDesc"
 			    android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="10dp"
+				android:layout_marginTop="0dp"
 				android:layout_margin="0dp"
 				android:padding="0dp"
-				android:layout_below="@id/invisibleTop" 
+				android:textStyle="bold"
 				android:text="know/dont know" 
 				android:layout_centerHorizontal="true"/>
 	    	<TextView 
@@ -36,24 +33,19 @@
 	    	    android:id="@+id/numOfWords"
 	    	    android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textSize="40sp"
+				android:textSize="30sp"
 				android:textStyle="bold"
 				android:layout_margin="0dp"
-				android:layout_marginBottom="10dp"
+				android:layout_marginBottom="0dp"
 				android:padding="0dp"
-				android:textColor="#ff6f0f"
+				android:textColor="#fcff0f"
 			    android:text="60/100"
 			    android:layout_centerHorizontal="true"
-			    android:layout_below="@id/numOfWordsDesc" />
+			    android:layout_below="@id/numOfWordsDesc"/>
 	    	
-	    	<TextView 
-			    android:id="@+id/invisibleMiddle"
-			    android:layout_width="10dp"
-				android:layout_height="20dp"
-				android:visibility="invisible"
-				
-			android:layout_below="@id/numOfWords"
-				/>
+	    	
+	</RelativeLayout>
+			
 		<Button
 			android:id="@+id/trainButton"
 			android:layout_width="225dp"
@@ -63,10 +55,10 @@
 			android:layout_centerHorizontal="true"
 			android:onClick="onTrainButton" 
 			android:background="@drawable/btn_train"
-			android:layout_marginTop="0dp"
+			android:layout_marginTop="110dp"
 			android:padding="10dp"
 			android:textSize="25sp"
-			android:layout_below="@id/invisibleMiddle"
+			
 			
 			 />
 			
@@ -105,5 +97,13 @@
 					 />
 			</LinearLayout>
 			
-	
+	<ImageView 
+	    android:layout_width="150dp"
+		android:layout_height="150dp"
+		android:scaleType="centerInside"
+		android:src="@drawable/bg_logo2"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentBottom="true"
+		
+				/>
 </RelativeLayout>

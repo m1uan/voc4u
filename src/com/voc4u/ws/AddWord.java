@@ -17,7 +17,7 @@ import com.wildfuse.wilda.network.Response;
 
 public class AddWord {
 
-	
+	static Boolean mReady = true;
 	final WordController mWCtrl;
 	public AddWord(Word w, WordController wc) 
 	{
@@ -30,9 +30,14 @@ public class AddWord {
 	{
 		mWCtrl = wc;
 		
-		
-		new AsyncManager<Void, Boolean>(new ControllerMulti()).execute();
-		
+		synchronized(mReady)
+		{
+			if(mReady)
+			{
+				mReady = false;
+				new AsyncManager<Void, Boolean>(new ControllerMulti()).execute();
+			}
+		}
 	}
 	 
 	
@@ -96,11 +101,10 @@ public class AddWord {
 	
 	public class ControllerMulti implements IAsyncController<Void, Boolean> 
 	{
-
+		
 		@Override
 		public void onPreExecute() throws RequestException {
-			// TODO Auto-generated method stub
-
+			
 		}
 
 		@Override
@@ -139,9 +143,12 @@ public class AddWord {
 		}
 
 		@Override
-		public void onPostExecute() {
-			// TODO Auto-generated method stub
-
+		public void onPostExecute() 
+		{
+			synchronized(mReady)
+			{
+				mReady = true;
+			}
 		}
 
 	}
