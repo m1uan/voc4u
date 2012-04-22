@@ -35,6 +35,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	public static final int DIALOG_SHOW_INFO = 107;
 	public static final int DIALOG_TTS_DATA_MISSING = 109;
 	public static final int DIALOG_EDIT_WORD = 110;
+	public static final int DIALOG_CONTEXT_MENU = 111;
 	
 	public static final String FROM_INIT = "FROM_INIT";
 
@@ -185,14 +186,18 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
-		if (id == DIALOG_ADD_WORD) {
+		if (id == DIALOG_ADD_WORD) 
+		{
 			final EditText edtNative = (EditText) dialog
 					.findViewById(R.id.edtNative);
 			final EditText edtLern = (EditText) dialog
 					.findViewById(R.id.edtLearn);
-			edtLern.setText("hello");
-			edtNative.setText("ahoj");
-		} else if (id == DIALOG_SHOW_INFO) {
+			
+			edtLern.setText("");
+			edtNative.setText("");
+		
+		} 
+		else if (id == DIALOG_SHOW_INFO) {
 			DialogInfo.setup(this, GetShowInfoType(), dialog);
 		} else
 			super.onPrepareDialog(id, dialog);

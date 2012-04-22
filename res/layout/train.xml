@@ -13,9 +13,9 @@
 		android:layout_height="wrap_content"
 		android:src="@drawable/bg_logo_transparent"
 		android:layout_centerHorizontal="true"
-		android:layout_alignParentBottom="true"
+		android:layout_centerVertical="true"
 				/>
-    
+
     <RelativeLayout
         android:id="@+id/word"
         android:layout_width="fill_parent"
@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/wordTextView"
             android:text="" />
+            
     </RelativeLayout>
 
     <ListView
@@ -61,6 +62,7 @@
         <Button
             android:id="@+id/dontKnowButton"
             style="@style/ButtonKnows"
+            android:background="@drawable/btn_know_2"
             android:onClick="onDontKnowButton"
             android:text="@string/btn_dontknow"
             android:layout_weight="1" />
@@ -69,12 +71,13 @@
 		    android:id="@+id/nextButtonLayout"
         	android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
+        	
        		android:layout_weight="1"
         	android:paddingLeft="1dp">
         	<Button
             	android:id="@+id/nextButton"
            		style="@style/ButtonKnows"
-            	
+            	android:background="@drawable/btn_know_1"
             	android:onClick="onNextButton"
             	android:text="@string/btn_know" />
         </LinearLayout>

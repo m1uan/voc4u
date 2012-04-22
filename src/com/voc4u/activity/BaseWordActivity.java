@@ -10,12 +10,16 @@ import junit.framework.Assert;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -120,7 +124,28 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 
 	protected abstract int getContentView();
 
-	
+	public boolean isConnected()
+	{
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		TelephonyManager mTelephony = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+		int netType = info.getType();
+		int netSubtype = info.getSubtype();
+		if (netType == ConnectivityManager.TYPE_WIFI) 
+		{
+		    return info.isConnected();
+		} 
+		else if (netType == ConnectivityManager.TYPE_MOBILE
+		    && netSubtype == TelephonyManager.NETWORK_TYPE_UMTS
+		    && !mTelephony.isNetworkRoaming()) 
+		{
+		        return info.isConnected();
+		} 
+		else 
+		{
+		    return false;
+		}
+	}
 
 	@Override
 	public void onResumeSuccess() 
@@ -131,9 +156,11 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 			mTts = new TextToSpeech(this, this);
 		}
 		
-		new AddWord(mWCtrl);
-		new DeleteWord(mWCtrl);
-		
+		if(isConnected())
+		{
+			new AddWord(mWCtrl);
+			new DeleteWord(mWCtrl);
+		}
 	}
 
 
@@ -277,15 +304,16 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
-		if (id == DIALOG_ADD_WORD) {
-			final EditText edtNative = (EditText) dialog
-					.findViewById(R.id.edtNative);
-			final EditText edtLern = (EditText) dialog
-					.findViewById(R.id.edtLearn);
-			edtLern.setText("hello");
-			edtNative.setText("ahoj");
-		}
-		else if(id == DIALOG_EDIT_WORD)
+//		if (id == DIALOG_ADD_WORD) {
+//			final EditText edtNative = (EditText) dialog
+//					.findViewById(R.id.edtNative);
+//			final EditText edtLern = (EditText) dialog
+//					.findViewById(R.id.edtLearn);
+//			edtLern.setText("hello");
+//			edtNative.setText("ahoj");
+//		}
+//		else 
+			if(id == DIALOG_EDIT_WORD)
 		{
 			final EditText edtNative = (EditText) dialog
 					.findViewById(R.id.edtNative);
@@ -355,7 +383,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		//((WordsItem)((AdapterContextMenuInfo)menuInfo).targetView).createMenu(menu);
 		//IconContextMenu icm = new IconContextMenu(this.getApplicationContext(), menu);
 		
-		 showDialog(1564);
+		 showDialog(DIALOG_CONTEXT_MENU);
 	}
 	
 	
