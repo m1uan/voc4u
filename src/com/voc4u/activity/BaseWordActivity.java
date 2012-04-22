@@ -289,7 +289,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 				});
 				break;
 			}
-			case 1564:
+			case DIALOG_CONTEXT_MENU:
 				if(mSelectedWordItem != null)
 				{
 					dialog = iconContextMenu.createMenu(mSelectedWordItem.getWord().getLern());
