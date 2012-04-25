@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 
 import com.voc4u.activity.dictionary.Dictionary;
+import com.voc4u.activity.lessons.Lessons;
 import com.voc4u.controller.DictionaryOpenHelper.NUM_WORDS_TYPE;
 import com.voc4u.controller.DictionaryOpenHelper.RemovedWord;
 import com.voc4u.setting.CommonSetting;
@@ -536,7 +537,7 @@ public class WordController {
 	}
 
 	public void showWordsMenu() {
-		Intent intent = new Intent(mContext, Dictionary.class);
+		Intent intent = new Intent(mContext, Lessons.class);
 		mContext.startActivity(intent);
 	}
 

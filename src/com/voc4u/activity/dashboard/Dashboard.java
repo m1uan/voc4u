@@ -11,6 +11,7 @@ import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.DialogInfo;
 import com.voc4u.activity.dictionary.Dictionary;
+import com.voc4u.activity.lessons.Lessons;
 import com.voc4u.activity.listener.Listener;
 import com.voc4u.activity.speaker.Speaker;
 import com.voc4u.activity.train.Train;
@@ -77,7 +78,7 @@ public class Dashboard extends BaseActivity
 	
 	public void onSettingButton(View view)
 	{
-		Intent it = new Intent(this, Dictionary.class);
+		Intent it = new Intent(this, Lessons.class);
 		startActivity(it);
 	}
 	
