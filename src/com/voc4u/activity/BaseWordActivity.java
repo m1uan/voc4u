@@ -129,22 +129,20 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		TelephonyManager mTelephony = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
-		int netType = info.getType();
-		int netSubtype = info.getSubtype();
-		if (netType == ConnectivityManager.TYPE_WIFI) 
-		{
-		    return info.isConnected();
-		} 
-		else if (netType == ConnectivityManager.TYPE_MOBILE
-		    && netSubtype == TelephonyManager.NETWORK_TYPE_UMTS
-		    && !mTelephony.isNetworkRoaming()) 
-		{
-		        return info.isConnected();
-		} 
-		else 
-		{
-		    return false;
+        if(info != null)
+        {
+        	int netType = info.getType();
+        	int netSubtype = info.getSubtype();
+			 if (netType == ConnectivityManager.TYPE_WIFI || (netType == ConnectivityManager.TYPE_MOBILE
+			    && netSubtype == TelephonyManager.NETWORK_TYPE_UMTS
+			    && !mTelephony.isNetworkRoaming())) 
+			{
+			        return info.isConnected();
+			} 
 		}
+        
+		return false;
+		
 	}
 
 	@Override
