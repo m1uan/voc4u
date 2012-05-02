@@ -537,7 +537,7 @@ public class WordController {
 	}
 
 	public void showWordsMenu() {
-		Intent intent = new Intent(mContext, Lessons.class);
+		Intent intent = new Intent(mContext, Dictionary.class);
 		mContext.startActivity(intent);
 	}
 
