@@ -5,6 +5,9 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,12 +26,15 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	public PublicWord mPublicWord;
 	private TextView mWord2TextView;
 	private Button mDontKnowButton;
+	private View vWord;
+	private View vLogo;
 
 	// if true set word as known
 	private final boolean mKnowetIt = true;
 	private String TAG;
 	private int mAppWidgetId;
 	private ListView lvLastItems;
+	private View mKnowButton;
 	private static LastListAdapter mListAdapter;
 
 	@Override
@@ -39,13 +45,17 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 
 		mWord2TextView = (TextView) findViewById(R.id.word2TextView);
 		mDontKnowButton = (Button) findViewById(R.id.dontKnowButton);
-
+		mKnowButton = findViewById(R.id.nextButtonLayout);
 		//if(mWCtrl != null && mWCtrl.count() > 0)
 		//	setupFirstWord();
 		
 		mPublicWord = null;
 		lvLastItems = (ListView) findViewById(R.id.lastList);
 		lvLastItems.setOnItemClickListener(this);
+		
+		vWord = (View)findViewById(R.id.word);
+		vLogo = (View)findViewById(R.id.logo);
+		
 		registerForContextMenu(lvLastItems);
 	}
 	
@@ -60,6 +70,16 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 			
 		
 		super.onResumeSuccess();
+		
+		Animation anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen);
+		mDontKnowButton.startAnimation(anim);
+		anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_speech);
+		mKnowButton.startAnimation(anim);
+		anim = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain);
+		vWord.startAnimation(anim);
+		anim = AnimationUtils.loadAnimation(this, R.anim.train_list);
+		vLogo.startAnimation(anim);
+		lvLastItems.startAnimation(anim);
 	}
 
 	private void setupFirstWord(boolean loadNew)
@@ -104,8 +124,45 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	}
 
 	@Override
+	public void onBackPressed() {
+		Animation anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen_r);
+		mDontKnowButton.startAnimation(anim);
+		anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_speech_r);
+		mKnowButton.startAnimation(anim);
+		anim = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain_r);
+		anim = AnimationUtils.loadAnimation(this, R.anim.train_list_r);
+		vLogo.startAnimation(anim);
+		lvLastItems.startAnimation(anim);
+		vWord.startAnimation(anim);
+		anim.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				mDontKnowButton.setVisibility(View.INVISIBLE);
+				mKnowButton.setVisibility(View.INVISIBLE);
+				vWord.setVisibility(View.INVISIBLE);
+				vLogo.setVisibility(View.INVISIBLE);
+				lvLastItems.setVisibility(View.INVISIBLE);
+				finish();
+				overridePendingTransition(R.anim.fadeout, R.anim.fadein);
+			}
+		});
+	}
+	
+	@Override
 	protected void onPause()
 	{
+		
 		/*AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
 		RemoteViews views = new RemoteViews(this.getPackageName(),

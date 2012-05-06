@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.voc4u.R;
@@ -20,8 +24,15 @@ import com.voc4u.controller.DictionaryOpenHelper.NUM_WORDS_TYPE;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
 
+
 public class Dashboard extends BaseActivity
 {
+	Button btnTrain;
+	Button btnListen;
+	Button btnSpeech;
+	View vLogo;
+	View vInfoPanel;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -31,6 +42,12 @@ public class Dashboard extends BaseActivity
 		
 //		Intent train = new Intent(this, Train.class);
 //		startActivity(train);
+		
+		btnTrain = (Button)findViewById(R.id.trainButton);
+		btnListen = (Button)findViewById(R.id.speakerButton);
+		btnSpeech = (Button)findViewById(R.id.speechButton);
+		vLogo = findViewById(R.id.logo);
+		vInfoPanel = findViewById(R.id.infoPanel);
 	}
 	
 	@Override
@@ -54,13 +71,71 @@ public class Dashboard extends BaseActivity
 		numow.setText(String.valueOf(numKnow) + " / " + String.valueOf(numAll));
 		numow.setVisibility(View.VISIBLE);
 		
+		
+		btnTrain.setVisibility(View.VISIBLE);
+		btnListen.setVisibility(View.VISIBLE);
+		btnSpeech.setVisibility(View.VISIBLE);
+		vLogo.setVisibility(View.VISIBLE);
+		vInfoPanel.setVisibility(View.VISIBLE);
+		
+		Animation animation = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain);
+		btnTrain.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen);
+		btnListen.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.dashboard_speech);
+		btnSpeech.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.train_list);
+		vLogo.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain);
+		vInfoPanel.startAnimation(animation);
+		//btnTrain.setVisibility(View.VISIBLE);
+		
 		super.onResumeSuccess();
 	}
 	
 	public void onTrainButton(View view)
 	{
-		Intent it = new Intent(this, Train.class);
-		startActivity(it);
+		final Intent it = new Intent(this, Train.class);
+		
+		
+		Animation animation = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain_r);
+		btnTrain.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen_r);
+		btnListen.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.dashboard_speech_r);
+		btnSpeech.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.train_list_r);
+		vLogo.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain_r);
+		vInfoPanel.startAnimation(animation);
+		animation.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				btnTrain.setVisibility(View.INVISIBLE);
+				btnListen.setVisibility(View.INVISIBLE);
+				btnSpeech.setVisibility(View.INVISIBLE);
+				vLogo.setVisibility(View.INVISIBLE);
+				vInfoPanel.setVisibility(View.INVISIBLE);
+				// TODO Auto-generated method stub
+				startActivity(it);
+				overridePendingTransition(R.anim.fadeout, R.anim.fadein);
+			}
+		});
+		
+		
 	}
 	
 	public void onSpeakerButton(View view)
