@@ -96,8 +96,10 @@ public class Dashboard extends BaseActivity
 	public void onTrainButton(View view)
 	{
 		final Intent it = new Intent(this, Train.class);
-		
-		
+		outgoingAnimation(it);
+	}
+
+	private void outgoingAnimation(final Intent it) {
 		Animation animation = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain_r);
 		btnTrain.startAnimation(animation);
 		animation = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen_r);
@@ -134,27 +136,25 @@ public class Dashboard extends BaseActivity
 				overridePendingTransition(R.anim.fadeout, R.anim.fadein);
 			}
 		});
-		
-		
 	}
 	
 	public void onSpeakerButton(View view)
 	{
 		//Intent it = new Intent(this, Words.class);
 		Intent it = new Intent(this, Speaker.class);
-		startActivity(it);
+		outgoingAnimation(it);
 	}
 	
 	public void onSpeechButton(View view)
 	{
 		Intent it = new Intent(this, Listener.class);
-		startActivity(it);
+		outgoingAnimation(it);
 	}
 	
 	public void onSettingButton(View view)
 	{
 		Intent it = new Intent(this, Lessons.class);
-		startActivity(it);
+		outgoingAnimation(it);
 	}
 	
 	@Override

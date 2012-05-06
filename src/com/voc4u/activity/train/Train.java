@@ -10,6 +10,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -28,6 +29,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	private Button mDontKnowButton;
 	private View vWord;
 	private View vLogo;
+	private ImageView ivFlag;
 
 	// if true set word as known
 	private final boolean mKnowetIt = true;
@@ -55,6 +57,8 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		
 		vWord = (View)findViewById(R.id.word);
 		vLogo = (View)findViewById(R.id.logo);
+		
+		ivFlag = (ImageView)findViewById(R.id.flag);
 		
 		registerForContextMenu(lvLastItems);
 	}
@@ -84,7 +88,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 
 	private void setupFirstWord(boolean loadNew)
 	{
-		Assert.assertTrue(mWCtrl != null);
+		
 		// load new public word
 		if (mWCtrl != null)
 		{
@@ -106,6 +110,8 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 			mWord2TextView.setVisibility(View.VISIBLE);
 			mWord2TextView.setVisibility(Consts.DEBUG ? View.VISIBLE
 					: View.GONE);
+			
+			ivFlag.setImageResource(mPublicWord.getTestingFlag(this));
 		}
 	}
 
