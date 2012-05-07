@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -86,6 +87,24 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		mKnowButton.startAnimation(anim);
 		anim = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain);
 		vWord.startAnimation(anim);
+		anim.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				ivFlag.setVisibility(View.INVISIBLE);
+				tvTestWord.setVisibility(View.INVISIBLE);
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				animateTestWord();
+			}
+		});
 		anim = AnimationUtils.loadAnimation(this, R.anim.train_list);
 		vLogo.startAnimation(anim);
 		lvLastItems.startAnimation(anim);
@@ -255,19 +274,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 				tvTestWord.setVisibility(View.INVISIBLE);
 				mWCtrl.updatePublicWord(know);
 				setupFirstWord(true);
-				Animation anim2 = new TranslateAnimation(300,0,0,0);
-				anim2.setDuration(300);
-				
-				tvTestWord.setAnimation(anim2);
-				tvTestWord.setVisibility(View.VISIBLE);
-				
-				
-				
-				Animation anim4 = new TranslateAnimation(-300,0,0,0);
-				anim4.setDuration(300);
-				ivFlag.startAnimation(anim4);
-				ivFlag.setVisibility(View.VISIBLE);
-				
+				animateTestWord();
 			}
 		});
 		
@@ -319,6 +326,41 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	public void doRedrawList()
 	{
 		lvLastItems.invalidateViews();
+	}
+
+	private void animateTestWord() {
+		Animation anim2 = new TranslateAnimation(300,0,0,0);
+		anim2.setDuration(300);
+		anim2.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				Animation anim = new ScaleAnimation(1, 0.8f, 1, 0.8f);
+				anim.setRepeatCount(-1);
+				anim.setRepeatMode(Animation.REVERSE);
+				anim.setDuration(500);
+				tvTestWord.startAnimation(anim);
+			}
+		});
+		tvTestWord.setAnimation(anim2);
+		tvTestWord.setVisibility(View.VISIBLE);
+		
+		Animation anim4 = new TranslateAnimation(-300,0,0,0);
+		anim4.setDuration(300);
+		ivFlag.startAnimation(anim4);
+		ivFlag.setVisibility(View.VISIBLE);
 	}
 	
 
