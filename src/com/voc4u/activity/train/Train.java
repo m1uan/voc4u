@@ -3,9 +3,13 @@ package com.voc4u.activity.train;
 import junit.framework.Assert;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -37,6 +41,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	private int mAppWidgetId;
 	private ListView lvLastItems;
 	private View mKnowButton;
+	private TextView tvTestWord;
 	private static LastListAdapter mListAdapter;
 
 	@Override
@@ -59,7 +64,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		vLogo = (View)findViewById(R.id.logo);
 		
 		ivFlag = (ImageView)findViewById(R.id.flag);
-		
+		tvTestWord = (TextView) findViewById(R.id.wordTextView);
 		registerForContextMenu(lvLastItems);
 	}
 	
@@ -101,13 +106,13 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		//Assert.assertTrue(mPublicWord != null);
 		if (mPublicWord != null)
 		{
-			TextView et = (TextView) findViewById(R.id.wordTextView);
-			et.setText(mPublicWord.getTestString());
+			
+			tvTestWord.setText(mPublicWord.getTestString());
 
 			
 			mWord2TextView.setText(mPublicWord.getBaseWord().getWeight() + "/"
 					+ mPublicWord.getBaseWord().getWeight2());
-			mWord2TextView.setVisibility(View.VISIBLE);
+			//mWord2TextView.setVisibility(View.VISIBLE);
 			mWord2TextView.setVisibility(Consts.DEBUG ? View.VISIBLE
 					: View.GONE);
 			
@@ -201,16 +206,93 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 
 	}
 
-	private void updateWord(boolean know)
+	private void updateWord(final boolean know)
 	{
-		mWCtrl.updatePublicWord(know);
+		Animation anim = new TranslateAnimation(0,0,0,200);
+		anim.setDuration(300);
+		Animation anim3 = new TranslateAnimation(0, 0,0,150);
+		anim3.setDuration(200);
+		
+		ivFlag.startAnimation(anim3);
+		anim3.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				ivFlag.setVisibility(View.INVISIBLE);
+			}
+		});
+		
+		//tvTestWord.setTextColor(Color.BLACK);
+		tvTestWord.startAnimation(anim);
+		anim.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				lvLastItems.invalidateViews();
+				
+				tvTestWord.setVisibility(View.INVISIBLE);
+				mWCtrl.updatePublicWord(know);
+				setupFirstWord(true);
+				Animation anim2 = new TranslateAnimation(300,0,0,0);
+				anim2.setDuration(300);
+				
+				tvTestWord.setAnimation(anim2);
+				tvTestWord.setVisibility(View.VISIBLE);
+				
+				
+				
+				Animation anim4 = new TranslateAnimation(-300,0,0,0);
+				anim4.setDuration(300);
+				ivFlag.startAnimation(anim4);
+				ivFlag.setVisibility(View.VISIBLE);
+				
+			}
+		});
+		
+		
+		
 		
 		//mListAdapter = new LastListAdapter(this);
 		
 		//lvLastItems.setAdapter(mListAdapter);
-		lvLastItems.invalidateViews();
-		setupFirstWord(true);
+
 		
+//		Animation anim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+//		anim.setDuration(500);
+//		LastItem v = (LastItem)mListAdapter.getLastView();
+//		if(v != null) {
+//		v.startAnimation(anim );
+//
+//			new Handler().postDelayed(new Runnable() {
+//
+//					public void run() {
+//
+//					}
+//
+//				}, anim.getDuration());
+//		}
 	}
 
 	@Override
