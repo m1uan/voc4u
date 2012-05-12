@@ -8,6 +8,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -297,16 +298,15 @@ public class TrainWidget extends AppWidgetProvider
 			pw = wc.getFirstPublicWord();
 			//setupActualWord(remoteViews, pw);
 			
-			// v testing flag je commionsetting ktere neni po restartu zarizeni initializovane!!
 			setupActualWord(context, remoteViews);
 			
 			
 			
-			int [] id_text1 = new int [] {R.id.text1_1, R.id.text1_2, R.id.text1_3 };
-			int [] id_text2 = new int [] {R.id.text2_1, R.id.text2_2, R.id.text2_3 };
+			int [] id_text1 = new int [] {R.id.text1_1, R.id.text1_2, R.id.text1_3, R.id.text1_4, R.id.text1_5 };
+			int [] id_text2 = new int [] {R.id.text2_1, R.id.text2_2, R.id.text2_3, R.id.text2_4, R.id.text2_5 };
 			
 			List<PublicWord> ll = WordController.getInstance(context).getLastList();
-			int llmax = ll.size() > 4 ? 4 : ll.size();
+			int llmax = ll.size() > 6 ? 6 : ll.size();
 			for(int i = 1; i != llmax; i++)
 			{
 				int size = ll.size();
@@ -318,7 +318,11 @@ public class TrainWidget extends AppWidgetProvider
 				
 				remoteViews.setTextViewText(id_text1[listpos], pwl.getLern());
 				remoteViews.setTextViewText(id_text2[listpos], pwl.getNative());
+				remoteViews.setTextColor(id_text1[listpos], pwl.getSuccess() ? Color.BLACK : Color.RED);
+				remoteViews.setTextColor(id_text2[listpos], pwl.getSuccess() ? Color.BLACK : Color.RED);
 			}
+			
+			
 			//setupButtons(context, remoteViews);
 			
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -334,13 +338,20 @@ public class TrainWidget extends AppWidgetProvider
 	{
 		
 		//remoteViews.setViewVisibility(R.id.word2TextView, View.INVISIBLE);
+		if (CommonSetting.lernCode == null || CommonSetting.nativeCode == null)
+		{
+			CommonSetting.restore(context);
+		}
 		
 		PublicWord pw = WordController.getInstance(context).getActualPublicWord();
 		
 		Log.d(TAG, String.format("setupActualWord:%s", pw.getLern()));
 		
 		remoteViews.setTextViewText(R.id.wordTextView, pw.getTestString());
-		remoteViews.setImageViewResource(R.id.flag, pw.getTestingFlag(context));
+		if (CommonSetting.lernCode != null && CommonSetting.nativeCode != null)
+		{
+			remoteViews.setImageViewResource(R.id.flag, pw.getTestingFlag(context));
+		}
 		//remoteViews.setTextViewText(R.id.word2TextView, pw.getNative());
 	}
 

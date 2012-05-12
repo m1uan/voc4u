@@ -122,6 +122,53 @@
         </LinearLayout>
     </RelativeLayout>
     
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:id="@+id/word_4" >
+
+        <TextView
+            android:id="@+id/text1_4"
+            style="@style/LastItemText"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" >
+            <TextView
+                android:id="@+id/text2_4"
+                style="@style/LastItemText" />
+        </LinearLayout>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:id="@+id/word_5" >
+
+        <TextView
+            android:id="@+id/text1_5"
+            style="@style/LastItemText"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" >
+            <TextView
+                android:id="@+id/text2_5"
+                style="@style/LastItemText" />
+        </LinearLayout>
+    </RelativeLayout>
     
 "
     
