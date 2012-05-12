@@ -5,7 +5,8 @@
     android:background="#ddffffff"
     android:orientation="vertical"
     android:layout_margin="8dp"
-    android:padding="2dp" >
+    android:padding="2dp"
+    android:id="@+id/widget_layout" >
 
     <LinearLayout
         android:id="@+id/word"
@@ -21,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:src="@drawable/ic_en"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/wordTextView"
@@ -32,7 +33,16 @@
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
-
+    
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/info"
+        android:textColor="#ff0000"
+        android:padding="10dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:text="@string/information_init"
+        android:visibility="visible" />
     <!--
          <com.voc4u.train.LastItem
 	     android:layout_width="wrap_content"
@@ -113,7 +123,7 @@
     </RelativeLayout>
     
     
-    
+"
     
 
     <LinearLayout

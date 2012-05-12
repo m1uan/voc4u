@@ -17,6 +17,7 @@ import com.voc4u.R;
 import com.voc4u.activity.train.Train;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.controller.WordController;
+import com.voc4u.setting.CommonSetting;
 
 public class TrainWidget extends AppWidgetProvider
 	
@@ -24,6 +25,7 @@ public class TrainWidget extends AppWidgetProvider
 	private static final String WORD_INDENT_ID = "word";
 	public static final String ACTION_WIDGET_RECEIVER = "23432432";
 	public static String ACTION_WIDGET_PLAY = "ActionReceiverPLAY";
+	public static String ACTION_WIDGET_INIT = "ActionReceiverINIT";
 	public static String ACTION_WIDGET_NEXT = "ActionReceiverNEXT";
 	public static String ACTION_WIDGET_WORD = "ActionReceiverWORD";
 	private Context mContext;
@@ -55,6 +57,7 @@ public class TrainWidget extends AppWidgetProvider
 		super.onEnabled(context);
 		
 		mContext = context;
+		
 		// runs when all of the first instance of the widget are placed
 		// on the home screen
 	}
@@ -75,9 +78,31 @@ public class TrainWidget extends AppWidgetProvider
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
 				R.layout.widget);
 
+		CommonSetting.restore(context);
+		if (CommonSetting.lernCode == null || CommonSetting.nativeCode == null) 
+		{
+			String s = context.getResources().getString(R.string.form_init);
+			remoteViews.setTextViewText(R.id.wordTextView, s);
+			remoteViews.setViewVisibility(R.id.word_1, View.GONE);
+			remoteViews.setViewVisibility(R.id.word_2, View.GONE);
+			remoteViews.setViewVisibility(R.id.word_3, View.GONE);
+			
+			Intent active = new Intent(context, TrainWidget.class);
+			active.setAction(ACTION_WIDGET_INIT);
+			PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context, 0, active, 0);
+			remoteViews.setOnClickPendingIntent(R.id.widget_layout,
+					actionPendingIntent);
+			remoteViews.setOnClickPendingIntent(R.id.nextButton,
+					actionPendingIntent);
+			remoteViews.setOnClickPendingIntent(R.id.dontKnowButton,
+					actionPendingIntent);
+		}
+		else
+		{
+		
 		setupActualWord(remoteViews,WordController.getInstance(context).getActualPublicWord());
 		setupButtons(context, remoteViews);
-
+		}
 		//remoteViews.setViewVisibility(R.id.word2TextView, View.INVISIBLE);
 		
 		appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
@@ -110,10 +135,11 @@ public class TrainWidget extends AppWidgetProvider
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
-		if (intent.getAction().equals(ACTION_WIDGET_PLAY))
+		if (intent.getAction().equals(ACTION_WIDGET_INIT))
 		{
-			Log.i("onReceive", ACTION_WIDGET_PLAY);
-			onPlayClick(context, intent);
+			Log.i("onReceive", ACTION_WIDGET_INIT);
+			onInitClick(context);
+			//onPlayClick(context, intent);
 		} else if (intent.getAction().equals(ACTION_WIDGET_NEXT))
 		{
 			Log.i("onReceive", ACTION_WIDGET_NEXT);
@@ -128,6 +154,23 @@ public class TrainWidget extends AppWidgetProvider
 		super.onReceive(context, intent);
 	}
 
+	private void onInitClick(Context context)
+	{
+		Log.i(TAG, "onPlayClick");
+		final Intent intent = new Intent(context, Train.class);
+
+		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+		ComponentName thisAppWidget = new ComponentName(context.getPackageName(), TrainWidget.class.getName());
+		int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+		
+		Log.d(TAG, String.format("putExtra:%d", appWidgetIds[0]));
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[0]);
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		Toast.makeText(context, "test2", Toast.LENGTH_LONG).show();
+		context.startActivity(intent);
+	}
+	
 	private void onPlayClick(Context context, Intent intent2)
 	{
 		Log.i(TAG, "onPlayClick");
