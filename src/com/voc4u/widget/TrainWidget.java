@@ -26,6 +26,7 @@ public class TrainWidget extends AppWidgetProvider
 	private static final String WORD_INDENT_ID = "word";
 	public static final String ACTION_WIDGET_RECEIVER = "23432432";
 	public static String ACTION_WIDGET_PLAY = "ActionReceiverPLAY";
+	public static String ACTION_WIDGET_TRAIN = "ActionReceiverTRAIN";
 	public static String ACTION_WIDGET_INIT = "ActionReceiverINIT";
 	public static String ACTION_WIDGET_KNOW = "ActionReceiverNEXT";
 	public static String ACTION_WIDGET_DONT = "ActionReceiverWORD";
@@ -76,9 +77,8 @@ public class TrainWidget extends AppWidgetProvider
         // the layout from our package).
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
         remoteViews.setViewVisibility(R.id.info, View.GONE);
-		remoteViews.setViewVisibility(R.id.word_1, View.VISIBLE);
-		remoteViews.setViewVisibility(R.id.word_2, View.VISIBLE);
-		remoteViews.setViewVisibility(R.id.word_3, View.VISIBLE);
+        remoteViews.setViewVisibility(R.id.flag, View.VISIBLE);
+		setListVisibility(remoteViews, View.VISIBLE);
 		
 		Intent active = new Intent(context, TrainWidget.class);
 		active.setAction(ACTION_WIDGET_PLAY);
@@ -98,10 +98,19 @@ public class TrainWidget extends AppWidgetProvider
 		remoteViews.setOnClickPendingIntent(R.id.wordTextView,
 				actionPendingIntent);
 		
-		
+		setupActualWord(context, remoteViews);
         // Tell the widget manager
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
+
+	private static void setListVisibility(RemoteViews remoteViews, int visible) 
+	{
+		int [] id_text1 = new int [] {R.id.word_1, R.id.word_2, R.id.word_3 };
+		for (int id : id_text1)
+		{
+			remoteViews.setViewVisibility(id, visible);
+		}
+	}
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -128,14 +137,14 @@ public class TrainWidget extends AppWidgetProvider
 			}
 			else
 			{
-				setupActualWord(remoteViews,WordController.getInstance(context).getActualPublicWord());
+				setupActualWord(context, remoteViews);
 				setupButtons(context, remoteViews);
 			}
 		}
 		else
 		{
 		
-			setupActualWord(remoteViews,WordController.getInstance(context).getActualPublicWord());
+			setupActualWord(context,remoteViews);
 			setupButtons(context, remoteViews);
 		}
 		//remoteViews.setViewVisibility(R.id.word2TextView, View.INVISIBLE);
@@ -147,9 +156,8 @@ public class TrainWidget extends AppWidgetProvider
 		String s = context.getResources().getString(R.string.form_init);
 		remoteViews.setViewVisibility(R.id.info, View.VISIBLE);
 		remoteViews.setTextViewText(R.id.wordTextView, s);
-		remoteViews.setViewVisibility(R.id.word_1, View.GONE);
-		remoteViews.setViewVisibility(R.id.word_2, View.GONE);
-		remoteViews.setViewVisibility(R.id.word_3, View.GONE);
+		remoteViews.setViewVisibility(R.id.flag, View.GONE);
+		setListVisibility(remoteViews, View.GONE);
 		
 		Intent active = new Intent(context, TrainWidget.class);
 		active.setAction(ACTION_WIDGET_INIT);
@@ -174,6 +182,12 @@ public class TrainWidget extends AppWidgetProvider
 //				actionPendingIntent);
 
 		active = new Intent(context, TrainWidget.class);
+		active.setAction(ACTION_WIDGET_TRAIN);
+		actionPendingIntent = PendingIntent.getBroadcast(context, 0, active, 0);
+		remoteViews.setOnClickPendingIntent(R.id.widget_layout,
+				actionPendingIntent);
+		
+		active = new Intent(context, TrainWidget.class);
 		active.setAction(ACTION_WIDGET_KNOW);
 		actionPendingIntent = PendingIntent.getBroadcast(context, 0, active, 0);
 		remoteViews.setOnClickPendingIntent(R.id.nextButton,
@@ -182,7 +196,7 @@ public class TrainWidget extends AppWidgetProvider
 		active = new Intent(context, TrainWidget.class);
 		active.setAction(ACTION_WIDGET_DONT);
 		actionPendingIntent = PendingIntent.getBroadcast(context, 0, active, 0);
-		remoteViews.setOnClickPendingIntent(R.id.wordTextView,
+		remoteViews.setOnClickPendingIntent(R.id.dontKnowButton,
 				actionPendingIntent);
 	}
 
@@ -197,13 +211,13 @@ public class TrainWidget extends AppWidgetProvider
 		} else if (intent.getAction().equals(ACTION_WIDGET_KNOW))
 		{
 			Log.i("onReceive", ACTION_WIDGET_KNOW);
-			onNextClick(context);
+			knowOrDont(context, true);
 		} else if (intent.getAction().equals(ACTION_WIDGET_DONT))
 		{
-			onWordClick(context);
-		} else
+			knowOrDont(context, false);
+		} else if(intent.getAction().equals(ACTION_WIDGET_TRAIN))
 		{
-			
+			onTrainClick(context);
 		}
 		super.onReceive(context, intent);
 	}
@@ -221,7 +235,22 @@ public class TrainWidget extends AppWidgetProvider
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[0]);
 		intent.addCategory(Intent.CATEGORY_LAUNCHER);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		Toast.makeText(context, "test2", Toast.LENGTH_LONG).show();
+		context.startActivity(intent);
+	}
+	
+	private void onTrainClick(Context context)
+	{
+		Log.i(TAG, "onPlayClick");
+		final Intent intent = new Intent(context, Train.class);
+
+		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+		ComponentName thisAppWidget = new ComponentName(context.getPackageName(), TrainWidget.class.getName());
+		int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+		
+		Log.d(TAG, String.format("putExtra:%d", appWidgetIds[0]));
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[0]);
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 	}
 	
@@ -251,19 +280,25 @@ public class TrainWidget extends AppWidgetProvider
 		//ttsc.speak(text);
 	}
 
-	private void onNextClick(Context context)
-	{
-		Log.i("onReceive", ACTION_WIDGET_DONT);
+
+
+	private void knowOrDont(Context context, boolean know) {
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
 				R.layout.widget);
 		if(remoteViews != null)
 		{
 			Log.i("onWordClick", ACTION_WIDGET_DONT);
-			PublicWord pw = WordController.getInstance(context).getFirstPublicWord();
-			setupActualWord(remoteViews, pw);
+			
+			WordController wc = WordController.getInstance(context);
+			
+			PublicWord pw = wc.getActualPublicWord();
+			wc.updatePublicWord(know);
+			
+			pw = wc.getFirstPublicWord();
+			//setupActualWord(remoteViews, pw);
 			
 			// v testing flag je commionsetting ktere neni po restartu zarizeni initializovane!!
-			remoteViews.setImageViewResource(R.id.flag, pw.getTestingFlag(context));
+			setupActualWord(context, remoteViews);
 			
 			
 			
@@ -271,16 +306,18 @@ public class TrainWidget extends AppWidgetProvider
 			int [] id_text2 = new int [] {R.id.text2_1, R.id.text2_2, R.id.text2_3 };
 			
 			List<PublicWord> ll = WordController.getInstance(context).getLastList();
-			int llmax = ll.size() > 3 ? 3 : ll.size();
-			for(int i = 0; i != llmax; i++)
+			int llmax = ll.size() > 4 ? 4 : ll.size();
+			for(int i = 1; i != llmax; i++)
 			{
 				int size = ll.size();
 				int step = (i + 1);
 				int pos = size - step;
 				PublicWord pwl = ll.get(pos);
 			
-				remoteViews.setTextViewText(id_text1[i], pwl.getLern());
-				remoteViews.setTextViewText(id_text2[i], pwl.getNative());
+				int listpos = i -1;
+				
+				remoteViews.setTextViewText(id_text1[listpos], pwl.getLern());
+				remoteViews.setTextViewText(id_text2[listpos], pwl.getNative());
 			}
 			//setupButtons(context, remoteViews);
 			
@@ -293,40 +330,21 @@ public class TrainWidget extends AppWidgetProvider
 		}
 	}
 
-	public static void setupActualWord(RemoteViews remoteViews, PublicWord pw)
+	public static void setupActualWord(Context context, RemoteViews remoteViews)
 	{
 		
 		//remoteViews.setViewVisibility(R.id.word2TextView, View.INVISIBLE);
 		
+		PublicWord pw = WordController.getInstance(context).getActualPublicWord();
+		
 		Log.d(TAG, String.format("setupActualWord:%s", pw.getLern()));
 		
 		remoteViews.setTextViewText(R.id.wordTextView, pw.getTestString());
-		
+		remoteViews.setImageViewResource(R.id.flag, pw.getTestingFlag(context));
 		//remoteViews.setTextViewText(R.id.word2TextView, pw.getNative());
 	}
 
-	private void onWordClick(Context context)
-	{
-		Log.i("onReceive", ACTION_WIDGET_DONT);
-		mRemoteViews = new RemoteViews(context.getPackageName(),
-				R.layout.widget);
-		if(mRemoteViews != null)
-		{
-			Log.i("onWordClick", ACTION_WIDGET_DONT);
-			//mRemoteViews.setViewVisibility(R.id.word2TextView, View.VISIBLE);
-			
-			
-			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-			ComponentName thisAppWidget = new ComponentName(context.getPackageName(), TrainWidget.class.getName());
-			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
 
-			//onUpdate(context, appWidgetManager, appWidgetIds);
-			appWidgetManager.updateAppWidget(thisAppWidget, mRemoteViews);
-			
-//			AppWidgetManager awm = AppWidgetManager.getInstance(context);
-//			awm.updateAppWidget(appWidgetId, views)
-		}	
-	}
 
 	public void onWordTextViewClick(View v)
 	{
