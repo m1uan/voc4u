@@ -1,5 +1,7 @@
 package com.voc4u.widget;
 
+import java.util.List;
+
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -71,7 +73,7 @@ public class TrainWidget extends AppWidgetProvider
 		mAppWidgetId = appWidgetIds[0];
 		
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
-				R.layout.main);
+				R.layout.widget);
 
 		setupActualWord(remoteViews,WordController.getInstance(context).getActualPublicWord());
 		setupButtons(context, remoteViews);
@@ -89,8 +91,8 @@ public class TrainWidget extends AppWidgetProvider
 		PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context,
 				0, active, 0);
 		
-		remoteViews.setOnClickPendingIntent(R.id.playButton,
-				actionPendingIntent);
+//		remoteViews.setOnClickPendingIntent(R.id.playButton,
+//				actionPendingIntent);
 
 		active = new Intent(context, TrainWidget.class);
 		active.setAction(ACTION_WIDGET_NEXT);
@@ -156,12 +158,33 @@ public class TrainWidget extends AppWidgetProvider
 	{
 		Log.i("onReceive", ACTION_WIDGET_WORD);
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
-				R.layout.main);
+				R.layout.widget);
 		if(remoteViews != null)
 		{
 			Log.i("onWordClick", ACTION_WIDGET_WORD);
 			PublicWord pw = WordController.getInstance(context).getFirstPublicWord();
 			setupActualWord(remoteViews, pw);
+			
+			// v testing flag je commionsetting ktere neni po restartu zarizeni initializovane!!
+			remoteViews.setImageViewResource(R.id.flag, pw.getTestingFlag(context));
+			
+			
+			
+			int [] id_text1 = new int [] {R.id.text1_1, R.id.text1_2, R.id.text1_3 };
+			int [] id_text2 = new int [] {R.id.text2_1, R.id.text2_2, R.id.text2_3 };
+			
+			List<PublicWord> ll = WordController.getInstance(context).getLastList();
+			int llmax = ll.size() > 3 ? 3 : ll.size();
+			for(int i = 0; i != llmax; i++)
+			{
+				int size = ll.size();
+				int step = (i + 1);
+				int pos = size - step;
+				PublicWord pwl = ll.get(pos);
+			
+				remoteViews.setTextViewText(id_text1[i], pwl.getLern());
+				remoteViews.setTextViewText(id_text2[i], pwl.getNative());
+			}
 			//setupButtons(context, remoteViews);
 			
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -175,24 +198,25 @@ public class TrainWidget extends AppWidgetProvider
 
 	public static void setupActualWord(RemoteViews remoteViews, PublicWord pw)
 	{
-
-		remoteViews.setViewVisibility(R.id.word2TextView, View.INVISIBLE);
+		
+		//remoteViews.setViewVisibility(R.id.word2TextView, View.INVISIBLE);
 		
 		Log.d(TAG, String.format("setupActualWord:%s", pw.getLern()));
 		
-		remoteViews.setTextViewText(R.id.wordTextView, pw.getLern());
-		remoteViews.setTextViewText(R.id.word2TextView, pw.getNative());
+		remoteViews.setTextViewText(R.id.wordTextView, pw.getTestString());
+		
+		//remoteViews.setTextViewText(R.id.word2TextView, pw.getNative());
 	}
 
 	private void onWordClick(Context context)
 	{
 		Log.i("onReceive", ACTION_WIDGET_WORD);
 		mRemoteViews = new RemoteViews(context.getPackageName(),
-				R.layout.main);
+				R.layout.widget);
 		if(mRemoteViews != null)
 		{
 			Log.i("onWordClick", ACTION_WIDGET_WORD);
-			mRemoteViews.setViewVisibility(R.id.word2TextView, View.VISIBLE);
+			//mRemoteViews.setViewVisibility(R.id.word2TextView, View.VISIBLE);
 			
 			
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -212,8 +236,8 @@ public class TrainWidget extends AppWidgetProvider
 		Log.d(TAG, "onWordTextViewClick()");
 
 		RemoteViews rv = new RemoteViews(mContext.getPackageName(),
-				R.layout.main);
-		rv.setViewVisibility(R.id.word2TextView, View.VISIBLE);
+				R.layout.widget);
+		//rv.setViewVisibility(R.id.word2TextView, View.VISIBLE);
 	}
 
 
