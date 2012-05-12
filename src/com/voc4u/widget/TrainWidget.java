@@ -171,7 +171,7 @@ public class TrainWidget extends AppWidgetProvider
 				actionPendingIntent);
 	}
 
-	private void setupButtons(Context context, RemoteViews remoteViews)
+	private static void setupButtons(Context context, RemoteViews remoteViews)
 	{
 		Intent active = new Intent(context, TrainWidget.class);
 		active.setAction(ACTION_WIDGET_PLAY);
@@ -299,28 +299,7 @@ public class TrainWidget extends AppWidgetProvider
 			//setupActualWord(remoteViews, pw);
 			
 			setupActualWord(context, remoteViews);
-			
-			
-			
-			int [] id_text1 = new int [] {R.id.text1_1, R.id.text1_2, R.id.text1_3, R.id.text1_4, R.id.text1_5 };
-			int [] id_text2 = new int [] {R.id.text2_1, R.id.text2_2, R.id.text2_3, R.id.text2_4, R.id.text2_5 };
-			
-			List<PublicWord> ll = WordController.getInstance(context).getLastList();
-			int llmax = ll.size() > 6 ? 6 : ll.size();
-			for(int i = 1; i != llmax; i++)
-			{
-				int size = ll.size();
-				int step = (i + 1);
-				int pos = size - step;
-				PublicWord pwl = ll.get(pos);
-			
-				int listpos = i -1;
-				
-				remoteViews.setTextViewText(id_text1[listpos], pwl.getLern());
-				remoteViews.setTextViewText(id_text2[listpos], pwl.getNative());
-				remoteViews.setTextColor(id_text1[listpos], pwl.getSuccess() ? Color.BLACK : Color.RED);
-				remoteViews.setTextColor(id_text2[listpos], pwl.getSuccess() ? Color.BLACK : Color.RED);
-			}
+			updateLastList(context, remoteViews);
 			
 			
 			//setupButtons(context, remoteViews);
@@ -331,6 +310,29 @@ public class TrainWidget extends AppWidgetProvider
 
 			//onUpdate(context, appWidgetManager, appWidgetIds);
 			appWidgetManager.updateAppWidget(thisAppWidget, remoteViews);
+		}
+	}
+
+	private static void updateLastList(Context context, RemoteViews remoteViews) 
+	{
+		int [] id_text1 = new int [] {R.id.text1_1, R.id.text1_2, R.id.text1_3, R.id.text1_4, R.id.text1_5 };
+		int [] id_text2 = new int [] {R.id.text2_1, R.id.text2_2, R.id.text2_3, R.id.text2_4, R.id.text2_5 };
+		
+		List<PublicWord> ll = WordController.getInstance(context).getLastList();
+		int llmax = ll.size() > 6 ? 6 : ll.size();
+		for(int i = 1; i != llmax; i++)
+		{
+			int size = ll.size();
+			int step = (i + 1);
+			int pos = size - step;
+			PublicWord pwl = ll.get(pos);
+		
+			int listpos = i -1;
+			
+			remoteViews.setTextViewText(id_text1[listpos], pwl.getLern());
+			remoteViews.setTextViewText(id_text2[listpos], pwl.getNative());
+			remoteViews.setTextColor(id_text1[listpos], pwl.getSuccess() ? Color.BLACK : Color.RED);
+			remoteViews.setTextColor(id_text2[listpos], pwl.getSuccess() ? Color.BLACK : Color.RED);
 		}
 	}
 
@@ -364,6 +366,18 @@ public class TrainWidget extends AppWidgetProvider
 		RemoteViews rv = new RemoteViews(mContext.getPackageName(),
 				R.layout.widget);
 		//rv.setViewVisibility(R.id.word2TextView, View.VISIBLE);
+	}
+
+	public static void appAfterTrain(Context context,
+			AppWidgetManager appWidgetManager, int appWidgetId) 
+	{
+		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
+        
+		setupActualWord(context, remoteViews);
+		setupButtons(context, remoteViews);
+		updateLastList(context, remoteViews);
+		
+		appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 	}
 
 

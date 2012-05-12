@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -21,11 +22,14 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.voc4u.R;
+import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.DialogInfo;
+import com.voc4u.activity.dashboard.Dashboard;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.controller.Word;
 import com.voc4u.setting.Consts;
+import com.voc4u.widget.TrainWidget;
 
 public class Train extends BaseWordActivity implements OnItemClickListener
 {
@@ -39,7 +43,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	// if true set word as known
 	private final boolean mKnowetIt = true;
 	private String TAG;
-	private int mAppWidgetId;
+	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private ListView lvLastItems;
 	private View mKnowButton;
 	private TextView tvTestWord;
@@ -108,6 +112,14 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		anim = AnimationUtils.loadAnimation(this, R.anim.train_list);
 		vLogo.startAnimation(anim);
 		lvLastItems.startAnimation(anim);
+		
+		Intent intent = getIntent();
+		Bundle extras = intent.getExtras();
+		if (extras != null) {
+			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+					AppWidgetManager.INVALID_APPWIDGET_ID);
+		}
+		
 	}
 
 	private void setupFirstWord(boolean loadNew)
@@ -363,5 +375,41 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		ivFlag.setVisibility(View.VISIBLE);
 	}
 	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	    	onHome();
+	        return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	protected boolean onHome() {
+		if(mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
+		{
+			Intent intent = new Intent(this, Dashboard.class);
+			
+			// Push widget update to surface with newly set prefix
+			AppWidgetManager appWidgetManager = AppWidgetManager
+					.getInstance(this);
+			TrainWidget.appAfterTrain(this, appWidgetManager, mAppWidgetId);
+
+			// Make sure we pass back the original appWidgetId
+			Intent resultValue = new Intent();
+			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+					mAppWidgetId);
+			setResult(RESULT_OK, resultValue);
+			
+
+			startActivity(intent);
+			finish();
+			return true;
+		}
+		else
+		{
+			return super.onHome();
+		}
+	}
 
 }

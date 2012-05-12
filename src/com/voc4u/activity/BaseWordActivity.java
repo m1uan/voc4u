@@ -247,11 +247,15 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	{
 		if (item == mMenuHomeId)
 		{
-			finish();
-			return true;
+			return onHome();
 		}
 		else
 			return super.onMenuItemClick(item);
+	}
+
+	protected boolean onHome() {
+		finish();
+		return true;
 	}
 	
 	@Override
