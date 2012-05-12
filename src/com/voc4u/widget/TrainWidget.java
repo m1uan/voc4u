@@ -59,8 +59,12 @@ public class TrainWidget extends AppWidgetProvider
 		
 		mContext = context;
 		
-		// runs when all of the first instance of the widget are placed
-		// on the home screen
+		CommonSetting.restore(context);
+		if (CommonSetting.lernCode == null || CommonSetting.nativeCode == null) 
+		{
+			onInitClick(context);
+		}
+		
 	}
 
 	public static void appWasInitialized(Context context, AppWidgetManager appWidgetManager,
