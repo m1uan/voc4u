@@ -42,7 +42,7 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:text="@string/information_init"
-        android:visibility="visible" />
+        android:visibility="gone" />
     <!--
          <com.voc4u.train.LastItem
 	     android:layout_width="wrap_content"
