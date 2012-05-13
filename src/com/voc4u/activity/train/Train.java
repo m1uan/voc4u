@@ -45,7 +45,8 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	private String TAG;
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private ListView lvLastItems;
-	private View mKnowButton;
+	private View mKnowButtonLayout;
+	private Button mKnowButton;
 	private TextView tvTestWord;
 	private static LastListAdapter mListAdapter;
 
@@ -57,7 +58,8 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 
 		mWord2TextView = (TextView) findViewById(R.id.word2TextView);
 		mDontKnowButton = (Button) findViewById(R.id.dontKnowButton);
-		mKnowButton = findViewById(R.id.nextButtonLayout);
+		mKnowButtonLayout = findViewById(R.id.nextButtonLayout);
+		mKnowButton = (Button)findViewById(R.id.nextButton);
 		//if(mWCtrl != null && mWCtrl.count() > 0)
 		//	setupFirstWord();
 		
@@ -88,7 +90,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		Animation anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen);
 		mDontKnowButton.startAnimation(anim);
 		anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_speech);
-		mKnowButton.startAnimation(anim);
+		mKnowButtonLayout.startAnimation(anim);
 		anim = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain);
 		vWord.startAnimation(anim);
 		anim.setAnimationListener(new AnimationListener() {
@@ -170,7 +172,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		Animation anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen_r);
 		mDontKnowButton.startAnimation(anim);
 		anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_speech_r);
-		mKnowButton.startAnimation(anim);
+		mKnowButtonLayout.startAnimation(anim);
 		anim = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain_r);
 		anim = AnimationUtils.loadAnimation(this, R.anim.train_list_r);
 		vLogo.startAnimation(anim);
@@ -191,7 +193,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				mDontKnowButton.setVisibility(View.INVISIBLE);
-				mKnowButton.setVisibility(View.INVISIBLE);
+				mKnowButtonLayout.setVisibility(View.INVISIBLE);
 				vWord.setVisibility(View.INVISIBLE);
 				vLogo.setVisibility(View.INVISIBLE);
 				lvLastItems.setVisibility(View.INVISIBLE);
@@ -239,6 +241,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 
 	private void updateWord(final boolean know)
 	{
+		enableActionButton(false);
 		Animation anim = new TranslateAnimation(0,0,0,200);
 		anim.setDuration(300);
 		Animation anim3 = new TranslateAnimation(0, 0,0,150);
@@ -347,8 +350,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 			
 			@Override
 			public void onAnimationStart(Animation animation) {
-				// TODO Auto-generated method stub
-				
+				enableActionButton(false);
 			}
 			
 			@Override
@@ -359,12 +361,15 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 			
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				Animation anim = new ScaleAnimation(1, 0.8f, 1, 0.8f);
-				anim.setRepeatCount(-1);
-				anim.setRepeatMode(Animation.REVERSE);
-				anim.setDuration(500);
-				tvTestWord.startAnimation(anim);
+				enableActionButton(true);
+//				Animation anim = new ScaleAnimation(1, 0.8f, 1, 0.8f);
+//				anim.setRepeatCount(-1);
+//				anim.setRepeatMode(Animation.REVERSE);
+//				anim.setDuration(500);
+//				tvTestWord.startAnimation(anim);
 			}
+
+			
 		});
 		tvTestWord.setAnimation(anim2);
 		tvTestWord.setVisibility(View.VISIBLE);
@@ -373,6 +378,14 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		anim4.setDuration(300);
 		ivFlag.startAnimation(anim4);
 		ivFlag.setVisibility(View.VISIBLE);
+	}
+	
+	private void enableActionButton(boolean enabled) 
+	{
+		mDontKnowButton.setClickable(enabled);
+		mKnowButton.setClickable(enabled);
+		mDontKnowButton.setEnabled(enabled);
+		mKnowButton.setEnabled(enabled);
 	}
 	
 	@Override
