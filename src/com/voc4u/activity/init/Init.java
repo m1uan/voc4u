@@ -43,6 +43,11 @@ public class Init extends Activity implements OnItemSelectedListener,
 	private LangType ltNative;
 	private LangType ltLearn;
 	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+	private View mSpinner1;
+	private View mSpinner2;
+	private View mText1;
+	private View mText2;
+	private View mButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,12 @@ public class Init extends Activity implements OnItemSelectedListener,
 		if (!DialogInfo.GetChecked(DialogInfo.TYPE_INIT)) {
 			showDialog(BaseActivity.DIALOG_SHOW_INFO);
 		}
+		
+		mSpinner1 = findViewById(R.id.spnLern);
+		mSpinner2 = findViewById(R.id.spnNative);
+		mText1 = findViewById(R.id.text1);
+		mText2 = findViewById(R.id.text2);
+		mButton = findViewById(R.id.btnStart);
 	}
 
 	@Override
@@ -280,12 +291,8 @@ public class Init extends Activity implements OnItemSelectedListener,
 	}
 
 	private void showTtsSetting() {
-		ComponentName componentToLaunch = new ComponentName(
-				"com.android.settings",
-				"com.android.settings.TextToSpeechSettings");
 		Intent intent = new Intent();
-		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-		intent.setComponent(componentToLaunch);
+		intent.setAction("com.android.settings.TTS_SETTINGS");
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 		// onShowSpeechMenu();
@@ -293,12 +300,11 @@ public class Init extends Activity implements OnItemSelectedListener,
 
 	@Override
 	protected void onResume() {
-		
-		
-		
 		// if goes from tts setting
-		if (mTts != null)
-			showDashboard();
+		if (mTts != null) {
+			showDashboard(); 
+		}
+		
 		super.onResume();
 	}
 

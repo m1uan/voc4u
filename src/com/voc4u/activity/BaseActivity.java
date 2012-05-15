@@ -56,8 +56,8 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 					.setOnMenuItemClickListener(this);
 		else
 			mMenuDictionary = null;
-		//mSpeachSetting = menu.add(R.string.btn_menu_speech_setting)
-		//		.setOnMenuItemClickListener(this);
+		mSpeachSetting = menu.add(R.string.btn_menu_speech_setting)
+				.setOnMenuItemClickListener(this);
 
 		mAddWord = menu.add(R.string.add_word_button)
 				.setOnMenuItemClickListener(this);
@@ -87,12 +87,11 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	}
 
 	protected void onShowSpeechMenu() {
-		ComponentName componentToLaunch = new ComponentName(
-				"com.android.settings",
-				"com.android.settings.TextToSpeechSettings");
+//		ComponentName componentToLaunch = new ComponentName(
+//				"com.android.settings",
+//				"com.android.settings.TextToSpeechSettings");
 		Intent intent = new Intent();
-		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-		intent.setComponent(componentToLaunch);
+		intent.setAction("com.android.settings.TTS_SETTINGS");
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}

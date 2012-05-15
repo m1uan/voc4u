@@ -24,24 +24,8 @@
 		android:layout_height="wrap_content"
 		
 		android:padding="5dp">
-
-		
-		<TextView
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/select_lern_lang"
-			android:textColor="@color/texts"
-			android:textStyle="bold"
-			android:textSize="15dp"
-			android:layout_marginRight="170dp"
-			android:layout_margin="4dp" />
-
-		<Spinner
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginRight="170dp"
-			android:id="@+id/spnLern" />
-		<TextView
+<TextView
+		    android:id="@+id/text2"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:textColor="@color/texts"
@@ -57,11 +41,30 @@
 			android:layout_marginRight="170dp"
 			android:id="@+id/spnNative" />
 		
+		<TextView
+		    android:id="@+id/text1"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/select_lern_lang"
+			android:textColor="@color/texts"
+			android:textStyle="bold"
+			android:textSize="15dp"
+			android:layout_marginRight="170dp"
+			android:layout_margin="4dp"
+			 />
+
+		<Spinner
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="170dp"
+			android:id="@+id/spnLern" />
+		
+		
 	</LinearLayout>
 	<Button
 	    	android:layout_alignParentBottom="true"
 			android:layout_margin="5dp"
-			
+			android:id="@+id/btnStart"
 			style="@style/ButtonKnows"
             android:background="@drawable/btn_know_1"
             android:layout_width="fill_parent"
