@@ -17,6 +17,9 @@ import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
@@ -48,6 +51,7 @@ public class Init extends Activity implements OnItemSelectedListener,
 	private View mText1;
 	private View mText2;
 	private View mButton;
+	private View mLogo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,7 @@ public class Init extends Activity implements OnItemSelectedListener,
 		mText1 = findViewById(R.id.text1);
 		mText2 = findViewById(R.id.text2);
 		mButton = findViewById(R.id.btnStart);
+		mLogo = findViewById(R.id.logo);
 	}
 
 	@Override
@@ -304,8 +309,51 @@ public class Init extends Activity implements OnItemSelectedListener,
 		if (mTts != null) {
 			showDashboard(); 
 		}
+		else {
+			animate(true);
+			
+			
+		}
 		
 		super.onResume();
+	}
+
+	private void animate(boolean b) {
+		
+		Animation anim1 = new TranslateAnimation( Animation.RELATIVE_TO_SELF,3.0f, Animation.RELATIVE_TO_SELF,0f,Animation.ABSOLUTE,0f,Animation.ABSOLUTE,0f);
+		anim1.setDuration(300);
+		
+		Animation anim12 = new TranslateAnimation( Animation.RELATIVE_TO_SELF,3.0f, Animation.RELATIVE_TO_SELF,0f,Animation.ABSOLUTE,0f,Animation.ABSOLUTE,0f);
+		anim12.setDuration(300);
+		anim12.setStartOffset(800);
+		Animation anim2 = new TranslateAnimation( Animation.RELATIVE_TO_SELF,-3.0f, Animation.RELATIVE_TO_SELF,0f,Animation.ABSOLUTE,0f,Animation.ABSOLUTE,0f);
+		anim2.setDuration(300);
+		anim2.setStartOffset(0);
+		Animation anim22 = new TranslateAnimation( Animation.RELATIVE_TO_SELF,-3.0f, Animation.RELATIVE_TO_SELF,0f,Animation.ABSOLUTE,0f,Animation.ABSOLUTE,0f);
+		anim22.setDuration(300);
+		anim22.setStartOffset(800);
+		//anim.setStartOffset(500);
+		
+		//anim2.setStartOffset(500);
+		Animation anim3 = new TranslateAnimation( Animation.RELATIVE_TO_SELF,0.0f, Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF,2f,Animation.RELATIVE_TO_SELF,0f);
+		anim3.setDuration(200);
+		anim3.setStartOffset(1500);
+		
+		Animation anim4 =  new AlphaAnimation(0.0f, 1.0f);
+		anim4.setDuration(5500);
+		anim4.setStartOffset(2500);
+		
+		//mText1.setAnimation(anim);
+		mText2.startAnimation(anim1);
+		
+		mSpinner2.startAnimation(anim2);
+		
+		mText1.startAnimation(anim12);
+		
+		
+		mSpinner1.startAnimation(anim22);
+		mButton.startAnimation(anim3);
+		mLogo.startAnimation(anim4);
 	}
 
 	@Override
