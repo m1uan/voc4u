@@ -293,6 +293,9 @@ public class Init extends Activity implements OnItemSelectedListener,
 
 	@Override
 	protected void onResume() {
+		
+		
+		
 		// if goes from tts setting
 		if (mTts != null)
 			showDashboard();

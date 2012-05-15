@@ -11,7 +11,7 @@
 	<string name="information_init" formatted="false">Select you native language, next select language which you want learn. And let\'s go train</string>
 	<string name="hint_native_word" formatted="false">native word</string>
 	
-	<string name="form_dashboard" formatted="false">Voc4u</string>
+	<string name="form_dashboard" formatted="false">Vocabulary - Voc4u</string>
 	<string name="btn_train" formatted="false">TRAIN</string>
 	<string name="start" formatted="false">start</string>
 	<string name="save_dictionary" formatted="false">save dictionary</string>
