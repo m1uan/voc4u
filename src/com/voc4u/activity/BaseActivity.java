@@ -56,8 +56,8 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 					.setOnMenuItemClickListener(this);
 		else
 			mMenuDictionary = null;
-		mSpeachSetting = menu.add(R.string.btn_menu_speech_setting)
-				.setOnMenuItemClickListener(this);
+		//mSpeachSetting = menu.add(R.string.btn_menu_speech_setting)
+		//		.setOnMenuItemClickListener(this);
 
 		mAddWord = menu.add(R.string.add_word_button)
 				.setOnMenuItemClickListener(this);
