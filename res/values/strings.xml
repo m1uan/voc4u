@@ -5,10 +5,12 @@
 <resources>
     
 	<string name="tap_for_display" formatted="false">*** tap for display ***</string>
+	
+	<string name="msg_our_lern_unsurported" formatted="false">Our learn language is unsurported by Speech to Text syntetizer</string>
 	<string name="form_dictionary" formatted="false">Dictionary</string>
 	<string name="information_init" formatted="false">Select you native language, next select language which you want learn. And let\'s go train</string>
 	<string name="hint_native_word" formatted="false">native word</string>
-	<string name="msg_our_lern_unsurported" formatted="false">Our learn language is unsurported by Speech to Text syntetizer</string>
+	
 	<string name="form_dashboard" formatted="false">Voc4u</string>
 	<string name="btn_train" formatted="false">TRAIN</string>
 	<string name="start" formatted="false">start</string>
