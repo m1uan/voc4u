@@ -1,5 +1,8 @@
 package com.voc4u.activity.train;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import junit.framework.Assert;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -28,6 +31,7 @@ import com.voc4u.activity.DialogInfo;
 import com.voc4u.activity.dashboard.Dashboard;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.controller.Word;
+import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
 import com.voc4u.widget.TrainWidget;
 
@@ -50,6 +54,9 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	private TextView tvTestWord;
 	private static LastListAdapter mListAdapter;
 
+	int numKnow = 0;
+	int numDontKnow = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -232,13 +239,14 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	public void onDontKnowButton(View v)
 	{
 		updateWord(false);
+		numDontKnow++;
 	}
 
 	public void onNextButton(View v)
 	{
 
 		updateWord(true);
-
+		numKnow++;
 	}
 
 	private void updateWord(final boolean know)
@@ -425,6 +433,20 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		{
 			return super.onHome();
 		}
+	}
+	
+	@Override
+	public void onDestroy() {
+		try {
+			JSONObject properties = new JSONObject();
+			properties.put("know_count", numKnow);
+			properties.put("dontknow_count", numDontKnow);
+			mMPMetrics.track("Train_leave", properties);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		super.onDestroy();
 	}
 
 }
