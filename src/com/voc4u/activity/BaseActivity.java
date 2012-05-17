@@ -1,5 +1,8 @@
 package com.voc4u.activity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mixpanel.android.mpmetrics.MPMetrics;
 import com.voc4u.R;
 import com.voc4u.activity.init.Init;
 import com.voc4u.controller.Word;
@@ -43,6 +47,8 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	private MenuItem mSpeachSetting;
 	private MenuItem mAddWord;
 	private MenuItem mHelp;
+	
+	protected MPMetrics mMPMetrics;
 
 	interface OnWordAdd
 	{
@@ -215,8 +221,21 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-
 		CommonSetting.restore(this);
+		
+		mMPMetrics = MPMetrics.getInstance(this, "9bbb341c8848bc0d46b0f1beb6cefec3");
+		JSONObject properties = new JSONObject();
+		try {
+			properties.put("learn", CommonSetting.lernCode.code);
+			properties.put("native", CommonSetting.nativeCode.code);
+			mMPMetrics.registerSuperProperties(properties);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 
 		boolean showinfo = getIntent().getBooleanExtra("showinfo", true);
 		if(showinfo)
@@ -246,6 +265,12 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 			onResumeSuccess();
 
 		super.onResume();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		mMPMetrics.flush();
+		super.onDestroy();
 	}
 
 }

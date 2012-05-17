@@ -66,6 +66,7 @@ public class Init extends Activity implements OnItemSelectedListener,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mMPMetrics = MPMetrics.getInstance(this, "9bbb341c8848bc0d46b0f1beb6cefec3");
+		mMPMetrics.track("Init activity", null);
 		setContentView(R.layout.init);
 		CommonSetting.restore(this);
 
@@ -92,7 +93,7 @@ public class Init extends Activity implements OnItemSelectedListener,
 		mButton = findViewById(R.id.btnStart);
 		mLogo = findViewById(R.id.logo);
 		
-		mMPMetrics.track("Init activity", null);
+		
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package com.voc4u.activity.dashboard;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -32,6 +35,8 @@ public class Dashboard extends BaseActivity
 	Button btnSpeech;
 	View vLogo;
 	View vInfoPanel;
+	private long numKnow;
+	private long numTotal;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -48,6 +53,8 @@ public class Dashboard extends BaseActivity
 		btnSpeech = (Button)findViewById(R.id.speechButton);
 		vLogo = findViewById(R.id.logo);
 		vInfoPanel = findViewById(R.id.infoPanel);
+		
+		
 	}
 	
 	@Override
@@ -65,10 +72,10 @@ public class Dashboard extends BaseActivity
 		desc.setVisibility(View.VISIBLE);
 		
 		WordController wc = WordController.getInstance(this);
-		long numKnow = wc.getNumWordsInDB(NUM_WORDS_TYPE.KNOWS);
-		long numAll = wc.count();
+		numKnow = wc.getNumWordsInDB(NUM_WORDS_TYPE.KNOWS);
+		numTotal = wc.count();
 		
-		numow.setText(String.valueOf(numKnow) + " / " + String.valueOf(numAll));
+		numow.setText(String.valueOf(numKnow) + " / " + String.valueOf(numTotal));
 		numow.setVisibility(View.VISIBLE);
 		
 		
@@ -161,5 +168,20 @@ public class Dashboard extends BaseActivity
 	protected String GetShowInfoType()
 	{
 		return DialogInfo.TYPE_DASHBOARD;
+	}
+	
+	
+	@Override
+	protected void onDestroy() {
+		try {
+			JSONObject properties = new JSONObject();
+			properties.put("know", numKnow);
+			properties.put("total", numTotal);
+			mMPMetrics.track("Dashboard_leaving", properties);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		super.onDestroy();
 	}
 }

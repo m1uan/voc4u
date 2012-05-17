@@ -56,7 +56,7 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 		mNum = 0;
 		
 		SService.setMainActivity(this);
-		//mActualPW = mWCtrl.getFirstPublicWord();
+		mMPMetrics.track("Speaker", null);
 	}
 
 	

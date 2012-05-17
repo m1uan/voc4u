@@ -73,6 +73,8 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		ivFlag = (ImageView)findViewById(R.id.flag);
 		tvTestWord = (TextView) findViewById(R.id.wordTextView);
 		registerForContextMenu(lvLastItems);
+		
+		mMPMetrics.track("Train", null);
 	}
 	
 	@Override

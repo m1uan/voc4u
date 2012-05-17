@@ -48,6 +48,7 @@ public class Listener extends BaseWordActivity implements OnClickListener
 			btnDontKnow.setVisibility(View.GONE);
 		
 		mPublicWord = null;
+		mMPMetrics.track("Listener", null);
 	}
 
 	@Override
