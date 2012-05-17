@@ -2,6 +2,9 @@ package com.voc4u.activity.init;
 
 import java.util.Locale;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -28,6 +31,7 @@ import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+import com.mixpanel.android.mpmetrics.MPMetrics;
 import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.DialogInfo;
@@ -56,10 +60,12 @@ public class Init extends Activity implements OnItemSelectedListener,
 	private View mButton;
 	private View mLogo;
 	private ProgressDialog mProgresDialog = null;
+	private MPMetrics mMPMetrics;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mMPMetrics = MPMetrics.getInstance(this, "9bbb341c8848bc0d46b0f1beb6cefec3");
 		setContentView(R.layout.init);
 		CommonSetting.restore(this);
 
@@ -85,11 +91,14 @@ public class Init extends Activity implements OnItemSelectedListener,
 		mText2 = findViewById(R.id.text2);
 		mButton = findViewById(R.id.btnStart);
 		mLogo = findViewById(R.id.logo);
+		
+		mMPMetrics.track("Init activity", null);
 	}
 
 	@Override
 	protected void onDestroy() {
 		TtsShutdown();
+		mMPMetrics.flush();
 		super.onDestroy();
 	}
 
@@ -186,6 +195,19 @@ public class Init extends Activity implements OnItemSelectedListener,
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		try {
+			JSONObject properties = new JSONObject();
+			properties.put("learn", CommonSetting.lernCode.code);
+			properties.put("native", CommonSetting.nativeCode.code);
+			mMPMetrics.track("onStart", properties);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		mTts = new TextToSpeech(this, this);
 	}
 
