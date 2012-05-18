@@ -520,6 +520,11 @@ public class WordController {
 	}
 
 	public void enableLessonAsync(int lesson, boolean enable, updateLisener ul) {
+		
+		// for MPMetrics
+		CommonSetting.lessonsEnambled[lesson] = enable;
+		CommonSetting.store(mContext);
+		
 		if (enable)
 			add(lesson);
 		else

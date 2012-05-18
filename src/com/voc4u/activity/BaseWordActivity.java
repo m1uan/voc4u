@@ -55,7 +55,8 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	private IconContextMenu iconContextMenu;
 	private WordsItem mSelectedWordItem;
 
-	
+	private long mLastTimestamp;
+	private long mTotalTime = 0;
 	
 	
 	@Override
@@ -159,8 +160,17 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 			new AddWord(mWCtrl);
 			new DeleteWord(mWCtrl);
 		}
+		
+		// for MPMetrix
+		mLastTimestamp = System.currentTimeMillis();
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		mTotalTime  += System.currentTimeMillis() - mLastTimestamp ;
+	}
 
 	@Override
 	public void onInit(int status)
@@ -450,5 +460,9 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 		
 	}
 	
+	
+	public long getTotalTime() {
+		return mTotalTime / 1000;
+	}
 	
 }

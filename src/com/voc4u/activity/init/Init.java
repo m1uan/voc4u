@@ -65,8 +65,11 @@ public class Init extends Activity implements OnItemSelectedListener,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mMPMetrics = MPMetrics.getInstance(this, "9bbb341c8848bc0d46b0f1beb6cefec3");
-		mMPMetrics.track("Init activity", null);
+		
+		if( !BaseActivity.isDebuggable(this)) {
+			mMPMetrics = MPMetrics.getInstance(this, "9bbb341c8848bc0d46b0f1beb6cefec3");
+			mMPMetrics.track("Init activity", null);
+		}
 		setContentView(R.layout.init);
 		CommonSetting.restore(this);
 
@@ -99,7 +102,11 @@ public class Init extends Activity implements OnItemSelectedListener,
 	@Override
 	protected void onDestroy() {
 		TtsShutdown();
-		mMPMetrics.flush();
+		
+		if(mMPMetrics != null) {
+			mMPMetrics.flush();
+		}
+		
 		super.onDestroy();
 	}
 

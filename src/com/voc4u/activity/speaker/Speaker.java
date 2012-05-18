@@ -1,5 +1,8 @@
 package com.voc4u.activity.speaker;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -56,7 +59,6 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 		mNum = 0;
 		
 		SService.setMainActivity(this);
-		mMPMetrics.track("Speaker", null);
 	}
 
 	
@@ -182,6 +184,16 @@ public class Speaker extends BaseWordActivity implements OnTouchListener
 	@Override
 	public void onDestroy()
 	{
+		if (mMPMetrics != null) {
+			try {
+				JSONObject properties = new JSONObject();
+				properties.put("time_in_speaker", getTotalTime());
+				mMPMetrics.track("Speaker", null);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		if(mIService != null)
 			stopService(mIService);
 		super.onDestroy();

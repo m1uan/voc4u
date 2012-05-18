@@ -35,8 +35,7 @@ import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
 import com.voc4u.widget.TrainWidget;
 
-public class Train extends BaseWordActivity implements OnItemClickListener
-{
+public class Train extends BaseWordActivity implements OnItemClickListener {
 	public PublicWord mPublicWord;
 	private TextView mWord2TextView;
 	private Button mDontKnowButton;
@@ -57,64 +56,65 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 	int numKnow = 0;
 	int numDontKnow = 0;
 	
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 
 		mWord2TextView = (TextView) findViewById(R.id.word2TextView);
 		mDontKnowButton = (Button) findViewById(R.id.dontKnowButton);
 		mKnowButtonLayout = findViewById(R.id.nextButtonLayout);
-		mKnowButton = (Button)findViewById(R.id.nextButton);
-		//if(mWCtrl != null && mWCtrl.count() > 0)
-		//	setupFirstWord();
-		
+		mKnowButton = (Button) findViewById(R.id.nextButton);
+		// if(mWCtrl != null && mWCtrl.count() > 0)
+		// setupFirstWord();
+
 		mPublicWord = null;
 		lvLastItems = (ListView) findViewById(R.id.lastList);
 		lvLastItems.setOnItemClickListener(this);
-		
-		vWord = (View)findViewById(R.id.word);
-		vLogo = (View)findViewById(R.id.logo);
-		
-		ivFlag = (ImageView)findViewById(R.id.flag);
+
+		vWord = (View) findViewById(R.id.word);
+		vLogo = (View) findViewById(R.id.logo);
+
+		ivFlag = (ImageView) findViewById(R.id.flag);
 		tvTestWord = (TextView) findViewById(R.id.wordTextView);
 		registerForContextMenu(lvLastItems);
-		
-		mMPMetrics.track("Train", null);
+
+		if(mMPMetrics != null) {
+			mMPMetrics.track("Train", null);
+		}
 	}
-	
+
 	@Override
-	public void onResumeSuccess()
-	{
+	public void onResumeSuccess() {
 		mListAdapter = new LastListAdapter(this);
 		lvLastItems.setAdapter(mListAdapter);
-		
-		if(mPublicWord == null)
+
+		if (mPublicWord == null)
 			setupFirstWord(false);
-			
-		
+
 		super.onResumeSuccess();
-		
-		Animation anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen);
+
+		Animation anim = AnimationUtils.loadAnimation(this,
+				R.anim.dashboard_listen);
 		mDontKnowButton.startAnimation(anim);
 		anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_speech);
 		mKnowButtonLayout.startAnimation(anim);
 		anim = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain);
 		vWord.startAnimation(anim);
 		anim.setAnimationListener(new AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animation animation) {
 				ivFlag.setVisibility(View.INVISIBLE);
 				tvTestWord.setVisibility(View.INVISIBLE);
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation animation) {
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				animateTestWord();
@@ -123,53 +123,48 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		anim = AnimationUtils.loadAnimation(this, R.anim.train_list);
 		vLogo.startAnimation(anim);
 		lvLastItems.startAnimation(anim);
-		
+
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
 		if (extras != null) {
 			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
 					AppWidgetManager.INVALID_APPWIDGET_ID);
 		}
+
 		
 	}
 
-	private void setupFirstWord(boolean loadNew)
-	{
-		
+	private void setupFirstWord(boolean loadNew) {
+
 		// load new public word
-		if (mWCtrl != null)
-		{
-			if(loadNew)
+		if (mWCtrl != null) {
+			if (loadNew)
 				mPublicWord = mWCtrl.getFirstPublicWord();
 			else
 				mPublicWord = mWCtrl.getActualPublicWord();
 		}
-		
-		//Assert.assertTrue(mPublicWord != null);
-		if (mPublicWord != null)
-		{
-			
+
+		// Assert.assertTrue(mPublicWord != null);
+		if (mPublicWord != null) {
+
 			tvTestWord.setText(mPublicWord.getTestString());
 
-			
 			mWord2TextView.setText(mPublicWord.getBaseWord().getWeight() + "/"
 					+ mPublicWord.getBaseWord().getWeight2());
-			//mWord2TextView.setVisibility(View.VISIBLE);
+			// mWord2TextView.setVisibility(View.VISIBLE);
 			mWord2TextView.setVisibility(Consts.DEBUG ? View.VISIBLE
 					: View.GONE);
-			
+
 			ivFlag.setImageResource(mPublicWord.getTestingFlag(this));
 		}
 	}
 
 	@Override
-	protected void onResume()
-	{
+	protected void onResume() {
 
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
-		if (extras != null)
-		{
+		if (extras != null) {
 			mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
 					AppWidgetManager.INVALID_APPWIDGET_ID);
 		}
@@ -178,7 +173,8 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 
 	@Override
 	public void onBackPressed() {
-		Animation anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen_r);
+		Animation anim = AnimationUtils.loadAnimation(this,
+				R.anim.dashboard_listen_r);
 		mDontKnowButton.startAnimation(anim);
 		anim = AnimationUtils.loadAnimation(this, R.anim.dashboard_speech_r);
 		mKnowButtonLayout.startAnimation(anim);
@@ -188,17 +184,17 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 		lvLastItems.startAnimation(anim);
 		vWord.startAnimation(anim);
 		anim.setAnimationListener(new AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animation animation) {
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation animation) {
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				mDontKnowButton.setVisibility(View.INVISIBLE);
@@ -211,208 +207,194 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 			}
 		});
 	}
-	
+
 	@Override
-	protected void onPause()
-	{
-		
-		/*AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+	protected void onPause() {
 
-		RemoteViews views = new RemoteViews(this.getPackageName(),
-				R.layout.main);
-
-		TrainWidget.setupActualWord(views, WordController.getInstance(this)
-				.getActualPublicWord());
-		appWidgetManager.updateAppWidget(mAppWidgetId, views);
-
-		Intent resultValue = new Intent();
-		resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-		setResult(RESULT_OK, resultValue);*/
+		/*
+		 * AppWidgetManager appWidgetManager =
+		 * AppWidgetManager.getInstance(this);
+		 * 
+		 * RemoteViews views = new RemoteViews(this.getPackageName(),
+		 * R.layout.main);
+		 * 
+		 * TrainWidget.setupActualWord(views, WordController.getInstance(this)
+		 * .getActualPublicWord());
+		 * appWidgetManager.updateAppWidget(mAppWidgetId, views);
+		 * 
+		 * Intent resultValue = new Intent();
+		 * resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+		 * mAppWidgetId); setResult(RESULT_OK, resultValue);
+		 */
 		super.onPause();
 	}
 
-	public void onPlayButton(View v)
-	{
+	public void onPlayButton(View v) {
 		onPlay(mPublicWord.getLern());
 	}
 
-	public void onDontKnowButton(View v)
-	{
+	public void onDontKnowButton(View v) {
 		updateWord(false);
 		numDontKnow++;
 	}
 
-	public void onNextButton(View v)
-	{
+	public void onNextButton(View v) {
 
 		updateWord(true);
 		numKnow++;
 	}
 
-	private void updateWord(final boolean know)
-	{
+	private void updateWord(final boolean know) {
 		enableActionButton(false);
-		Animation anim = new TranslateAnimation(0,0,0,200);
+		Animation anim = new TranslateAnimation(0, 0, 0, 200);
 		anim.setDuration(300);
-		Animation anim3 = new TranslateAnimation(0, 0,0,150);
+		Animation anim3 = new TranslateAnimation(0, 0, 0, 150);
 		anim3.setDuration(200);
-		
+
 		ivFlag.startAnimation(anim3);
 		anim3.setAnimationListener(new AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animation animation) {
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation animation) {
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				ivFlag.setVisibility(View.INVISIBLE);
 			}
 		});
-		
-		//tvTestWord.setTextColor(Color.BLACK);
+
+		// tvTestWord.setTextColor(Color.BLACK);
 		tvTestWord.startAnimation(anim);
 		anim.setAnimationListener(new AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animation animation) {
-				
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation animation) {
-				
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				lvLastItems.invalidateViews();
-				
+
 				tvTestWord.setVisibility(View.INVISIBLE);
 				mWCtrl.updatePublicWord(know);
 				setupFirstWord(true);
 				animateTestWord();
 			}
 		});
-		
-		
-		
-		
-		//mListAdapter = new LastListAdapter(this);
-		
-		//lvLastItems.setAdapter(mListAdapter);
 
-		
-//		Animation anim = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-//		anim.setDuration(500);
-//		LastItem v = (LastItem)mListAdapter.getLastView();
-//		if(v != null) {
-//		v.startAnimation(anim );
-//
-//			new Handler().postDelayed(new Runnable() {
-//
-//					public void run() {
-//
-//					}
-//
-//				}, anim.getDuration());
-//		}
+		// mListAdapter = new LastListAdapter(this);
+
+		// lvLastItems.setAdapter(mListAdapter);
+
+		// Animation anim = AnimationUtils.loadAnimation(this,
+		// android.R.anim.fade_in);
+		// anim.setDuration(500);
+		// LastItem v = (LastItem)mListAdapter.getLastView();
+		// if(v != null) {
+		// v.startAnimation(anim );
+		//
+		// new Handler().postDelayed(new Runnable() {
+		//
+		// public void run() {
+		//
+		// }
+		//
+		// }, anim.getDuration());
+		// }
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-			long arg3)
-	{
+			long arg3) {
 		PublicWord pw = (PublicWord) lvLastItems.getItemAtPosition(position);
 		onPlay(pw.getLern());
 	}
 
 	@Override
-	protected int getContentView()
-	{
+	protected int getContentView() {
 		return R.layout.train;
 	}
-	
+
 	@Override
-	protected String GetShowInfoType()
-	{
+	protected String GetShowInfoType() {
 		return DialogInfo.TYPE_TRAIN;
 	}
-	
+
 	@Override
-	public void doRedrawList()
-	{
+	public void doRedrawList() {
 		lvLastItems.invalidateViews();
 	}
 
 	private void animateTestWord() {
-		Animation anim2 = new TranslateAnimation(300,0,0,0);
+		Animation anim2 = new TranslateAnimation(300, 0, 0, 0);
 		anim2.setDuration(300);
 		anim2.setAnimationListener(new AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(Animation animation) {
 				enableActionButton(false);
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(Animation animation) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				enableActionButton(true);
-//				Animation anim = new ScaleAnimation(1, 0.8f, 1, 0.8f);
-//				anim.setRepeatCount(-1);
-//				anim.setRepeatMode(Animation.REVERSE);
-//				anim.setDuration(500);
-//				tvTestWord.startAnimation(anim);
+				// Animation anim = new ScaleAnimation(1, 0.8f, 1, 0.8f);
+				// anim.setRepeatCount(-1);
+				// anim.setRepeatMode(Animation.REVERSE);
+				// anim.setDuration(500);
+				// tvTestWord.startAnimation(anim);
 			}
 
-			
 		});
 		tvTestWord.setAnimation(anim2);
 		tvTestWord.setVisibility(View.VISIBLE);
-		
-		Animation anim4 = new TranslateAnimation(-300,0,0,0);
+
+		Animation anim4 = new TranslateAnimation(-300, 0, 0, 0);
 		anim4.setDuration(300);
 		ivFlag.startAnimation(anim4);
 		ivFlag.setVisibility(View.VISIBLE);
 	}
-	
-	private void enableActionButton(boolean enabled) 
-	{
+
+	private void enableActionButton(boolean enabled) {
 		mDontKnowButton.setClickable(enabled);
 		mKnowButton.setClickable(enabled);
 		mDontKnowButton.setEnabled(enabled);
 		mKnowButton.setEnabled(enabled);
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-	    if (keyCode == KeyEvent.KEYCODE_BACK) {
-	    	onHome();
-	        return true;
-	    }
-	    return super.onKeyDown(keyCode, event);
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			onHome();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	@Override
 	protected boolean onHome() {
-		if(mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID)
-		{
+		if (mAppWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
 			Intent intent = new Intent(this, Dashboard.class);
-			
+
 			// Push widget update to surface with newly set prefix
 			AppWidgetManager appWidgetManager = AppWidgetManager
 					.getInstance(this);
@@ -423,28 +405,29 @@ public class Train extends BaseWordActivity implements OnItemClickListener
 			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 					mAppWidgetId);
 			setResult(RESULT_OK, resultValue);
-			
 
 			startActivity(intent);
 			finish();
 			return true;
-		}
-		else
-		{
+		} else {
 			return super.onHome();
 		}
 	}
-	
+
 	@Override
 	public void onDestroy() {
-		try {
-			JSONObject properties = new JSONObject();
-			properties.put("know_count", numKnow);
-			properties.put("dontknow_count", numDontKnow);
-			mMPMetrics.track("Train_leave", properties);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (mMPMetrics != null) {
+			try {
+				JSONObject properties = new JSONObject();
+				properties.put("know_count", numKnow);
+				properties.put("dontknow_count", numDontKnow);
+				properties.put("total_count", numDontKnow + numKnow);
+				properties.put("time_in_train", getTotalTime());
+				mMPMetrics.track("Train_leave", properties);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		super.onDestroy();
 	}

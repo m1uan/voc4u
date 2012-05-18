@@ -75,7 +75,9 @@ public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnCli
 		btnStoreSetting = findViewById(R.id.btnStoreSetting);
 		btnStoreSetting.setOnClickListener(this);
 		
-		mMPMetrics.track("Dictionary", null);
+		if(mMPMetrics != null) {
+			mMPMetrics.track("Dictionary", null);
+		}
 	}
 
 	@Override
