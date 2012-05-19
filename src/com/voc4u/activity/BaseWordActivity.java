@@ -462,7 +462,7 @@ public abstract class BaseWordActivity extends BaseActivity implements OnInitLis
 	
 	
 	public long getTotalTime() {
-		return mTotalTime / 1000;
+		return mTotalTime / 1000 / 60;
 	}
 	
 }

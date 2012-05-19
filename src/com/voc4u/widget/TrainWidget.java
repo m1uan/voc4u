@@ -2,6 +2,9 @@ package com.voc4u.widget;
 
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.mixpanel.android.mpmetrics.MPMetrics;
 import com.voc4u.R;
 import com.voc4u.activity.init.Init;
 import com.voc4u.activity.train.Train;
@@ -35,7 +39,10 @@ public class TrainWidget extends AppWidgetProvider
 	private static String TAG = "TrainWidget";
 	private RemoteViews mRemoteViews;
 	private int mAppWidgetId;
-
+	
+	static int mKnowButtonCount = 0;
+	static int mDontKnowButtonCount = 0;
+	
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		// called when widgets are deleted
@@ -249,6 +256,10 @@ public class TrainWidget extends AppWidgetProvider
 		intent.addCategory(Intent.CATEGORY_LAUNCHER);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
+		
+		MPMetrics mpMetrics = MPMetrics.getInstance(context, "9bbb341c8848bc0d46b0f1beb6cefec3");
+		mpMetrics.track("widget_go_train", null);
+		mpMetrics.flush();
 	}
 
 	private void onPlayClick(Context context, Intent intent2) {
@@ -283,6 +294,13 @@ public class TrainWidget extends AppWidgetProvider
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
 				R.layout.widget);
 
+		if(know) {
+			mKnowButtonCount++;
+		}
+		else {
+			mDontKnowButtonCount++;
+		}
+		
 		if (remoteViews != null) {
 			if (cannotContinueWithRestore(context)) {
 				updateWidget(context, remoteViews);
@@ -303,6 +321,24 @@ public class TrainWidget extends AppWidgetProvider
 			updateLastList(context, remoteViews);
 
 			updateWidget(context, remoteViews);
+			if(mKnowButtonCount + mDontKnowButtonCount > 7) {
+				MPMetrics mpMetrics = MPMetrics.getInstance(context, "9bbb341c8848bc0d46b0f1beb6cefec3");
+				JSONObject properties = new JSONObject();
+				try {
+					
+					properties.put("know_count", mKnowButtonCount);
+					properties.put("dontknow_count", mDontKnowButtonCount);
+					properties.put("total_count", mKnowButtonCount + mDontKnowButtonCount);
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				mpMetrics.track("widget_train", properties);
+				mpMetrics.flush();
+				mKnowButtonCount = 0;
+				mDontKnowButtonCount = 0;
+			}
 		}
 	}
 
