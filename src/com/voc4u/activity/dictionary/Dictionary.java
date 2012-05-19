@@ -2,6 +2,9 @@ package com.voc4u.activity.dictionary;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import junit.framework.Assert;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -49,6 +52,8 @@ public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnCli
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
+		
+		
 		mWordCtrl = WordController.getInstance(this);
 
 		mAdapter = new Adapter();
@@ -69,6 +74,10 @@ public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnCli
 
 		btnStoreSetting = findViewById(R.id.btnStoreSetting);
 		btnStoreSetting.setOnClickListener(this);
+		
+		if(mMPMetrics != null) {
+			mMPMetrics.track("Dictionary", null);
+		}
 	}
 
 	@Override
@@ -430,6 +439,8 @@ public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnCli
 					public void onClick(DialogInterface dialog, int id)
 					{
 						resetDB();
+						mMPMetrics.track("reset_DB", null);
+						
 					}
 				}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
 				{

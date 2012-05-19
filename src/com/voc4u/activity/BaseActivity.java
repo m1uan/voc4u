@@ -1,12 +1,21 @@
 package com.voc4u.activity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +26,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mixpanel.android.mpmetrics.MPMetrics;
 import com.voc4u.R;
 import com.voc4u.activity.init.Init;
 import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
+import com.voc4u.setting.Consts;
 import com.voc4u.ws.AddWord;
 
 public class BaseActivity extends Activity implements OnMenuItemClickListener {
@@ -36,7 +47,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	public static final int DIALOG_TTS_DATA_MISSING = 109;
 	public static final int DIALOG_EDIT_WORD = 110;
 	public static final int DIALOG_CONTEXT_MENU = 111;
-	
+
 	public static final String FROM_INIT = "FROM_INIT";
 
 	private MenuItem mMenuDictionary;
@@ -44,11 +55,12 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	private MenuItem mAddWord;
 	private MenuItem mHelp;
 
-	interface OnWordAdd
-	{
+	protected MPMetrics mMPMetrics = null;
+
+	interface OnWordAdd {
 		long onWordAdd(WordController wc, String learn, String nativ);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (hasShowDictionary())
@@ -87,41 +99,36 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	}
 
 	protected void onShowSpeechMenu() {
-		ComponentName componentToLaunch = new ComponentName(
-				"com.android.settings",
-				"com.android.settings.TextToSpeechSettings");
+		// ComponentName componentToLaunch = new ComponentName(
+		// "com.android.settings",
+		// "com.android.settings.TextToSpeechSettings");
 		Intent intent = new Intent();
-		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-		intent.setComponent(componentToLaunch);
+		intent.setAction("com.android.settings.TTS_SETTINGS");
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}
 
 	@Override
-	protected Dialog onCreateDialog(int id) 
-	{
-		if (id == DIALOG_ADD_WORD) 
-		{
+	protected Dialog onCreateDialog(int id) {
+		if (id == DIALOG_ADD_WORD) {
 			final Dialog dialog = createDialogAddWord(new OnWordAdd() {
-				
+
 				@Override
-				public long onWordAdd(WordController wc, String learn, String nativ) {
-					long id = wc.addWordEx(
-							WordController.CUSTOM_WORD_LESSON, learn, nativ, 1, 1);
+				public long onWordAdd(WordController wc, String learn,
+						String nativ) {
+					long id = wc.addWordEx(WordController.CUSTOM_WORD_LESSON,
+							learn, nativ, 1, 1);
 					return id;
 				}
 			});
 			return dialog;
-		}
-		else if (id == DIALOG_ADD_WORD_WARN) 
-		{
+		} else if (id == DIALOG_ADD_WORD_WARN) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.add_word_title);
 			builder.setMessage(R.string.msg_must_be_fill_both_edit_field);
 			builder.setCancelable(true);
 			builder.setPositiveButton(android.R.string.ok,
-					new DialogInterface.OnClickListener() 
-			{
+					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							dialog.dismiss();
@@ -129,8 +136,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 					});
 			// builder.set
 			return builder.create();
-		} else if (id == DIALOG_SHOW_INFO) 
-		{
+		} else if (id == DIALOG_SHOW_INFO) {
 			return DialogInfo.create(this);
 		} else
 			return super.onCreateDialog(id);
@@ -153,8 +159,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 
 		final EditText edtNative = (EditText) dialog
 				.findViewById(R.id.edtNative);
-		final EditText edtLern = (EditText) dialog
-				.findViewById(R.id.edtLearn);
+		final EditText edtLern = (EditText) dialog.findViewById(R.id.edtLearn);
 		Button btnAdd = (Button) dialog.findViewById(R.id.btnAdd);
 		btnAdd.setOnClickListener(new OnClickListener() {
 
@@ -169,13 +174,14 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 				} else
 					dialog.dismiss();
 
-				WordController wc = WordController.getInstance(BaseActivity.this);
-				
+				WordController wc = WordController
+						.getInstance(BaseActivity.this);
+
 				long id = onWordAdd.onWordAdd(wc, lern, nat);
 
 				Word word = new Word(id, lern, nat, 1, 1);
 				onAddCustomWord(word);
-				
+
 				// add word to internet
 				new AddWord(word, wc);
 
@@ -186,18 +192,16 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
-		if (id == DIALOG_ADD_WORD) 
-		{
+		if (id == DIALOG_ADD_WORD) {
 			final EditText edtNative = (EditText) dialog
 					.findViewById(R.id.edtNative);
 			final EditText edtLern = (EditText) dialog
 					.findViewById(R.id.edtLearn);
-			
+
 			edtLern.setText("");
 			edtNative.setText("");
-		
-		} 
-		else if (id == DIALOG_SHOW_INFO) {
+
+		} else if (id == DIALOG_SHOW_INFO) {
 			DialogInfo.setup(this, GetShowInfoType(), dialog);
 		} else
 			super.onPrepareDialog(id, dialog);
@@ -213,21 +217,56 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 		Toast.makeText(BaseActivity.this, tst, Toast.LENGTH_SHORT).show();
 	}
 
-	protected void onCreate(Bundle savedInstanceState) 
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		CommonSetting.restore(this);
 
-		boolean showinfo = getIntent().getBooleanExtra("showinfo", true);
-		if(showinfo)
+		// new version
+		// because till version 1.3 the MPmetrix dosn't exist
+		// and CommonSetting.lessonsEnambled isn't in local store prefiled
+		// you must init lessonsEnabled from WordDatabase
+		if(!CommonSetting.lessonsEnambled[0])
 		{
+			WordController wc = WordController.getInstance(this);
+			for(int i = 1; i != Consts.NATIVE_LESSON_NUM; i++) {
+				CommonSetting.lessonsEnambled[i] = wc.isEnableLesson(i);
+			}
+			
+			CommonSetting.lessonsEnambled[0] = true;
+			CommonSetting.store(this);
+		}
+		
+		if (!isDebuggable(this)) {
+			prepareMPMetrics();
+		}
+
+		boolean showinfo = getIntent().getBooleanExtra("showinfo", true);
+		if (showinfo) {
 			String showtype = GetShowInfoType();
 			if (showtype != null && !DialogInfo.GetChecked(showtype))
 				showDialog(DIALOG_SHOW_INFO);
-			
+
 			getIntent().putExtra("showinfo", false);
 		}
+	}
+
+	private void prepareMPMetrics() {
+		mMPMetrics = CommonSetting.initMetrics(this);
+	}
+
+	public static boolean isDebuggable(Context ctx) {
+		boolean debuggable = false;
+
+//		PackageManager pm = ctx.getPackageManager();
+//		try {
+//			ApplicationInfo appinfo = pm.getApplicationInfo(
+//					ctx.getPackageName(), 0);
+//			debuggable = (0 != (appinfo.flags &= ApplicationInfo.FLAG_DEBUGGABLE));
+//		} catch (NameNotFoundException e) {
+//			/* debuggable variable will remain false */
+//		}
+
+		return debuggable;
 	}
 
 	public void onResumeSuccess() {
@@ -235,18 +274,23 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	}
 
 	@Override
-	protected void onResume() 
-	{
-		if (CommonSetting.lernCode == null || CommonSetting.nativeCode == null) 
-		{
+	protected void onResume() {
+		if (CommonSetting.lernCode == null || CommonSetting.nativeCode == null) {
 			Intent init = new Intent(this, Init.class);
 			startActivity(init);
 			finish();
-		} 
-		else
+		} else
 			onResumeSuccess();
 
 		super.onResume();
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (mMPMetrics != null) {
+			mMPMetrics.flush();
+		}
+		super.onDestroy();
 	}
 
 }

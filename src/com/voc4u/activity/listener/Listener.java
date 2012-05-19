@@ -3,6 +3,9 @@ package com.voc4u.activity.listener;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -153,5 +156,22 @@ public class Listener extends BaseWordActivity implements OnClickListener
 	public void doRedrawList()
 	{
 		lvLastItems.invalidateViews();
+	}
+	
+	@Override
+	public void onDestroy() {
+		if (mMPMetrics != null) {
+			try {
+				JSONObject properties = new JSONObject();
+				properties.put("time_in_listen", getTotalTime());
+				mMPMetrics.track("Listener", null);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		super.onDestroy();
 	}
 }

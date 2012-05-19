@@ -13,7 +13,9 @@ public class LastListAdapter extends BaseAdapter
 {
 
 	private final WordController mWCtrl;
-
+	private View vTopView;
+	
+	
 	public LastListAdapter(Context context)
 	{
 		mWCtrl = WordController.getInstance(context);
@@ -54,9 +56,16 @@ public class LastListAdapter extends BaseAdapter
 			li = new LastItem(parent.getContext());
 		}
 		
+		if(position == 0) {
+			vTopView = li;
+		}
+		
 		li.setup(getItem(position));
 		
 		return li;
 	}
 
+	public View getLastView() {
+		return vTopView;
+	}
 }

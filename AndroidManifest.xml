@@ -1,61 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.voc4u"
-	android:versionCode="1230"
-	android:versionName="1.2.3">
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-	<!-- <uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/> -->
-	<uses-sdk
-		android:minSdkVersion="4" />
-	<application
-		android:icon="@drawable/icon"
-		android:label="@string/form_dashboard">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.voc4u"
+    android:versionCode="1300"
+    android:versionName="1.3" >
 
-        <activity android:name="com.voc4u.activity.train.Train"
-                  android:label="@string/form_dashboard"
-                  android:theme="@style/CustomTheme" >
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--
+    <uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    -->
+    <uses-sdk android:minSdkVersion="7" />
+
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/form_dashboard" >
+        <receiver android:name="com.voc4u.widget.TrainWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.voc4u.widget.TrainWidget.ACTION_WIDGET_RECEIVER" />
+                <action android:name="com.voc4u.widget.TrainWidget.ACTION_WIDGET_PLAY" />
+                <action android:name="com.voc4u.widget.TrainWidget.ACTION_WIDGET_NEXT" />
+                <action android:name="com.voc4u.widget.TrainWidget.ACTION_WIDGET_WORD" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/hello_widget_provider" />
+        </receiver>
+
+        <activity
+            android:name="com.voc4u.activity.train.Train"
+            android:label="@string/form_dashboard"
+            android:theme="@style/CustomTheme" >
         </activity>
-        
-        <activity android:name="com.voc4u.activity.words.Words"
-                  android:label="@string/form_dashboard" 
-                  android:screenOrientation="portrait"
-                  android:theme="@style/CustomTheme" >
+        <activity
+            android:name="com.voc4u.activity.words.Words"
+            android:label="@string/form_dashboard"
+            
+            android:theme="@style/CustomTheme" >
         </activity>
-        
-         <activity android:name="com.voc4u.activity.speaker.Speaker"
-                  android:label="@string/form_dashboard" 
-                  android:screenOrientation="portrait"
-                  android:theme="@style/CustomTheme" >
+        <activity
+            android:name="com.voc4u.activity.speaker.Speaker"
+            android:label="@string/form_dashboard"
+            
+            android:theme="@style/CustomTheme" >
         </activity>
-        
-        <activity android:name="com.voc4u.activity.dashboard.Dashboard"
-                  android:label="@string/form_dashboard"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/CustomTheme">
+        <activity
+            android:name="com.voc4u.activity.dashboard.Dashboard"
+            android:label="@string/form_dashboard"
+           
+            android:theme="@style/CustomTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity android:name="com.voc4u.activity.dictionary.Dictionary"
-                  android:label="@string/form_dictionary" >
+        <activity
+            android:name="com.voc4u.activity.lessons.Lessons"
+            android:label="@string/form_dictionary" >
         </activity>
-		<activity android:name="com.voc4u.activity.init.Init"
-                  android:label="@string/form_dashboard" android:screenOrientation="portrait">
+        <activity
+            android:name="com.voc4u.activity.dictionary.Dictionary"
+            android:label="@string/form_dictionary" >
         </activity>
-        <activity android:name=".activity.listener.Listener"
-                  android:label="@string/form_dashboard" 
-                  android:screenOrientation="portrait"
-                  android:theme="@style/CustomTheme">
-                  
+        <activity
+            android:name="com.voc4u.activity.init.Init"
+            android:label="@string/form_dashboard"
+            >
         </activity>
-	
-		<service android:name=".activity.speaker.SService" />
-	</application>
-	
-</manifest>
+        <activity
+            android:name=".activity.listener.Listener"
+            android:label="@string/form_dashboard"
+            
+            android:theme="@style/CustomTheme" >
+        </activity>
 
+        <service android:name=".activity.speaker.SService" />
+    </application>
+
+</manifest>

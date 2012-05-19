@@ -1,13 +1,21 @@
 package com.voc4u.setting;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.mixpanel.android.mpmetrics.MPMetrics;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 
 public class CommonSetting
 {
 	private static final String LANG_NATIVE_NUM = "langNativeNum";
+
+	
 	
 	//public static LangType langType = LangType.ENG_2_CZECH;
 	public static int langNativeNum = 0;
@@ -19,9 +27,12 @@ public class CommonSetting
 	public static boolean NSMTrain = false;
 	public static boolean NSMDashboard = false;
 	
+	public static boolean [] lessonsEnambled = new boolean [Consts.NATIVE_LESSON_NUM];
+	
 	private static final String	PREFS_FILE	= "preferences";
 	private static final String LANG_NATIVE_CODE = "native_code";
 	private static final String LANG_LERN_CODE = "lern_code";
+	private static final String LESSON_ENABLED = "lessons_enabled";
 	private static final String NSM_INIT = "nsm_init";
 	private static final String NSM_DICTIONARY = "nsm_dictionary";
 	private static final String NSM_TRAIN = "nsm_train";
@@ -40,6 +51,35 @@ public class CommonSetting
 	private static boolean getBoolean(Context context, String key, boolean defValue)
 	{
 		return getPrefs(context).getBoolean(key, defValue);
+	}
+	
+	private static void putBooleanArray(Context context, String key, boolean [] value)
+	{
+		String svalues = "";
+		for(boolean v : value){
+			svalues += String.valueOf(v) + ";";
+		}
+		
+		getPrefs(context).edit().putString(key, svalues).commit();
+	}
+	
+	private static void getBooleanArray(Context context, String key, boolean [] retValues, boolean defValue)
+	{
+		String svalues = getPrefs(context).getString(key, "");
+		
+		String [] avalues = null;
+		if(svalues != null && svalues.length() > 0) {
+			avalues = svalues.split(";");
+		}
+		
+		for(int i = 0; i != retValues.length; i++ ) {
+			if(avalues != null && i < avalues.length) {
+				retValues[i] = Boolean.parseBoolean(avalues[i]);
+			}
+			else {
+				retValues[i] = defValue;
+			}			
+		}
 	}
 	
 	private static void putInt(Context context, String key, int value)
@@ -72,6 +112,8 @@ public class CommonSetting
 		putBoolean(context, NSM_DICTIONARY, NSMDictionary);
 		putBoolean(context, NSM_TRAIN, NSMTrain);
 		putBoolean(context, NSM_DASBOARD, NSMDashboard);
+		
+		putBooleanArray(context, LESSON_ENABLED, lessonsEnambled);
 	}
 	
 	public static void restore(Context context)
@@ -89,8 +131,35 @@ public class CommonSetting
 		NSMDictionary = getBoolean(context, NSM_DICTIONARY, false);
 		NSMTrain = getBoolean(context, NSM_TRAIN, false);
 		NSMDashboard = getBoolean(context, NSM_DASBOARD, false);
-		//langSetting = new LangSetting(context);
+		getBooleanArray(context, LESSON_ENABLED, lessonsEnambled, false);
 	}
 	
+	
+	public static MPMetrics initMetrics(Context ctx)
+	{
+		MPMetrics mMPMetrics = MPMetrics.getInstance(ctx, Consts.MPMETRICS_CODE);
+		Log.i("voc4u", "mMPMetrics enabled");
+
+		JSONObject properties = new JSONObject();
+		try {
+			properties.put("learn", CommonSetting.lernCode.code);
+			properties.put("native", CommonSetting.nativeCode.code);
+			properties.put("version", Consts.VERSION);
+			
+			long i = 0;
+
+			for(int pos = CommonSetting.lessonsEnambled.length -1; pos > -1; pos --) {
+				long e = CommonSetting.lessonsEnambled[pos] ? 1 : 0;
+				i = ( i << 1 ) | e;
+			}
+			properties.put("lesson_enabled", i);
+			mMPMetrics.registerSuperProperties(properties);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return mMPMetrics;
+	}
 	
 }

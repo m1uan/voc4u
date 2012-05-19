@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
 
 import com.voc4u.activity.dictionary.Dictionary;
+import com.voc4u.activity.lessons.Lessons;
 import com.voc4u.controller.DictionaryOpenHelper.NUM_WORDS_TYPE;
 import com.voc4u.controller.DictionaryOpenHelper.RemovedWord;
 import com.voc4u.setting.CommonSetting;
@@ -519,6 +520,11 @@ public class WordController {
 	}
 
 	public void enableLessonAsync(int lesson, boolean enable, updateLisener ul) {
+		
+		// for MPMetrics
+		CommonSetting.lessonsEnambled[lesson] = enable;
+		CommonSetting.store(mContext);
+		
 		if (enable)
 			add(lesson);
 		else

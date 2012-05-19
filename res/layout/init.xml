@@ -5,26 +5,48 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:background="#FFFFFF">
+	
+    <ImageView 
+	    android:id="@+id/logo"
+	    android:layout_width="150dp"
+		android:layout_height="150dp"
+		android:scaleType="centerInside"
+		android:src="@drawable/bg_logo2"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="60dp"
+				/>
+    
 	<LinearLayout
 		android:orientation="vertical"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:padding="5dp">
 
-		<TextView
+	  <TextView
+		    android:id="@+id/text2"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:textColor="@color/texts"
-			android:text="@string/select_native_lang" />
+			android:text="@string/select_native_lang"
+			android:textStyle="bold"
+			android:textSize="15dp"
+			android:layout_margin="4dp" />
 
 		<Spinner
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/spnNative" />
+		
 		<TextView
+		    android:id="@+id/text1"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/select_lern_lang"
-			android:textColor="@color/texts" />
+			android:textColor="@color/texts"
+			android:textStyle="bold"
+			android:textSize="15dp"
+			android:layout_margin="4dp" />
 
 		<Spinner
 			android:layout_width="fill_parent"
@@ -35,9 +57,13 @@
 	</LinearLayout>
 	<Button
 	    	android:layout_alignParentBottom="true"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
+			android:layout_margin="5dp"
+			android:id="@+id/btnStart"
+			style="@style/ButtonKnows"
+            android:background="@drawable/btn_know_1"
+            android:layout_width="fill_parent"
 			android:text="@string/start"
-			android:onClick="onStart"
-			android:textColor="@color/texts"/>
+			android:textStyle="bold"
+			android:textSize="20dp"
+			android:onClick="onStart"/>
 </RelativeLayout>

@@ -1,5 +1,9 @@
 package com.voc4u.controller;
 
+import android.content.Context;
+
+import com.voc4u.setting.CommonSetting;
+
 
 public class PublicWord
 {
@@ -15,6 +19,15 @@ public class PublicWord
 		mPoliticy = politicy;
 	}
 	
+	
+	public int getTestingFlag(Context ctx){
+		if(isBasePrimary()) {
+			return CommonSetting.lernCode.getDrawableID(ctx);
+		}
+		else {
+			return CommonSetting.nativeCode.getDrawableID(ctx);
+		}
+	}
 	
 	public String getTestString()
 	{
