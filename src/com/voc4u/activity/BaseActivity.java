@@ -251,27 +251,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	}
 
 	private void prepareMPMetrics() {
-		mMPMetrics = MPMetrics.getInstance(this, "9bbb341c8848bc0d46b0f1beb6cefec3");
-		Log.i("voc4u", "mMPMetrics enabled");
-
-		JSONObject properties = new JSONObject();
-		try {
-			properties.put("learn", CommonSetting.lernCode.code);
-			properties.put("native", CommonSetting.nativeCode.code);
-			properties.put("version", Consts.VERSION);
-			
-			long i = 0;
-
-			for(int pos = CommonSetting.lessonsEnambled.length -1; pos > -1; pos --) {
-				long e = CommonSetting.lessonsEnambled[pos] ? 1 : 0;
-				i = ( i << 1 ) | e;
-			}
-			properties.put("lesson_enabled", i);
-			mMPMetrics.registerSuperProperties(properties);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		mMPMetrics = CommonSetting.initMetrics(this);
 	}
 
 	public static boolean isDebuggable(Context ctx) {

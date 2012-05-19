@@ -1,8 +1,14 @@
 package com.voc4u.setting;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.mixpanel.android.mpmetrics.MPMetrics;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 
 public class CommonSetting
@@ -128,5 +134,32 @@ public class CommonSetting
 		getBooleanArray(context, LESSON_ENABLED, lessonsEnambled, false);
 	}
 	
+	
+	public static MPMetrics initMetrics(Context ctx)
+	{
+		MPMetrics mMPMetrics = MPMetrics.getInstance(ctx, Consts.MPMETRICS_CODE);
+		Log.i("voc4u", "mMPMetrics enabled");
+
+		JSONObject properties = new JSONObject();
+		try {
+			properties.put("learn", CommonSetting.lernCode.code);
+			properties.put("native", CommonSetting.nativeCode.code);
+			properties.put("version", Consts.VERSION);
+			
+			long i = 0;
+
+			for(int pos = CommonSetting.lessonsEnambled.length -1; pos > -1; pos --) {
+				long e = CommonSetting.lessonsEnambled[pos] ? 1 : 0;
+				i = ( i << 1 ) | e;
+			}
+			properties.put("lesson_enabled", i);
+			mMPMetrics.registerSuperProperties(properties);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return mMPMetrics;
+	}
 	
 }

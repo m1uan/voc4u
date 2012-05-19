@@ -39,6 +39,7 @@ import com.voc4u.activity.dashboard.Dashboard;
 import com.voc4u.controller.WordController;
 import com.voc4u.controller.updateLisener;
 import com.voc4u.setting.CommonSetting;
+import com.voc4u.setting.Consts;
 import com.voc4u.setting.LangSetting;
 import com.voc4u.setting.LangType;
 import com.voc4u.widget.TrainWidget;
@@ -67,7 +68,7 @@ public class Init extends Activity implements OnItemSelectedListener,
 		super.onCreate(savedInstanceState);
 		
 		if( !BaseActivity.isDebuggable(this)) {
-			mMPMetrics = MPMetrics.getInstance(this, "9bbb341c8848bc0d46b0f1beb6cefec3");
+			mMPMetrics = MPMetrics.getInstance(this, Consts.MPMETRICS_CODE);
 			mMPMetrics.track("Init activity", null);
 		}
 		setContentView(R.layout.init);

@@ -257,7 +257,7 @@ public class TrainWidget extends AppWidgetProvider
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startActivity(intent);
 		
-		MPMetrics mpMetrics = MPMetrics.getInstance(context, "9bbb341c8848bc0d46b0f1beb6cefec3");
+		MPMetrics mpMetrics = CommonSetting.initMetrics(context);
 		mpMetrics.track("widget_go_train", null);
 		mpMetrics.flush();
 	}
@@ -321,14 +321,15 @@ public class TrainWidget extends AppWidgetProvider
 			updateLastList(context, remoteViews);
 
 			updateWidget(context, remoteViews);
-			if(mKnowButtonCount + mDontKnowButtonCount > 7) {
-				MPMetrics mpMetrics = MPMetrics.getInstance(context, "9bbb341c8848bc0d46b0f1beb6cefec3");
+			int count = mKnowButtonCount + mDontKnowButtonCount;
+			if(count > 7) {
+				MPMetrics mpMetrics = CommonSetting.initMetrics(context);
 				JSONObject properties = new JSONObject();
 				try {
 					
 					properties.put("know_count", mKnowButtonCount);
 					properties.put("dontknow_count", mDontKnowButtonCount);
-					properties.put("total_count", mKnowButtonCount + mDontKnowButtonCount);
+					properties.put("total_count", count);
 					
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
