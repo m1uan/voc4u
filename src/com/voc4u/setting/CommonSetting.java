@@ -142,8 +142,12 @@ public class CommonSetting
 
 		JSONObject properties = new JSONObject();
 		try {
-			properties.put("learn", CommonSetting.lernCode.code);
-			properties.put("native", CommonSetting.nativeCode.code);
+			if(CommonSetting.lernCode != null) {
+				properties.put("learn", CommonSetting.lernCode.code);
+			}
+			if(CommonSetting.nativeCode != null) {
+				properties.put("native", CommonSetting.nativeCode.code);
+			}
 			properties.put("version", Consts.VERSION);
 			
 			long i = 0;
