@@ -221,24 +221,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 		super.onCreate(savedInstanceState);
 		CommonSetting.restore(this);
 
-		// new version
-		// because till version 1.3 the MPmetrix dosn't exist
-		// and CommonSetting.lessonsEnambled isn't in local store prefiled
-		// you must init lessonsEnabled from WordDatabase
-		if(!CommonSetting.lessonsEnambled[0])
-		{
-			WordController wc = WordController.getInstance(this);
-			for(int i = 1; i != Consts.NATIVE_LESSON_NUM; i++) {
-				CommonSetting.lessonsEnambled[i] = wc.isEnableLesson(i);
-			}
-			
-			CommonSetting.lessonsEnambled[0] = true;
-			CommonSetting.store(this);
-		}
-		
-		if (!isDebuggable(this)) {
-			prepareMPMetrics();
-		}
+
 
 		boolean showinfo = getIntent().getBooleanExtra("showinfo", true);
 		if (showinfo) {
@@ -270,7 +253,24 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	}
 
 	public void onResumeSuccess() {
-
+		// new version
+		// because till version 1.3 the MPmetrix dosn't exist
+		// and CommonSetting.lessonsEnambled isn't in local store prefiled
+		// you must init lessonsEnabled from WordDatabase
+		if(!CommonSetting.lessonsEnambled[0])
+		{
+			WordController wc = WordController.getInstance(this);
+			for(int i = 1; i != Consts.NATIVE_LESSON_NUM; i++) {
+				CommonSetting.lessonsEnambled[i] = wc.isEnableLesson(i);
+			}
+			
+			CommonSetting.lessonsEnambled[0] = true;
+			CommonSetting.store(this);
+		}
+		
+		if (!isDebuggable(this)) {
+			prepareMPMetrics();
+		}
 	}
 
 	@Override
