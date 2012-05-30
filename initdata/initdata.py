@@ -7,8 +7,9 @@ import sys
 
 
 
-dirs = [ 1, 2, 3, 4, 5 ]
-langs = [ "CS" , "DE", "EN" , "ES", "FR", "PL", "PT", "IT"]
+dirs = [ 6, 7, 8, 9 ]
+#langs = [ "CS" , "DE", "EN" , "ES", "FR", "PL", "PT", "IT"]
+langs = [ "CS" , "EN" ]
 hidden = [ "es", "cs", "de", "lv", "sq", "lt", "tl", "fi", "no", "sl", "bs", "eo", "de " ] 
 dirname = "lesson"
 filename = "Data"

@@ -27,7 +27,9 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 	private final CheckBox chkBox;
 	private final ItemStatus mStatus;
 	private final Dictionary	mDictionary;
-	private TestAnyChecked mTestAnyChecked;
+	private ItemData[] mItems;
+	private ItemData mCurrentItem;
+	
 	
 	public ItemView(Dictionary context, WordController wordCtrl)
 	{
@@ -45,62 +47,32 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 		mDictionary = context;
 	}
 
-	public void setup(int position, TestAnyChecked tac)
+	public void setup(int position, ItemData[] items)
 	{
-		mTestAnyChecked = tac;
-		mLesson = position + 1;
-		String lessons[] = getContext().getResources().getStringArray(R.array.lessons);
+		mItems = items;
+		mCurrentItem = items[position];
+		mLesson = mCurrentItem.getLesson();
 		
-		Assert.assertTrue("Isn't enought names for lessons", position < lessons.length);
+
 		
-		if(position < lessons.length)
-			mTitle = lessons[position];
+		//if(position < lessons.length)
+			mTitle = "lesson " + mLesson;
 //		else
 //			mTitle = getContext().getString(R.string.dictionaryItem, mLesson);
 		
-		findViewById(R.id.preparing).setVisibility(mWordCtrl.isPrepairing(mLesson)? View.VISIBLE : View.GONE);
+		findViewById(R.id.preparing).setVisibility(mWordCtrl.isPrepairing(mLesson) ? View.VISIBLE : View.GONE);
 		
 		
 		final TextView tv = (TextView) findViewById(R.id.text);
 		tv.setText(mTitle);
 
-		final boolean enable = mWordCtrl.isEnableLesson(mLesson);
+		final boolean enable = mCurrentItem.getEnabledLesson();
 		chkBox.setChecked(enable);
 		chkBox.setOnCheckedChangeListener(this);
-		
-		Assert.assertTrue("Isn't enought colors for lessons", position < LangSetting.LESSON_BG_COLOR.length);
-		if(position < LangSetting.LESSON_BG_COLOR.length)
-			setBackgroundResource(LangSetting.LESSON_BG_COLOR[position]);
-		
-		String[] aex = LangSetting.getInitDataFromLT(CommonSetting.lernCode, mLesson);
-		String sex = "";
-		
-		if(aex != null && aex.length > 0)
-		{
-			int lex = aex.length > MAX_EXAMPLES_IN_VIEW? MAX_EXAMPLES_IN_VIEW : aex.length;
 
-			sex = getFirstWord(aex[0]);
-			
-			for(int i = 1; i < lex; i++)
-				sex += ", " + getFirstWord(aex[i]);
-		}
 		
 		final TextView ex = (TextView)findViewById(R.id.examples);
-		ex.setText(sex);
-	}
-	
-	private String getFirstWord(final String string)
-	{
-		int inx = string.indexOf("|");
-		if(inx > -1)
-			return string.substring(0, inx);
-		else 
-			return string;
-//		String[] words = string.replace("|", " | ").split("|");
-//		if(words != null && words.length > 0)
-//			return words[0];
-//		
-//		return string;
+		ex.setText(mCurrentItem.getWords());
 	}
 
 	public int getLesson()
@@ -117,7 +89,7 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 			// test set mTestAnyChecked was set
 			// and test any checked return true -> some items still checked (this is not calced)
 			// and test enable in db when in db take to question to user
-			if (mWordCtrl.isEnableLesson(mLesson) && (mTestAnyChecked == null || mTestAnyChecked.testAnyChecked(this)))
+			if (mWordCtrl.isEnableLesson(mLesson) && (mItems == null || testAnyChecked()))
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						getContext());
@@ -149,6 +121,15 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 			setVocabulary(true);
 	}
 
+	private boolean testAnyChecked() {
+		for(int i = 0; i != mItems.length; i++) {
+			if(mItems[i].getEnabledLesson()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	protected void setVocabulary(boolean enable)
 	{
 //		if(mStatus == ItemStatus.NONE)
@@ -157,7 +138,7 @@ public class ItemView extends LinearLayout implements OnCheckedChangeListener
 //			mStatus = !enable ? ItemStatus.NONE : ItemStatus.REMOVE;
 //		else if(mStatus == ItemStatus.REMOVE)
 //			mStatus = enable ? ItemStatus.NONE : ItemStatus.REMOVE;
-		
+		mCurrentItem.setEnabled(enable);
 		mWordCtrl.enableLessonAsync(mLesson, enable, mDictionary);
 		mDictionary.onUpdateDone();
 	}

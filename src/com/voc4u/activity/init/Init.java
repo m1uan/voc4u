@@ -66,8 +66,8 @@ public class Init extends Activity implements OnItemSelectedListener,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		if( !BaseActivity.isDebuggable(this)) {
+
+		if (!BaseActivity.isDebuggable(this)) {
 			mMPMetrics = MPMetrics.getInstance(this, Consts.MPMETRICS_CODE);
 			mMPMetrics.track("Init activity", null);
 		}
@@ -89,25 +89,24 @@ public class Init extends Activity implements OnItemSelectedListener,
 		if (!DialogInfo.GetChecked(DialogInfo.TYPE_INIT)) {
 			showDialog(BaseActivity.DIALOG_SHOW_INFO);
 		}
-		
+
 		mSpinner1 = findViewById(R.id.spnLern);
 		mSpinner2 = findViewById(R.id.spnNative);
 		mText1 = findViewById(R.id.text1);
 		mText2 = findViewById(R.id.text2);
 		mButton = findViewById(R.id.btnStart);
 		mLogo = findViewById(R.id.logo);
-		
-		
+
 	}
 
 	@Override
 	protected void onDestroy() {
 		TtsShutdown();
-		
-		if(mMPMetrics != null) {
+
+		if (mMPMetrics != null) {
 			mMPMetrics.flush();
 		}
-		
+
 		super.onDestroy();
 	}
 
@@ -185,13 +184,15 @@ public class Init extends Activity implements OnItemSelectedListener,
 		WordController.getInstance(this).enableLessonAsync(1, true, null);
 
 		mLogo.clearAnimation();
-		Animation anim1 = new RotateAnimation( 0, 4320.f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,  0.5f);
-		
+		Animation anim1 = new RotateAnimation(0, 4320.f,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+
 		anim1.setDuration(4320);
 		anim1.setRepeatCount(Animation.INFINITE);
 		mLogo.startAnimation(anim1);
-		
-		//showDialog(BaseActivity.DIALOG_PROGRESS);
+
+		// showDialog(BaseActivity.DIALOG_PROGRESS);
 		mButton.setEnabled(false);
 		mSpinner1.setEnabled(false);
 		mSpinner2.setEnabled(false);
@@ -204,19 +205,19 @@ public class Init extends Activity implements OnItemSelectedListener,
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		try {
-			JSONObject properties = new JSONObject();
-			properties.put("learn", CommonSetting.lernCode.code);
-			properties.put("native", CommonSetting.nativeCode.code);
-			mMPMetrics.track("onStart", properties);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		if (mMPMetrics != null) {
+			try {
+				JSONObject properties = new JSONObject();
+				properties.put("learn", CommonSetting.lernCode.code);
+				properties.put("native", CommonSetting.nativeCode.code);
+				mMPMetrics.track("onStart", properties);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
-		
+
 		mTts = new TextToSpeech(this, this);
 	}
 
@@ -351,86 +352,94 @@ public class Init extends Activity implements OnItemSelectedListener,
 	protected void onResume() {
 		// if goes from tts setting
 		if (mTts != null) {
-			showDashboard(); 
-		}
-		else if(CommonSetting.lernCode != null && CommonSetting.nativeCode != null) {
+			showDashboard();
+		} else if (CommonSetting.lernCode != null
+				&& CommonSetting.nativeCode != null) {
 			// sometime when is application start and select you languages
 			// 1. after you take start
 			// 2. push back button and you are in phone screen
-			// 3. hold home button and try start voc4u -> you will appear again in init setting
+			// 3. hold home button and try start voc4u -> you will appear again
+			// in init setting
 			// but you should be in dashboard
 			showDashboard();
-		}
-		else {
+		} else {
 			animate(true);
-			
-			
+
 		}
-		
+
 		super.onResume();
 	}
 
 	private void animate(boolean ingoing) {
-		
+
 		mLogo.clearAnimation();
-		
+
 		float m1 = ingoing ? 3.0f : 0f;
 		float m1r = -1.0f * m1;
-		
+
 		float m2 = ingoing ? 0f : 3.f;
 		float m2r = -1.0f * m2;
-		
-		
-		Animation anim1 = new TranslateAnimation( Animation.RELATIVE_TO_SELF,m1, Animation.RELATIVE_TO_SELF,m2,Animation.ABSOLUTE,0f,Animation.ABSOLUTE,0f);
+
+		Animation anim1 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+				m1, Animation.RELATIVE_TO_SELF, m2, Animation.ABSOLUTE, 0f,
+				Animation.ABSOLUTE, 0f);
 		anim1.setDuration(300);
 		anim1.setStartOffset(100);
-		
-		Animation anim12 = new TranslateAnimation( Animation.RELATIVE_TO_SELF,m1, Animation.RELATIVE_TO_SELF,m2,Animation.ABSOLUTE,0f,Animation.ABSOLUTE,0f);
+
+		Animation anim12 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+				m1, Animation.RELATIVE_TO_SELF, m2, Animation.ABSOLUTE, 0f,
+				Animation.ABSOLUTE, 0f);
 		anim12.setDuration(300);
 		anim12.setStartOffset(400);
-		Animation anim2 = new TranslateAnimation( Animation.RELATIVE_TO_SELF,m1r, Animation.RELATIVE_TO_SELF,m2r,Animation.ABSOLUTE,0f,Animation.ABSOLUTE,0f);
+		Animation anim2 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+				m1r, Animation.RELATIVE_TO_SELF, m2r, Animation.ABSOLUTE, 0f,
+				Animation.ABSOLUTE, 0f);
 		anim2.setDuration(300);
 		anim2.setStartOffset(100);
-		Animation anim22 = new TranslateAnimation( Animation.RELATIVE_TO_SELF,m1r, Animation.RELATIVE_TO_SELF,m2r,Animation.ABSOLUTE,0f,Animation.ABSOLUTE,0f);
+		Animation anim22 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+				m1r, Animation.RELATIVE_TO_SELF, m2r, Animation.ABSOLUTE, 0f,
+				Animation.ABSOLUTE, 0f);
 		anim22.setDuration(300);
 		anim22.setStartOffset(400);
-		//anim.setStartOffset(500);
-		
-		//anim2.setStartOffset(500);
-		Animation anim3 = new TranslateAnimation( Animation.RELATIVE_TO_SELF,0.0f, Animation.RELATIVE_TO_SELF,0f,Animation.RELATIVE_TO_SELF, m1,Animation.RELATIVE_TO_SELF, m2);
+		// anim.setStartOffset(500);
+
+		// anim2.setStartOffset(500);
+		Animation anim3 = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+				0.0f, Animation.RELATIVE_TO_SELF, 0f,
+				Animation.RELATIVE_TO_SELF, m1, Animation.RELATIVE_TO_SELF, m2);
 		anim3.setDuration(300);
 		anim3.setStartOffset(600);
-		
-		Animation anim4 =  new AlphaAnimation(0.0f, 1.0f);
+
+		Animation anim4 = new AlphaAnimation(0.0f, 1.0f);
 		anim4.setDuration(5500);
 		anim4.setStartOffset(600);
-		
-		if(!ingoing) {
+
+		if (!ingoing) {
 			anim1.setAnimationListener(new HideAfterFinish(mText2, false));
 			anim2.setAnimationListener(new HideAfterFinish(mSpinner2, false));
 			anim12.setAnimationListener(new HideAfterFinish(mText1, false));
 			anim22.setAnimationListener(new HideAfterFinish(mSpinner1, false));
 			anim3.setAnimationListener(new HideAfterFinish(mButton, false));
 		}
-		//mText1.setAnimation(anim);
+		// mText1.setAnimation(anim);
 		mText2.startAnimation(anim1);
 		mSpinner2.startAnimation(anim2);
 		mText1.startAnimation(anim12);
 		mSpinner1.startAnimation(anim22);
 		mButton.startAnimation(anim3);
-		
-		if(ingoing) {
+
+		if (ingoing) {
 			mLogo.startAnimation(anim4);
 		} else {
-			Animation anim5 = AnimationUtils.loadAnimation(this, R.anim.logo_disapear);
+			Animation anim5 = AnimationUtils.loadAnimation(this,
+					R.anim.logo_disapear);
 			mLogo.startAnimation(anim5);
 			anim5.setAnimationListener(new HideAfterFinish(mLogo, true));
 		}
 	}
 
-	
 	class HideAfterFinish implements AnimationListener {
-		
+
 		private final View mView;
 		private final boolean mLast;
 
@@ -438,29 +447,29 @@ public class Init extends Activity implements OnItemSelectedListener,
 			mView = v;
 			mLast = last;
 		}
-		
+
 		@Override
 		public void onAnimationStart(Animation animation) {
-			
+
 		}
-		
+
 		@Override
 		public void onAnimationRepeat(Animation animation) {
-		
+
 		}
-		
+
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			mView.setVisibility(View.INVISIBLE);
-			if(mLast) {
+			if (mLast) {
 				showDashboard();
 			}
 		}
 	}
-	
+
 	@Override
 	public void onInit(int status) {
-		
+
 		// status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
 		if (status == TextToSpeech.SUCCESS) {
 			// Set preferred language to US english.

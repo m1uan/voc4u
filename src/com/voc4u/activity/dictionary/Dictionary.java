@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.provider.SyncStateContract.Constants;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,10 +35,11 @@ import com.voc4u.controller.Word;
 import com.voc4u.controller.WordController;
 import com.voc4u.controller.updateLisener;
 import com.voc4u.setting.CommonSetting;
+import com.voc4u.setting.Consts;
 import com.voc4u.setting.LangSetting;
 import com.voc4u.widget.CommonDialogs;
 
-public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnClickListener, OnItemClickListener, updateLisener
+public class Dictionary extends BaseWordActivity implements OnClickListener, OnItemClickListener, updateLisener
 {
 
 	private WordController		mWordCtrl;
@@ -107,50 +109,54 @@ public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnCli
 		super.onPause();
 	}
 
-	public boolean testAnyChecked(ItemView without)
-	{
-//		boolean anyChanges = false;
-		boolean anyChecked = false;
-//
-		for (int i = 0; i != mAdapter.getLessonCount(); i++)
-		{
-			ItemView item = mAdapter.getLessonItem(i);
-
-			if (item != null && without != item)
-			{
-//				ItemStatus is = item.getStatus();
-//				if (is != ItemStatus.NONE)
-//				{
-//					// because 0 is for user owned words
-//					mWordCtrl.enableLessonAsync(item.getLesson(), is == ItemStatus.ADD, this);
-//					anyChanges = true;
-//				}
-
-				if (item.isChecked())
-					anyChecked = true;
-			}
-		}
-//
-		ArrayList<Word> list = null;
-		if(!anyChecked)
-			list = mWCtrl.getWordsInLesson(WordController.CUSTOM_WORD_LESSON);
-		
-		if (!anyChecked && (list == null || list.size() > 2))
-		{
-			showDialog(BaseActivity.DIALOG_MUST_CHECK_AT_LEAST_ONE);
-			
-			if(without != null)
-				without.setChecked(true);
-			
-			return false;
-		}
-//		else if (!CommingFromInit() && anyChanges)
-//		{
-//			showDialog(BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING);
-//			// showDialogAboutDurationOfOperation();
-//		}
-		return true;
+	class ItemViewM {
+		public boolean checked;
 	}
+	
+//	public boolean testAnyChecked(ItemViewM without)
+//	{
+////		boolean anyChanges = false;
+//		boolean anyChecked = false;
+////
+//		for (int i = 0; i != mAdapter.getLessonCount(); i++)
+//		{
+//			ItemViewM item = mAdapter.getLessonItem(i);
+//
+//			if (item != null && without != item)
+//			{
+////				ItemStatus is = item.getStatus();
+////				if (is != ItemStatus.NONE)
+////				{
+////					// because 0 is for user owned words
+////					mWordCtrl.enableLessonAsync(item.getLesson(), is == ItemStatus.ADD, this);
+////					anyChanges = true;
+////				}
+//
+//				if (item.isChecked())
+//					anyChecked = true;
+//			}
+//		}
+////
+//		ArrayList<Word> list = null;
+//		if(!anyChecked)
+//			list = mWCtrl.getWordsInLesson(WordController.CUSTOM_WORD_LESSON);
+//		
+//		if (!anyChecked && (list == null || list.size() > 2))
+//		{
+//			showDialog(BaseActivity.DIALOG_MUST_CHECK_AT_LEAST_ONE);
+//			
+//			if(without != null)
+//				without.setChecked(true);
+//			
+//			return false;
+//		}
+////		else if (!CommingFromInit() && anyChanges)
+////		{
+////			showDialog(BaseActivity.DIALOG_CONFIRM_CONTINUE_SAVE_SETTING);
+////			// showDialogAboutDurationOfOperation();
+////		}
+//		return true;
+//	}
 
 	private void ShowDashboardOrFinish()
 	{
@@ -185,14 +191,19 @@ public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnCli
 		private static final int	CUSTOM_WORD_TYPE	= 1;
 		private static final int 	CUSTOM_WORDS_TYPE = 2;
 		final private int			mLessonNum;
-		final ItemView[]			mLessons;
+		ItemData [] items = null;
 		private int					mLastItem		= 0;
 
 		public Adapter()
 		{
-			mLessonNum = LangSetting.LESSON_BG_COLOR.length;
-			mLessons = new ItemView[mLessonNum];
+			mLessonNum = Consts.NATIVE_LESSON_NUM;
 			
+			items = new ItemData[mLessonNum];
+			
+			for(int i = 0; i != mLessonNum; i++) {
+				ItemData id = new ItemData(mWCtrl, i+1);
+				items[i] = id;
+			}
 			
 			mLastItem = 0;
 		}
@@ -226,13 +237,7 @@ public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnCli
 			return mLessonNum;
 		}
 
-		ItemView getLessonItem(int position)
-		{
-			if (mLessonNum > position)
-				return mLessons[position];
-
-			return null;
-		}
+		
 
 		@Override
 		public ItemView getItem(int position)
@@ -289,23 +294,19 @@ public class Dictionary extends BaseWordActivity implements TestAnyChecked,OnCli
 
 		public View createWordView(int position, View convertView)
 		{
-			ItemView item;
-
-			// it suppose the lesson is the first in list
 			
 
 			if (convertView == null)
 			{
-				item = new ItemView(Dictionary.this, mWordCtrl);
-				if(position < mLessons.length)
-					mLessons[position] = item;
+				convertView = new ItemView(Dictionary.this, mWordCtrl);
+				
 			}
 			else
-				item = (ItemView) convertView;
+				convertView = (ItemView) convertView;
 
-			item.setup(position, Dictionary.this);
+			((ItemView)convertView).setup(position, items);
 
-			return item;
+			return convertView;
 		}
 
 		@Override

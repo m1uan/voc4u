@@ -240,14 +240,14 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	public static boolean isDebuggable(Context ctx) {
 		boolean debuggable = false;
 
-//		PackageManager pm = ctx.getPackageManager();
-//		try {
-//			ApplicationInfo appinfo = pm.getApplicationInfo(
-//					ctx.getPackageName(), 0);
-//			debuggable = (0 != (appinfo.flags &= ApplicationInfo.FLAG_DEBUGGABLE));
-//		} catch (NameNotFoundException e) {
-//			/* debuggable variable will remain false */
-//		}
+		PackageManager pm = ctx.getPackageManager();
+		try {
+			ApplicationInfo appinfo = pm.getApplicationInfo(
+					ctx.getPackageName(), 0);
+			debuggable = (0 != (appinfo.flags &= ApplicationInfo.FLAG_DEBUGGABLE));
+		} catch (NameNotFoundException e) {
+			/* debuggable variable will remain false */
+		}
 
 		return debuggable;
 	}
