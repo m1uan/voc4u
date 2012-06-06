@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:paddingTop="0dp" >
+
+    <TextView
+        android:id="@+id/image"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Your progress is Wonderfully! You already learn 1400 words! Continue with this good work! You shoul tell your friends about your success." />
+
+    <Button
+        android:padding="5dp"
+        android:id="@+id/btnFacebook"
+        android:layout_width="fill_parent"
+        android:layout_height="75dp"
+        android:text="Facebook"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:padding="5dp"
+        android:id="@+id/btnOk"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@android:string/ok" />
+
+</LinearLayout>

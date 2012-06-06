@@ -1,13 +1,8 @@
 package com.voc4u.activity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,13 +10,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -47,6 +41,7 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 	public static final int DIALOG_TTS_DATA_MISSING = 109;
 	public static final int DIALOG_EDIT_WORD = 110;
 	public static final int DIALOG_CONTEXT_MENU = 111;
+	public static final int DIALOG_PROGRESS_FACEBOOK = 112;
 
 	public static final String FROM_INIT = "FROM_INIT";
 
@@ -221,8 +216,6 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 		super.onCreate(savedInstanceState);
 		CommonSetting.restore(this);
 
-
-
 		boolean showinfo = getIntent().getBooleanExtra("showinfo", true);
 		if (showinfo) {
 			String showtype = GetShowInfoType();
@@ -257,17 +250,16 @@ public class BaseActivity extends Activity implements OnMenuItemClickListener {
 		// because till version 1.3 the MPmetrix dosn't exist
 		// and CommonSetting.lessonsEnambled isn't in local store prefiled
 		// you must init lessonsEnabled from WordDatabase
-		if(!CommonSetting.lessonsEnambled[0])
-		{
+		if (!CommonSetting.lessonsEnambled[0]) {
 			WordController wc = WordController.getInstance(this);
-			for(int i = 1; i != Consts.NATIVE_LESSON_NUM; i++) {
+			for (int i = 1; i != Consts.NATIVE_LESSON_NUM; i++) {
 				CommonSetting.lessonsEnambled[i] = wc.isEnableLesson(i);
 			}
-			
+
 			CommonSetting.lessonsEnambled[0] = true;
 			CommonSetting.store(this);
 		}
-		
+
 		if (!isDebuggable(this)) {
 			prepareMPMetrics();
 		}

@@ -16,12 +16,10 @@ import android.widget.TextView;
 import com.voc4u.R;
 import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.DialogInfo;
-import com.voc4u.activity.dictionary.Dictionary;
 import com.voc4u.activity.lessons.Lessons;
 import com.voc4u.activity.listener.Listener;
 import com.voc4u.activity.speaker.Speaker;
 import com.voc4u.activity.train.Train;
-import com.voc4u.activity.words.Words;
 import com.voc4u.controller.DictionaryOpenHelper.NUM_WORDS_TYPE;
 import com.voc4u.controller.WordController;
 import com.voc4u.setting.CommonSetting;
@@ -50,6 +48,20 @@ public class Dashboard extends BaseActivity {
 		vLogo = findViewById(R.id.logo);
 		vInfoPanel = findViewById(R.id.infoPanel);
 
+		// mFacebook.authorize(this, new DialogListener() {
+		// @Override
+		// public void onComplete(Bundle values) {}
+		//
+		// @Override
+		// public void onFacebookError(FacebookError error) {}
+		//
+		// @Override
+		// public void onError(DialogError e) {}
+		//
+		// @Override
+		// public void onCancel() {}
+		// });
+
 	}
 
 	@Override
@@ -73,30 +85,33 @@ public class Dashboard extends BaseActivity {
 				+ String.valueOf(numTotal));
 		numow.setVisibility(View.VISIBLE);
 
-		btnTrain.setVisibility(View.VISIBLE);
-		btnListen.setVisibility(View.VISIBLE);
-		btnSpeech.setVisibility(View.VISIBLE);
-		vLogo.setVisibility(View.VISIBLE);
-		vInfoPanel.setVisibility(View.VISIBLE);
-
-		Animation animation = AnimationUtils.loadAnimation(this,
-				R.anim.dashboardtrain);
-		btnTrain.startAnimation(animation);
-		animation = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen);
-		btnListen.startAnimation(animation);
-		animation = AnimationUtils.loadAnimation(this, R.anim.dashboard_speech);
-		btnSpeech.startAnimation(animation);
-		animation = AnimationUtils.loadAnimation(this, R.anim.train_list);
-		vLogo.startAnimation(animation);
-		animation = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain);
-		vInfoPanel.startAnimation(animation);
 		// btnTrain.setVisibility(View.VISIBLE);
+		// btnListen.setVisibility(View.VISIBLE);
+		// btnSpeech.setVisibility(View.VISIBLE);
+		// vLogo.setVisibility(View.VISIBLE);
+		// vInfoPanel.setVisibility(View.VISIBLE);
+		//
+		// Animation animation = AnimationUtils.loadAnimation(this,
+		// R.anim.dashboardtrain);
+		// btnTrain.startAnimation(animation);
+		// animation = AnimationUtils.loadAnimation(this,
+		// R.anim.dashboard_listen);
+		// btnListen.startAnimation(animation);
+		// animation = AnimationUtils.loadAnimation(this,
+		// R.anim.dashboard_speech);
+		// btnSpeech.startAnimation(animation);
+		// animation = AnimationUtils.loadAnimation(this, R.anim.train_list);
+		// vLogo.startAnimation(animation);
+		// animation = AnimationUtils.loadAnimation(this,
+		// R.anim.dashboardtrain);
+		// vInfoPanel.startAnimation(animation);
 
 		super.onResumeSuccess();
 	}
 
 	public void onTrainButton(View view) {
 		final Intent it = new Intent(this, Train.class);
+		it.putExtra(Train.NUM_KNOW_PARAM, numKnow);
 		outgoingAnimation(it);
 	}
 

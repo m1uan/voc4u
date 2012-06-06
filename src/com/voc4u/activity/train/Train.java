@@ -3,35 +3,36 @@ package com.voc4u.activity.train;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import junit.framework.Assert;
+import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.android.FacebookError;
 import com.voc4u.R;
-import com.voc4u.activity.BaseActivity;
 import com.voc4u.activity.BaseWordActivity;
 import com.voc4u.activity.DialogInfo;
 import com.voc4u.activity.dashboard.Dashboard;
+import com.voc4u.controller.DictionaryOpenHelper.NUM_WORDS_TYPE;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.controller.Word;
-import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
 import com.voc4u.widget.TrainWidget;
 
@@ -53,9 +54,15 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 	private TextView tvTestWord;
 	private static LastListAdapter mListAdapter;
 
+	public static String NUM_KNOW_PARAM = "NUM_KNOW_PARAM";
+
+	// know words which have higher learn as 0 and higher native as 0
+	// for facebook and user info progress
+	long mNumRealKnow = -1;
+	// only counting how many user push button know for MixPanel
 	int numKnow = 0;
+	// only counting how many user push button dontknow for MixPanel
 	int numDontKnow = 0;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +87,13 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 		tvTestWord = (TextView) findViewById(R.id.wordTextView);
 		registerForContextMenu(lvLastItems);
 
-		if(mMPMetrics != null) {
+		if (mMPMetrics != null) {
 			mMPMetrics.track("Train", null);
+		}
+
+		// for case when is orientation changed
+		if (mNumRealKnow == -1) {
+			mNumRealKnow = getIntent().getLongExtra(NUM_KNOW_PARAM, -1);
 		}
 	}
 
@@ -131,7 +143,9 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 					AppWidgetManager.INVALID_APPWIDGET_ID);
 		}
 
-		
+		if (mNumRealKnow == -1) {
+			mNumRealKnow = mWCtrl.getNumWordsInDB(NUM_WORDS_TYPE.KNOWS);
+		}
 	}
 
 	private void setupFirstWord(boolean loadNew) {
@@ -239,9 +253,31 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 	}
 
 	public void onNextButton(View v) {
+		// get actual word because after update will be else
+		Word w = mPublicWord.getBaseWord();
+		PublicWord pw = mPublicWord;
 
+		// update before show user result
+		// because when sommeting happens and this word isn't finish saved
+		// user could see information about improve his skill many times
 		updateWord(true);
+
+		// get values for debug
+		int weight1 = w.getWeight();
+		int weight2 = w.getWeight2();
+
+		// test if this word is new know word
+		if ((pw.isBasePrimary() && weight1 == 1 && weight2 > 1)
+				|| (!pw.isBasePrimary() && weight1 > 1 && weight2 == 1)) {
+			mNumRealKnow++;
+
+			if (mNumRealKnow > 0) {
+				showDialog(DIALOG_PROGRESS_FACEBOOK);
+			}
+		}
+		showDialog(DIALOG_PROGRESS_FACEBOOK);
 		numKnow++;
+
 	}
 
 	private void updateWord(final boolean know) {
@@ -432,4 +468,79 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 		super.onDestroy();
 	}
 
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		if (id == DIALOG_PROGRESS_FACEBOOK) {
+			final Dialog dialog = new Dialog(this);
+
+			// dialog.
+			dialog.setContentView(R.layout.dialog_words_known_info);
+			dialog.setTitle("congratulations");
+
+			WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+			lp.copyFrom(dialog.getWindow().getAttributes());
+			lp.width = WindowManager.LayoutParams.FILL_PARENT;
+			// lp.height = WindowManager.LayoutParams.FILL_PARENT;
+			// dialog.show();
+			dialog.getWindow().setAttributes(lp);
+			dialog.show();
+
+			dialog.findViewById(R.id.btnOk).setOnClickListener(
+					new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							dialog.dismiss();
+						}
+					});
+			dialog.findViewById(R.id.btnFacebook).setOnClickListener(
+					new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							final Facebook mFacebook = new Facebook(
+									"184157091711392");
+							// post on user's wall.
+							Bundle parameters = new Bundle();
+							parameters
+									.putString("link",
+											"https://play.google.com/store/apps/details?id=com.voc4u");
+							parameters
+									.putString("name",
+											"Congratulations! Knoweledge spread about new 25 words!");
+							parameters.putString("caption", "...be better!");
+							parameters
+									.putString("picture",
+											"http://voc4u9.appspot.com/styles/icon_hg.png");
+							parameters
+									.putString("description",
+											"http://voc4u9.appspot.com/styles/icon_hg.png");
+							mFacebook.dialog(Train.this, "feed", parameters,
+									new DialogListener() {
+										@Override
+										public void onComplete(Bundle values) {
+											dialog.dismiss();
+										}
+
+										@Override
+										public void onFacebookError(
+												FacebookError error) {
+										}
+
+										@Override
+										public void onError(DialogError e) {
+										}
+
+										@Override
+										public void onCancel() {
+										}
+									});
+						}
+					});
+
+			return dialog;
+		} else {
+			return super.onCreateDialog(id);
+		}
+	}
 }
