@@ -58,3 +58,9 @@ ctx_menu_delete;delete
 ctx_menu_play;play
 ctx_menu_edit;edit
 confirm_you_want_realy_delete;do you want delete the word?
+tilte_congratulation;Congratulation
+msg_congratulation;Your progress is Wonderfully! Your knowledge already spread about new %d words! Continue with this good work! You should tell your friends about your success.
+btn_facebook;Facebook
+msg_facebook_msg;Knoweledge spread about new %d words!
+msg_facebook_desc;Vocabulary Voc4u is a smart and simple vocabulary for learning foreign words. You can learn English, German, Spanish, French, Czech, Italian, Polish and Portuguese. Don't hasitate and try it!
+msg_facebook_caption;Super Vocabulary Voc4u Android

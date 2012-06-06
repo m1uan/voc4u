@@ -5,13 +5,11 @@
 <resources>
     
 	<string name="tap_for_display" formatted="false">*** tap for display ***</string>
-	
-	<string name="msg_our_lern_unsurported" formatted="false">Our learn language is unsurported by Speech to Text syntetizer</string>
 	<string name="form_dictionary" formatted="false">Dictionary</string>
-	<string name="information_init" formatted="false">Select you native language, next select language which you want learn. And let\'s go train</string>
+	<string name="information_init" formatted="false">Select you native language, next select language which you want learn. And let\'s go train :-)\nThis setting is showed only once, when you decide change it, you must go to Dictionary and there Reset DB.</string>
 	<string name="hint_native_word" formatted="false">native word</string>
-	
-	<string name="form_dashboard" formatted="false">Vocabulary - Voc4u</string>
+	<string name="msg_our_lern_unsurported" formatted="false">Our learn language is unsurported by Speech to Text syntetizer</string>
+	<string name="form_dashboard" formatted="false">Voc4u</string>
 	<string name="btn_train" formatted="false">TRAIN</string>
 	<string name="start" formatted="false">start</string>
 	<string name="save_dictionary" formatted="false">save dictionary</string>
@@ -65,6 +63,12 @@
 	<string name="ctx_menu_delete" formatted="false">delete</string>
 	<string name="ctx_menu_play" formatted="false">play</string>
 	<string name="ctx_menu_edit" formatted="false">edit</string>
-	<string name="confirm_you_want_realy_delete" formatted="false">do you want delete the word?</string><string-array name="lessons"><item>Essential</item><item>Elementary</item><item>Pre-intermediate</item><item>Intermediate</item> </string-array>
+	<string name="confirm_you_want_realy_delete" formatted="false">do you want delete the word?</string>
+	<string name="tilte_congratulation" formatted="false">Congratulation</string>
+	<string name="msg_congratulation" formatted="false">Your progress is Wonderfully! Your knowledge already spread about new %d words! Continue with this good work! You should tell your friends about your success.</string>
+	<string name="btn_facebook" formatted="false">Facebook</string>
+	<string name="msg_facebook_msg" formatted="false">Knoweledge spread about new %d words!</string>
+	<string name="msg_facebook_desc" formatted="false">Vocabulary Voc4u is a smart and simple vocabulary for learning foreign words. You can learn English, German, Spanish, French, Czech, Italian, Polish and Portuguese. Don\'t hasitate and try it!</string>
+	<string name="msg_facebook_caption" formatted="false">Super Vocabulary Voc4u Android</string><string-array name="lessons"><item>Essential</item><item>Elementary</item><item>Pre-intermediate</item><item>Intermediate</item> </string-array>
 </resources>
 

@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -471,76 +472,87 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		if (id == DIALOG_PROGRESS_FACEBOOK) {
-			final Dialog dialog = new Dialog(this);
-
-			// dialog.
-			dialog.setContentView(R.layout.dialog_words_known_info);
-			dialog.setTitle("congratulations");
-
-			WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-			lp.copyFrom(dialog.getWindow().getAttributes());
-			lp.width = WindowManager.LayoutParams.FILL_PARENT;
-			// lp.height = WindowManager.LayoutParams.FILL_PARENT;
-			// dialog.show();
-			dialog.getWindow().setAttributes(lp);
-			dialog.show();
-
-			dialog.findViewById(R.id.btnOk).setOnClickListener(
-					new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							dialog.dismiss();
-						}
-					});
-			dialog.findViewById(R.id.btnFacebook).setOnClickListener(
-					new OnClickListener() {
-
-						@Override
-						public void onClick(View v) {
-							final Facebook mFacebook = new Facebook(
-									"184157091711392");
-							// post on user's wall.
-							Bundle parameters = new Bundle();
-							parameters
-									.putString("link",
-											"https://play.google.com/store/apps/details?id=com.voc4u");
-							parameters
-									.putString("name",
-											"Congratulations! Knoweledge spread about new 25 words!");
-							parameters.putString("caption", "...be better!");
-							parameters
-									.putString("picture",
-											"http://voc4u9.appspot.com/styles/icon_hg.png");
-							parameters
-									.putString("description",
-											"http://voc4u9.appspot.com/styles/icon_hg.png");
-							mFacebook.dialog(Train.this, "feed", parameters,
-									new DialogListener() {
-										@Override
-										public void onComplete(Bundle values) {
-											dialog.dismiss();
-										}
-
-										@Override
-										public void onFacebookError(
-												FacebookError error) {
-										}
-
-										@Override
-										public void onError(DialogError e) {
-										}
-
-										@Override
-										public void onCancel() {
-										}
-									});
-						}
-					});
-
-			return dialog;
+			return prepareDialogAboutUserProgress();
 		} else {
 			return super.onCreateDialog(id);
 		}
+	}
+
+	private Dialog prepareDialogAboutUserProgress() {
+		final Dialog dialog = new Dialog(this);
+
+		String progresInfo = getResources().getString(
+				R.string.msg_congratulation, mNumRealKnow);
+
+		// dialog.
+		dialog.setContentView(R.layout.dialog_words_known_info);
+		dialog.setTitle(R.string.tilte_congratulation);
+		TextView tv = (TextView) dialog.findViewById(R.id.tvMsgCongratulation);
+		tv.setText(progresInfo);
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		lp.copyFrom(dialog.getWindow().getAttributes());
+		lp.width = WindowManager.LayoutParams.FILL_PARENT;
+		// lp.height = WindowManager.LayoutParams.FILL_PARENT;
+		// dialog.show();
+		dialog.getWindow().setAttributes(lp);
+		dialog.show();
+
+		dialog.findViewById(R.id.btnOk).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+					}
+				});
+		dialog.findViewById(R.id.btnFacebook).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						showFacebookDialog(dialog);
+					}
+
+				});
+
+		return dialog;
+	}
+
+	private void showFacebookDialog(final Dialog dialog) {
+		final Facebook mFacebook = new Facebook("184157091711392");
+		// post on user's wall.
+		Bundle parameters = new Bundle();
+		parameters.putString("link",
+				"https://play.google.com/store/apps/details?id=com.voc4u");
+		parameters.putString("picture",
+				"http://voc4u9.appspot.com/styles/icon_hg.png");
+
+		Resources res = getResources();
+
+		parameters.putString("name",
+				res.getString(R.string.msg_facebook_msg, mNumRealKnow));
+		parameters.putString("caption",
+				res.getString(R.string.msg_facebook_caption));
+
+		parameters.putString("description",
+				res.getString(R.string.msg_facebook_desc));
+		mFacebook.dialog(Train.this, "feed", parameters, new DialogListener() {
+			@Override
+			public void onComplete(Bundle values) {
+				dialog.dismiss();
+			}
+
+			@Override
+			public void onFacebookError(FacebookError error) {
+			}
+
+			@Override
+			public void onError(DialogError e) {
+			}
+
+			@Override
+			public void onCancel() {
+			}
+		});
 	}
 }

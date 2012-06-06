@@ -9,17 +9,17 @@
     android:paddingTop="0dp" >
 
     <TextView
-        android:id="@+id/image"
+        android:id="@+id/tvMsgCongratulation"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Your progress is Wonderfully! You already learn 1400 words! Continue with this good work! You shoul tell your friends about your success." />
+        android:text="@string/msg_congratulation" />
 
     <Button
         android:padding="5dp"
         android:id="@+id/btnFacebook"
         android:layout_width="fill_parent"
         android:layout_height="75dp"
-        android:text="Facebook"
+        android:text="@string/btn_facebook"
         android:textSize="15sp"
         android:textStyle="bold" />
 

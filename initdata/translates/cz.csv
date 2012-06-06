@@ -56,3 +56,9 @@ msg_tts_language_missing;Vámi učený jazyk, není pravděpodobně podporovaný
 msg_tts_data_missing;V syntetyzatoru hlasu, pravděpodobně chybí data, chcete přejít do nastavení Syntezy hlasu?;
 msg_our_lern_unsurported;Jazyk který se chceš naučit není podporován hlasovým syntetizérem.
 lesson_5;m1uan
+tilte_congratulation;Gratuluji!
+msg_congratulation;Tvůj postup je fenomenální! Tvoje znalosti byli rozšířeny o %i nových slovíček! Pokračuj v dobré práci! A nezapomeň o tvém uspěchu říct také přátelům na facebooku.
+btn_facebook;Facebook
+msg_facebook_msg;Znalosti rozšířeny o %i nových slovíček!
+msg_facebook_desc;Voc4u je jednoduchý slovníček, který ti může pomoci naučit se slovíčka. Mezi podporované jazyky patří Angličtina, Francouština, Němčina, Italština, Španělština, Polština a Portugalština.
+msg_facebook_caption;Super slovníček Voc4u Android
