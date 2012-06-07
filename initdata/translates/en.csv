@@ -9,11 +9,11 @@ START;start;
 SAVE_DICTIONARY;save dictionary;
 SPEECH_TO_TEXT;Try to tell the word on up with the true pronunciation.;
 NOT_SELECTED_YET;Not selected yet...;
-INFORMATION_DASHBOARD;Welcome in Vocabulary For You. The voc4u have three options.\n#1: Train is the main and there you can improve memory of vocabulary, for examle in public transport.\n#2: Speaker mod is about, vocabulary to speech and you can only listening, for examle when you go to bet.\n#3: For otherwise here is mode for trying pronunciation, the Phone listening you and comparing with the regular word.;
+INFORMATION_DASHBOARD;Welcome to Vocabulary Voc4u. Voc4u has three modes.\n1: Training mode. This is the main mode and here, you can improve your range of vocabulary in different topics, for example, Public Transport.\n2: Listening mode. This mode converts vocabulary to speech, giving you the ability to listen to the spoken language.\n3: Speech mode. This mode is for practising your vocabulary and pronunciation. Voc4u will listen and analyze your accuracy.;
 DIC_MENU_DICTIONARY;   Dictionary;
 SELECT_LERN_LANG;Select your learn language:;
 LANGUAGE_SELECT;Language selector;
-BTN_NOSHOWMORE;don't show again;
+BTN_NOSHOWMORE;permanently hide the dialog;
 BTN_KNOW;Know;
 CUSTOM_WORD_EMPTY;Not add word yet;
 FORM_TRAIN;Train;
@@ -38,7 +38,7 @@ LESSON_4;Intermediate;
 LESSON_3;Pre-Intermediate;
 LESSON_2;Elementary;
 LESSON_1;Basic;
-INFORMATION_TRAIN;Here you can train the your vocabulary. Two button "know" and "don't know" do display to you next word, but when use the "don't know" the word will be show more frequently. Words in Train you can manage in Dictionary access from options menu.;
+INFORMATION_TRAIN;In order to use the app correctly, if you have difficulty learning the vocabulary on screen, press the \"dont know\" button. Vocabulary Voc4u will then ask you the same word later, so that you can practise it further. If you can understand the word on screen, press the "know" button. The app will set the word as a lower priority, so you can focus on the words that you don't know.But first, please go to the Dictionary and select your difficulty level for vocabulary analysis.
 HINT_LERN_WORD;learn word;
 INFORMATION_DICTIONARY;On this form you can select the lesson for your training. Any lesson have example with words which contain. ;
 DIC_MENU_ADD_WORD;   Add word;
@@ -59,8 +59,8 @@ ctx_menu_play;play
 ctx_menu_edit;edit
 confirm_you_want_realy_delete;do you want delete the word?
 tilte_congratulation;Congratulation
-msg_congratulation;Your progress is Wonderfully! Your knowledge already spread about new %d words! Continue with this good work! You should tell your friends about your success.
+msg_msg_congratulation;Your progress is excellent! Your vocabulary has already increased by %d words! Keep it up! Why not share your success with your friends.
 btn_facebook;Facebook
-msg_facebook_msg;Knoweledge spread about new %d words!
+msg_facebook_msg;Vocabulary has already increased by %d words!
 msg_facebook_desc;Vocabulary Voc4u is a smart and simple vocabulary for learning foreign words. You can learn English, German, Spanish, French, Czech, Italian, Polish and Portuguese. Don't hasitate and try it!
 msg_facebook_caption;Super Vocabulary Voc4u Android

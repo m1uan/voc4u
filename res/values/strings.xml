@@ -15,11 +15,11 @@
 	<string name="save_dictionary" formatted="false">save dictionary</string>
 	<string name="speech_to_text" formatted="false">Try to tell the word on up with the true pronunciation.</string>
 	<string name="not_selected_yet" formatted="false">Not selected yet...</string>
-	<string name="information_dashboard" formatted="false">Welcome in Vocabulary For You. The voc4u have three options.\n#1: Train is the main and there you can improve memory of vocabulary, for examle in public transport.\n#2: Speaker mod is about, vocabulary to speech and you can only listening, for examle when you go to bet.\n#3: For otherwise here is mode for trying pronunciation, the Phone listening you and comparing with the regular word.</string>
+	<string name="information_dashboard" formatted="false">Welcome to Vocabulary Voc4u. Voc4u has three modes.\n1: Training mode. This is the main mode and here, you can improve your range of vocabulary in different topics, for example, Public Transport.\n2: Listening mode. This mode converts vocabulary to speech, giving you the ability to listen to the spoken language.\n3: Speech mode. This mode is for practising your vocabulary and pronunciation. Voc4u will listen and analyze your accuracy.</string>
 	<string name="dic_menu_dictionary" formatted="false">Dictionary</string>
 	<string name="select_lern_lang" formatted="false">Select your learn language:</string>
 	<string name="language_select" formatted="false">Language selector</string>
-	<string name="btn_noshowmore" formatted="false">don\'t show again</string>
+	<string name="btn_noshowmore" formatted="false">permanently hide the dialog</string>
 	<string name="btn_know" formatted="false">Know</string>
 	<string name="custom_word_empty" formatted="false">Not add word yet</string>
 	<string name="form_train" formatted="false">Train</string>
@@ -44,7 +44,7 @@
 	<string name="lesson_3" formatted="false">Pre-Intermediate</string>
 	<string name="lesson_2" formatted="false">Elementary</string>
 	<string name="lesson_1" formatted="false">Basic</string>
-	<string name="information_train" formatted="false">Here you can train the your vocabulary. Two button \"know\" and \"don\'t know\" do display to you next word, but when use the \"don\'t know\" the word will be show more frequently. Words in Train you can manage in Dictionary access from options menu.</string>
+	<string name="information_train" formatted="false">In order to use the app correctly, if you have difficulty learning the vocabulary on screen, press the \\"dont know\\" button. Vocabulary Voc4u will then ask you the same word later, so that you can practise it further. If you can understand the word on screen, press the \"know\" button. The app will set the word as a lower priority, so you can focus on the words that you don\'t know.But first, please go to the Dictionary and select your difficulty level for vocabulary analysis.</string>
 	<string name="hint_lern_word" formatted="false">learn word</string>
 	<string name="information_dictionary" formatted="false">On this form you can select the lesson for your training. Any lesson have example with words which contain.</string>
 	<string name="dic_menu_add_word" formatted="false">Add word</string>
@@ -65,9 +65,9 @@
 	<string name="ctx_menu_edit" formatted="false">edit</string>
 	<string name="confirm_you_want_realy_delete" formatted="false">do you want delete the word?</string>
 	<string name="tilte_congratulation" formatted="false">Congratulation</string>
-	<string name="msg_congratulation" formatted="false">Your progress is Wonderfully! Your knowledge already spread about new %d words! Continue with this good work! You should tell your friends about your success.</string>
+	<string name="msg_msg_congratulation" formatted="false">Your progress is excellent! Your vocabulary has already increased by %d words! Keep it up! Why not share your success with your friends.</string>
 	<string name="btn_facebook" formatted="false">Facebook</string>
-	<string name="msg_facebook_msg" formatted="false">Knoweledge spread about new %d words!</string>
+	<string name="msg_facebook_msg" formatted="false">Vocabulary has already increased by %d words!</string>
 	<string name="msg_facebook_desc" formatted="false">Vocabulary Voc4u is a smart and simple vocabulary for learning foreign words. You can learn English, German, Spanish, French, Czech, Italian, Polish and Portuguese. Don\'t hasitate and try it!</string>
 	<string name="msg_facebook_caption" formatted="false">Super Vocabulary Voc4u Android</string><string-array name="lessons"><item>Essential</item><item>Elementary</item><item>Pre-intermediate</item><item>Intermediate</item> </string-array>
 </resources>
