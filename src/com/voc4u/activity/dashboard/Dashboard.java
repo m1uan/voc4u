@@ -85,26 +85,23 @@ public class Dashboard extends BaseActivity {
 				+ String.valueOf(numTotal));
 		numow.setVisibility(View.VISIBLE);
 
-		// btnTrain.setVisibility(View.VISIBLE);
-		// btnListen.setVisibility(View.VISIBLE);
-		// btnSpeech.setVisibility(View.VISIBLE);
-		// vLogo.setVisibility(View.VISIBLE);
-		// vInfoPanel.setVisibility(View.VISIBLE);
-		//
-		// Animation animation = AnimationUtils.loadAnimation(this,
-		// R.anim.dashboardtrain);
-		// btnTrain.startAnimation(animation);
-		// animation = AnimationUtils.loadAnimation(this,
-		// R.anim.dashboard_listen);
-		// btnListen.startAnimation(animation);
-		// animation = AnimationUtils.loadAnimation(this,
-		// R.anim.dashboard_speech);
-		// btnSpeech.startAnimation(animation);
-		// animation = AnimationUtils.loadAnimation(this, R.anim.train_list);
-		// vLogo.startAnimation(animation);
-		// animation = AnimationUtils.loadAnimation(this,
-		// R.anim.dashboardtrain);
-		// vInfoPanel.startAnimation(animation);
+		btnTrain.setVisibility(View.VISIBLE);
+		btnListen.setVisibility(View.VISIBLE);
+		btnSpeech.setVisibility(View.VISIBLE);
+		vLogo.setVisibility(View.VISIBLE);
+		vInfoPanel.setVisibility(View.VISIBLE);
+
+		Animation animation = AnimationUtils.loadAnimation(this,
+				R.anim.dashboardtrain);
+		btnTrain.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.dashboard_listen);
+		btnListen.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.dashboard_speech);
+		btnSpeech.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.train_list);
+		vLogo.startAnimation(animation);
+		animation = AnimationUtils.loadAnimation(this, R.anim.dashboardtrain);
+		vInfoPanel.startAnimation(animation);
 
 		super.onResumeSuccess();
 	}
