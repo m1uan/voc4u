@@ -148,6 +148,11 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 		if (mNumRealKnow == -1) {
 			mNumRealKnow = mWCtrl.getNumWordsInDB(NUM_WORDS_TYPE.KNOWS);
 		}
+
+		if (mMPMetrics != null) {
+			mMPMetrics.track("Train", null);
+		}
+
 	}
 
 	private void setupFirstWord(boolean loadNew) {
@@ -459,20 +464,27 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 
 	@Override
 	public void onDestroy() {
+		callMPMetrics("Train_leave");
+		super.onDestroy();
+	}
+
+	private void callMPMetrics(String key) {
 		if (mMPMetrics != null) {
 			try {
 				JSONObject properties = new JSONObject();
+				properties.put("next_real_know_words",
+						CommonSetting.nextKnowWordsLevel);
+				properties.put("real_know_words", mNumRealKnow);
 				properties.put("know_count", numKnow);
 				properties.put("dontknow_count", numDontKnow);
 				properties.put("total_count", numDontKnow + numKnow);
 				properties.put("time_in_train", getTotalTime());
-				mMPMetrics.track("Train_leave", properties);
+				mMPMetrics.track(key, properties);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		super.onDestroy();
 	}
 
 	@Override
@@ -492,6 +504,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 			TextView tv = (TextView) dialog
 					.findViewById(R.id.tvMsgCongratulation);
 			tv.setText(progresInfo);
+			callMPMetrics("Train_progress_show");
 		} else {
 			super.onPrepareDialog(id, dialog);
 		}
@@ -527,6 +540,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 					@Override
 					public void onClick(View v) {
 						showFacebookDialog(dialog);
+						callMPMetrics("Train_show_facebook");
 					}
 
 				});
@@ -555,6 +569,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 		mFacebook.dialog(Train.this, "feed", parameters, new DialogListener() {
 			@Override
 			public void onComplete(Bundle values) {
+				callMPMetrics("Train_show_facebook_complete");
 				dialog.dismiss();
 			}
 
@@ -568,6 +583,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 
 			@Override
 			public void onCancel() {
+				callMPMetrics("Train_show_facebook_cancel");
 			}
 		});
 	}
