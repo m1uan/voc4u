@@ -65,7 +65,7 @@
 	<string name="ctx_menu_edit" formatted="false">edit</string>
 	<string name="confirm_you_want_realy_delete" formatted="false">do you want delete the word?</string>
 	<string name="tilte_congratulation" formatted="false">Congratulation</string>
-	<string name="msg_msg_congratulation" formatted="false">Your progress is excellent! Your vocabulary has already increased by %d words! Keep it up! Why not share your success with your friends.</string>
+	<string name="msg_congratulation" formatted="false">Your progress is excellent! Your vocabulary has already increased by %d words! Keep it up! Why not share your success with your facebook friends?</string>
 	<string name="btn_facebook" formatted="false">Facebook</string>
 	<string name="msg_facebook_msg" formatted="false">Vocabulary has already increased by %d words!</string>
 	<string name="msg_facebook_desc" formatted="false">Vocabulary Voc4u is a smart and simple vocabulary for learning foreign words. You can learn English, German, Spanish, French, Czech, Italian, Polish and Portuguese. Don\'t hasitate and try it!</string>

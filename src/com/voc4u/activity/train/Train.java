@@ -34,6 +34,7 @@ import com.voc4u.activity.dashboard.Dashboard;
 import com.voc4u.controller.DictionaryOpenHelper.NUM_WORDS_TYPE;
 import com.voc4u.controller.PublicWord;
 import com.voc4u.controller.Word;
+import com.voc4u.setting.CommonSetting;
 import com.voc4u.setting.Consts;
 import com.voc4u.widget.TrainWidget;
 
@@ -188,6 +189,7 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 
 	@Override
 	public void onBackPressed() {
+		super.onBackPressed();
 		Animation anim = AnimationUtils.loadAnimation(this,
 				R.anim.dashboard_listen_r);
 		mDontKnowButton.startAnimation(anim);
@@ -272,11 +274,15 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 				|| (!pw.isBasePrimary() && weight1 > 1 && weight2 == 1)) {
 			mNumRealKnow++;
 
-			if (mNumRealKnow > 0) {
+			if (mNumRealKnow > CommonSetting.nextKnowWordsLevel) {
 				showDialog(DIALOG_PROGRESS_FACEBOOK);
+				CommonSetting.nextKnowWordsLevel = CommonSetting.nextKnowWordsLevel
+						+ CommonSetting.nextKnowWordsLevel * 2;
+				CommonSetting.store(this);
+
 			}
 		}
-		showDialog(DIALOG_PROGRESS_FACEBOOK);
+		// showDialog(DIALOG_PROGRESS_FACEBOOK);
 		numKnow++;
 
 	}
@@ -478,17 +484,27 @@ public class Train extends BaseWordActivity implements OnItemClickListener {
 		}
 	}
 
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
+		if (id == DIALOG_PROGRESS_FACEBOOK) {
+			String progresInfo = getResources().getString(
+					R.string.msg_congratulation, mNumRealKnow);
+			TextView tv = (TextView) dialog
+					.findViewById(R.id.tvMsgCongratulation);
+			tv.setText(progresInfo);
+		} else {
+			super.onPrepareDialog(id, dialog);
+		}
+
+	}
+
 	private Dialog prepareDialogAboutUserProgress() {
 		final Dialog dialog = new Dialog(this);
-
-		String progresInfo = getResources().getString(
-				R.string.msg_congratulation, mNumRealKnow);
 
 		// dialog.
 		dialog.setContentView(R.layout.dialog_words_known_info);
 		dialog.setTitle(R.string.tilte_congratulation);
-		TextView tv = (TextView) dialog.findViewById(R.id.tvMsgCongratulation);
-		tv.setText(progresInfo);
+
 		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 		lp.copyFrom(dialog.getWindow().getAttributes());
 		lp.width = WindowManager.LayoutParams.FILL_PARENT;
