@@ -135,7 +135,8 @@ public class CommonSetting {
 		NSMTrain = getBoolean(context, NSM_TRAIN, false);
 		NSMDashboard = getBoolean(context, NSM_DASBOARD, false);
 
-		nextKnowWordsLevel = getLong(context, NEXT_KNOW_WORDS_LEVEL, 1);
+		nextKnowWordsLevel = getLong(context, NEXT_KNOW_WORDS_LEVEL,
+				Consts.FIRST_KNOWN_LEVEL);
 		getBooleanArray(context, LESSON_ENABLED, lessonsEnambled, false);
 	}
 

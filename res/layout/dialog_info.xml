@@ -1,42 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/layout_root"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:padding="10dp"
-              >
-    <TextView android:id="@+id/text"
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:text="native"
-               android:layout_marginRight="10dp"
-               />
-<LinearLayout 
+    android:id="@+id/layout_root"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
-     <TextView 
-         android:id="@+id/textchk"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:textStyle="bold"
-         android:text="@string/btn_noshowmore"
-         android:layout_marginLeft="1dp"
-         android:layout_gravity="left|center_vertical"
-         android:layout_weight="1" />
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:text="native" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textchk"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:text="@string/btn_noshowmore"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/chkNoShowMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:text="" />
+    </LinearLayout>
     
-   	<CheckBox
-               android:id="@+id/chkNoShowMore"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text=""
-               android:layout_gravity="right|center_vertical"/>
-               </LinearLayout>
-     <Button
-			android:id="@+id/btnCancel"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/btn_cancel"  />
-              
+    <Button
+        android:id="@+id/btnDictionary"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:padding="20dp"
+        android:text="@string/form_dictionary"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@android:string/ok" />
+
 </LinearLayout>

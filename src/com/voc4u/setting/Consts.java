@@ -14,4 +14,5 @@ public class Consts {
 	public static final int NATIVE_LESSON_NUM = 4;
 
 	public static final String MPMETRICS_CODE = "9bbb341c8848bc0d46b0f1beb6cefec3";
+	public static final int FIRST_KNOWN_LEVEL = 5;
 }
